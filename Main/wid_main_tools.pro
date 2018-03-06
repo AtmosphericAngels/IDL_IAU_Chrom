@@ -7,7 +7,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 FUNCTION refresh_dsel_msel, event, chrom
 
-  strct = {dsel: 0, msel: 0, mass: 0,  nvd: 0}
+  strct = {dsel: 0, msel: 0, mass: -1,  nvd: 0}
   
   IF SIZE(chrom, /TYPE) NE 8 THEN BEGIN ; abort if chrom is no structure
     MSG = DIALOG_MESSAGE('No valid data found.', /INFORMATION)
@@ -24,10 +24,11 @@ FUNCTION refresh_dsel_msel, event, chrom
   ID_sel_mass = WIDGET_INFO(event.top, find_by_uname='sel_mass')
   sel_mass = WIDGET_INFO(ID_sel_mass, /droplist_select) ; selected mass
   WIDGET_CONTROL, ID_sel_mass, get_value=masslist ; list of all masses
-  mass = masslist[sel_mass]
-  msel = WHERE(*chrom[sel_chrom].mass EQ FIX(masslist[sel_mass],type=4), nvd)
   
-  IF nvd EQ 0 THEN MSG = DIALOG_MESSAGE('m/Q not found.', /INFORMATION)
+  mass = -1
+  msel = WHERE(*chrom[sel_chrom].mass EQ FIX(masslist[sel_mass],type=4), nvd)
+  IF nvd EQ 0 THEN MSG = DIALOG_MESSAGE('m/Q not found.', /INFORMATION) $
+    ELSE mass = masslist[sel_mass]
 
   strct = {dsel: sel_chrom, msel: msel, mass: mass,  nvd: nvd}
 
@@ -40,7 +41,7 @@ FUNCTION change_time, chrom, new_t_scale
   IF new_t_scale EQ 'Seconds' THEN t_set=0 ELSE t_set=1 ; t_set = 0 --> seconds, t_set = 1, minutes
   
   old_t_scale = chrom[0].t_scale
-  IF old_t_scale EQ 'Minutes' THEN t_conv=60. ELSE t_conv=1./60.; define conversion factor to get the corresponding 
+  IF old_t_scale EQ 'Minutes' THEN t_conv=60D ELSE t_conv=1D/60D; define conversion factor to get the corresponding 
                                                             ; other time scale
                                                             
   IF old_t_scale EQ 'Seconds' AND t_set EQ 0 THEN RETURN, chrom ; is state equals set state

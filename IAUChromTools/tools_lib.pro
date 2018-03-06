@@ -74,12 +74,10 @@ END
 
 FUNCTION get_finval, array
 
-  w_finite=WHERE(FINITE(array) EQ 1, w_not_finite)
+  w_finite = WHERE(FINITE(array) EQ 1, n_fin)
   
-  IF w_not_finite EQ 0 THEN BEGIN
-
-    RETURN, array
-  ENDIF ELSE RETURN, array[w_finite]
+  IF n_fin EQ 0 THEN RETURN, !NULL $
+    ELSE RETURN, array[w_finite]
   
 END
 
@@ -126,15 +124,20 @@ FUNCTION get_uniq_mass, chrom, SEL_CHROM=sel_chrom                   ; get uniqu
   
   IF NOT KEYWORD_SET(SEL_CHROM) THEN BEGIN                           ; ALL CHROMATOGRAMS
     FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN                      ; loop over all chromatograms
-      vd_mass = (*chrom[i].mass)[WHERE(FINITE(*chrom[i].mass) EQ 1)] ; exclued nans
-      uniqm = vd_mass[UNIQ(vd_mass, SORT(vd_mass))]
-      tot_uniqm = [tot_uniqm, uniqm]
+      w_fin = WHERE(FINITE(*chrom[i].mass) EQ 1, n_fin)
+      IF n_fin GT 0 THEN BEGIN ; only append if finite values are found
+        vd_mass = (*chrom[i].mass)[w_fin] ; exclued nans
+        uniqm = vd_mass[UNIQ(vd_mass, SORT(vd_mass))]
+        tot_uniqm = [tot_uniqm, uniqm]
+      ENDIF
     ENDFOR
-    tot_uniqm = tot_uniqm[UNIQ(tot_uniqm, SORT(tot_uniqm))]          
-    
-  ENDIF ELSE BEGIN                                                   ; SPECIFIC CHROMATOGRAM
-    vd_mass = (*chrom[sel_chrom].mass)[WHERE(FINITE(*chrom[sel_chrom].mass) EQ 1)]
-    tot_uniqm = vd_mass[UNIQ(vd_mass, SORT(vd_mass))]    
+    IF N_ELEMENTS(tot_uniqm) GT 0 THEN tot_uniqm = tot_uniqm[UNIQ(tot_uniqm, SORT(tot_uniqm))]          
+  ENDIF ELSE BEGIN       
+    w_fin = WHERE(FINITE(*chrom[sel_chrom].mass) EQ 1, n_fin)
+    IF n_fin GT 0 THEN BEGIN ; only append if finite values are found
+      vd_mass = (*chrom[sel_chrom].mass)[w_fin]
+      tot_uniqm = vd_mass[UNIQ(vd_mass, SORT(vd_mass))]   
+    ENDIF                                            ; SPECIFIC CHROMATOGRAM 
   ENDELSE
 
   RETURN, tot_uniqm

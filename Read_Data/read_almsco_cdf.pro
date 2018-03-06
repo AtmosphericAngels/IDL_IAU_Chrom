@@ -21,8 +21,8 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
   IF NOT KEYWORD_SET(loud) THEN loud = 0
   
   IF NOT KEYWORD_SET(t_scale) THEN t_scale = 'Seconds'         ; time scale default: seconds
-  t_conv = 1.                                                  ; time conversion factor = 1 for default time scale (seconds)
-  IF t_scale EQ 'Minutes' THEN t_conv = 60.                    ; time conversion factor = 60 if time scale is minutes
+  t_conv = 1D                                                 ; time conversion factor = 1 for default time scale (seconds)
+  IF t_scale EQ 'Minutes' THEN t_conv = 60D                    ; time conversion factor = 60 if time scale is minutes
   
   
   IF NOT KEYWORD_SET(def_file) THEN $
@@ -61,8 +61,7 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
 ;    *refd.mass = round(ncdfstr.mass_values)
    *refd.mass = fltarr(n_elements(ncdfstr.mass_values))              
    rmv = round(ncdfstr.mass_values)
-   nrmv = ncdfstr.mass_values
-   dm = rmv-nrmv                  ; difference to integer value: dm > 0 eqs. rounded up / dm < 0 eqs. rounded down
+   dm = rmv-ncdfstr.mass_values                  ; difference to integer value: dm > 0 eqs. rounded up / dm < 0 eqs. rounded down
    m_int = 0.485                  ; intervall around nom.mass (+/-)
 
    w0 = where(abs(dm) LE m_int)   ; intervall around nom.mass +/- m_int
@@ -88,22 +87,27 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
 ;      endfor
 ;      print, 'n doubles: ', ivd
  ; ***
-      
-    *refd.intensity = ncdfstr.intensity_values
-    
-    *refd.time = DBLARR(N_ELEMENTS(ncdfstr.intensity_values))*!Values.F_NAN ; generate one time point for every intensity value
-    ix=[ncdfstr.scan_index, N_ELEMENTS(ncdfstr.intensity_values)] ; generate index array as ncdfstr.scan_index but with additional element N_ELEMENTS(ncdfstr.intensity_values)
-    
-    FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-1 DO BEGIN
-      IF ix[j+1] GT ix[j] THEN ((*refd.time)[ix[j]:ix[j+1]-1]=ncdfstr.scan_acquisition_time[j] / t_conv) $
-        ELSE ((*refd.time)[ix[j]]=ncdfstr.scan_acquisition_time[j] / t_conv)
-    ENDFOR
-    
+
+    *refd.intensity = ncdfstr.intensity_values    
+    *refd.time = DBLARR(N_ELEMENTS(ncdfstr.intensity_values))*!Values.D_NAN ; generate one time point for every intensity value
+
+;    ix=[ncdfstr.scan_index, N_ELEMENTS(ncdfstr.intensity_values)] ; generate index array     
+;    FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-1 DO BEGIN
+;      IF ix[j+1] GT ix[j] THEN (*refd.time)[ix[j]:ix[j+1]-1] = ncdfstr.scan_acquisition_time[j] $
+;        ELSE (*refd.time)[ix[j]]=ncdfstr.scan_acquisition_time[j]
+;    ENDFOR
+
+    FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-2 DO $
+      (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
+    ; correct indexing: index of last scan must be less than number of intensity values 
+    IF ncdfstr.scan_index[-1] LT N_ELEMENTS(ncdfstr.intensity_values) THEN $
+      (*refd.time)[ncdfstr.scan_index[-1]:-1] = ncdfstr.scan_acquisition_time[-1]/t_conv
+
     refd.t_scale = t_scale
     refd.iauchrom_vers = version
 
     chrom=[chrom,refd]
-  
+
   ENDFOR
   
   ; sort chrom structure by jdate vector...
