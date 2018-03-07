@@ -338,7 +338,7 @@ PRO wid_main_handle, event
             x = (*chrom[data_select.dsel].time)[data_select.msel]
             v = (*chrom[data_select.dsel].intensity)[data_select.msel]
             plot_routine_pobj0, x, v, OVER=1
-          ENDIF
+          ENDIF ELSE plot_routine_pobj0, 0, 0, /SET_ZERO
       END
 ; ********************************************************************************************************************************************** 
      'sel_mass' : $
@@ -352,7 +352,7 @@ PRO wid_main_handle, event
             x = (*chrom[data_select.dsel].time)[data_select.msel]
             v = (*chrom[data_select.dsel].intensity)[data_select.msel]
             plot_routine_pobj0, x, v, OVER=1
-          ENDIF
+          ENDIF ELSE plot_routine_pobj0, 0, 0, /SET_ZERO
       END
 ; **********************************************************************************************************************************************  
     'integration': $

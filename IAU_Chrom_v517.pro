@@ -36,7 +36,7 @@ PRO IAU_Chrom_v517
 ;  path = 'E:\KIT_DATA\MPI_GHGGC_Data_netcdf'
   path = 'D:\'
 
-  error_handler_IO = 0
+  error_handler_IO = 1
   
   wid_main_ini
   

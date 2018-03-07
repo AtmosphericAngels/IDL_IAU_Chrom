@@ -27,9 +27,10 @@ FUNCTION refresh_dsel_msel, event, chrom
   
   mass = -1
   msel = WHERE(*chrom[sel_chrom].mass EQ FIX(masslist[sel_mass],type=4), nvd)
-  IF nvd EQ 0 THEN MSG = DIALOG_MESSAGE('m/Q not found.', /INFORMATION) $
-    ELSE mass = masslist[sel_mass]
+  mass = masslist[sel_mass]
 
+  ;MSG = DIALOG_MESSAGE('m/Q not found.', /INFORMATION)
+  
   strct = {dsel: sel_chrom, msel: msel, mass: mass,  nvd: nvd}
 
   RETURN, strct

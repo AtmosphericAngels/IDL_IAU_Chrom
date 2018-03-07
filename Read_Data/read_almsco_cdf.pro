@@ -7,6 +7,7 @@
 ; introduced Nov 2013, H.Boenisch, F.Obersteiner
 ; 1705, FO: added def_file keyword to import function to override pickfile dialog.
 ;           added sort_by_jdate keyword to sort loaded files by measurement timestamp.
+; 1803, FO: added check for double scan index values
 ; 
 ; INFO:
 ; based on read_agilent_cdf, does not use interpol, generates refd.time by replicating ncdfstr.scan_acquisition_time
@@ -91,15 +92,10 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
     *refd.intensity = ncdfstr.intensity_values    
     *refd.time = DBLARR(N_ELEMENTS(ncdfstr.intensity_values))*!Values.D_NAN ; generate one time point for every intensity value
 
-;    ix=[ncdfstr.scan_index, N_ELEMENTS(ncdfstr.intensity_values)] ; generate index array     
-;    FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-1 DO BEGIN
-;      IF ix[j+1] GT ix[j] THEN (*refd.time)[ix[j]:ix[j+1]-1] = ncdfstr.scan_acquisition_time[j] $
-;        ELSE (*refd.time)[ix[j]]=ncdfstr.scan_acquisition_time[j]
-;    ENDFOR
-
     FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-2 DO $
-      (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
-    ; correct indexing: index of last scan must be less than number of intensity values 
+      IF ncdfstr.scan_index[j] EQ ncdfstr.scan_index[j+1] THEN $
+        (*refd.time)[ncdfstr.scan_index[j]] = ncdfstr.scan_acquisition_time[j]/t_conv $
+      ELSE (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
     IF ncdfstr.scan_index[-1] LT N_ELEMENTS(ncdfstr.intensity_values) THEN $
       (*refd.time)[ncdfstr.scan_index[-1]:-1] = ncdfstr.scan_acquisition_time[-1]/t_conv
 
