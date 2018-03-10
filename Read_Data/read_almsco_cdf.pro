@@ -91,13 +91,21 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
 
     *refd.intensity = ncdfstr.intensity_values    
     *refd.time = DBLARR(N_ELEMENTS(ncdfstr.intensity_values))*!Values.D_NAN ; generate one time point for every intensity value
-
-    FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-2 DO $
-      IF ncdfstr.scan_index[j] EQ ncdfstr.scan_index[j+1] THEN $
-        (*refd.time)[ncdfstr.scan_index[j]] = ncdfstr.scan_acquisition_time[j]/t_conv $
-      ELSE (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
-    IF ncdfstr.scan_index[-1] LT N_ELEMENTS(ncdfstr.intensity_values) THEN $
-      (*refd.time)[ncdfstr.scan_index[-1]:-1] = ncdfstr.scan_acquisition_time[-1]/t_conv
+    
+    ; check for duplicate occurances of the same index
+    si_sort = (ncdfstr.scan_index)[SORT(ncdfstr.scan_index)]
+    si_unq = (ncdfstr.scan_index)[uniq(si_sort)]
+    IF N_ELEMENTS(ncdfstr.scan_index) EQ N_ELEMENTS(si_unq) THEN BEGIN
+      FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-2 DO $
+        (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
+    ENDIF ELSE BEGIN ; duplicate indices: -1 will cause illegal subscript range (check takes 5 times longer)
+      FOR j=0L, N_ELEMENTS(ncdfstr.scan_index)-2 DO $
+        IF ncdfstr.scan_index[j] EQ ncdfstr.scan_index[j+1] THEN $ ; check for repeated occurances of the same scan index
+          (*refd.time)[ncdfstr.scan_index[j]] = ncdfstr.scan_acquisition_time[j]/t_conv $
+        ELSE (*refd.time)[ncdfstr.scan_index[j]:ncdfstr.scan_index[j+1]-1] = ncdfstr.scan_acquisition_time[j]/t_conv
+      IF ncdfstr.scan_index[-1] LT N_ELEMENTS(ncdfstr.intensity_values) THEN $
+        (*refd.time)[ncdfstr.scan_index[-1]:-1] = ncdfstr.scan_acquisition_time[-1]/t_conv
+    ENDELSE
 
     refd.t_scale = t_scale
     refd.iauchrom_vers = version
