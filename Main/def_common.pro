@@ -12,7 +12,7 @@ PRO def_common
          path, subst, uniq_mass, tot_uniqm, version
   
          
-  version = 5.17 ; current version
+  version = 5.18 ; current version
   
   fragdata = 0
   exp_info = 0

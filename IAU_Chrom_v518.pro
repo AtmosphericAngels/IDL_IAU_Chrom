@@ -24,7 +24,7 @@
 @wid_tpshskviewer
 @wid_plotctrls
 ;------------------------------------------------------------------------------------------------------------------------
-PRO IAU_Chrom_v517
+PRO IAU_Chrom_v518
 
   !Except=0
 
@@ -69,8 +69,10 @@ END
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
 ; 
-; TODO
-; - 
+; 2018-03-06: v5.18
+; - updated import routine for Almsco/Markes Tof cdfs. added check if scan index vector contains duplicate entries.
+;   Note: these duplicate entries seem to be created if the "dynamic baseline subtraction" of the Benchtof software is
+;   used.
 ; 
 ; 2017-11-24: v5.17
 ; - updated the manual; screenshots and scripting feature.
