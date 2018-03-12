@@ -3,7 +3,6 @@
 	<name>IAU_Chrom_v5.X</name>
 	<comment></comment>
 	<projects>
-		<project>Lib_Markwardt</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
