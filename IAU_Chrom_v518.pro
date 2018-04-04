@@ -33,16 +33,16 @@ PRO IAU_Chrom_v518
   COMMON DATA
   COMMON COM_PLOT
 
-;  path = 'E:\KIT_DATA\MPI_GHGGC_Data_netcdf'
-  path = 'D:\'
+  path = 'E:\KIT_DATA\MPI_GHGGC_Data_netcdf'
+;  path = 'D:\'
 
   error_handler_IO = 1
   
   wid_main_ini
   
 ;  Outdir='D:\PROGRAMMING\debugging\iau_chrom\rt'
-;  sfile='D:\PROGRAMMING\IDL_WD\IAU_Chrom_v5X\IAU_Chrom_v516.sav'
-;  MAKE_RT, 'IAU_Chrom_v516', Outdir, SAVEFILE=sfile, /OVERWRITE
+;  sfile='D:\PROGRAMMING\IDL_WD\IAU_Chrom_v5X\IAU_Chrom_v518.sav'
+;  MAKE_RT, 'IAU_Chrom_v518', Outdir, SAVEFILE=sfile, /OVERWRITE
   
 END
 ;########################################################################################################################
