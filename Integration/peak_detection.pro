@@ -39,6 +39,7 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
 
   IF KEYWORD_SET(verbose) THEN BEGIN
     
+    ;A0 is undefined if constant baseline is selected
     z0=(t-A0[1])/A0[2]
     peak0=A0[0]*EXP(-z0^2/2)
     base0=A0[3]+REPLICATE(0,nw_ret_win)
