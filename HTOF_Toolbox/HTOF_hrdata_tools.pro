@@ -466,9 +466,9 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
   t0=SYSTIME(1)
   
   IF NOT KEYWORD_SET(verbose) THEN verbose = 0 
-  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100
-  IF NOT KEYWORD_SET(limits_acc) THEN limits_acc = [0.0175, 0.0175]
-  IF NOT KEYWORD_SET(limits_nom) THEN limits_nom = limits_acc*3.
+  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100D
+  IF NOT KEYWORD_SET(limits_acc) THEN limits_acc = [0.0175D, 0.0175D]
+  IF NOT KEYWORD_SET(limits_nom) THEN limits_nom = limits_acc*3D
   
   targets = (peaktable.mass)[WHERE(peaktable.label NE 'nominal')] ; get m/Q traces to recalculate
                                                                   ; ! make sure to use 'nominal' as tagname in peaktable.
@@ -481,7 +481,7 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
   
   n_bufs = N_ELEMENTS((*hr_data.spectra)[0, 0,*, 0])
   n_writes = N_ELEMENTS((*hr_data.spectra)[0, 0, 0, *])
-  ns_per_bin = 0.6255                                             ; approx. ns per bin. DETECTOR-SPECIFIC!
+  ns_per_bin = 0.6255D                                            ; approx. ns per bin. DETECTOR-SPECIFIC!
 
 
   FOR i=0, N_ELEMENTS(targets)-1 DO BEGIN                         ; loop: file n, over all targeted m/Q
