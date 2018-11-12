@@ -137,8 +137,12 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 		info=NCDF_ATTINQ(ncid,name,/GLOBAL)
      	IF (info.datatype EQ 'CHAR') THEN vals=STRING(vals)
 		IF (i EQ 0) THEN BEGIN
+		  ; replace illegal characters!
+		  name = name.replace('.', '_')
 			ncdf=CREATE_STRUCT(validateName(name),vals)
 		ENDIF ELSE BEGIN
+		  ; replace illegal characters!
+		  name = name.replace('.', '_')
 			ncdf=CREATE_STRUCT(ncdf,validateName(name),vals)
 		ENDELSE
 		gattname[i]=name

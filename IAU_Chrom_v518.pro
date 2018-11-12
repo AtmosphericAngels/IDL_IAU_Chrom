@@ -78,6 +78,9 @@ END
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
 ; 
+; 2018-11-12: v5.18
+; - Fides Lefrancois: FUNCTION h5_get_massaxis: added function for MassCalibMode = 0
+; 
 ; 2018-03-06: v5.18
 ; - updated import routine for Almsco/Markes Tof cdfs. added check if scan index vector contains duplicate entries.
 ;   Note: these duplicate entries seem to be created if the "dynamic baseline subtraction" of the Benchtof software is

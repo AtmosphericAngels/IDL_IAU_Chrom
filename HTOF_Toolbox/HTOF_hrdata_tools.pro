@@ -72,6 +72,7 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
       0: BEGIN ; i = p1*sqrt(m) + p2
            p1 = calparms[0]
            p2 = calparms[1]
+           FOR i=0L, n_bins-1 DO massaxis[i]=((i-p2)/p1)^(2.)
          END
       1: BEGIN ; i = p1*1/sqrt(m) + p2
            p1 = calparms[0]
@@ -81,7 +82,7 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
            p1 = calparms[0]
            p2 = calparms[1]
            p3 = calparms[2]
-             FOR i=0L, n_bins-1 DO massaxis[i]=((i-p2)/p1)^(1./p3)
+           FOR i=0L, n_bins-1 DO massaxis[i]=((i-p2)/p1)^(1./p3)
 ;             mass_vs_timebin=((bins_ix-p2)/p1)^(1./p3) ; vectorized loop gives slightly different result....
          END
       3: BEGIN ; i = p1*sqrt(m) + p2 + p3*(m-p4)^2
@@ -466,7 +467,7 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
   t0=SYSTIME(1)
   
   IF NOT KEYWORD_SET(verbose) THEN verbose = 0 
-  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100D
+  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100
   IF NOT KEYWORD_SET(limits_acc) THEN limits_acc = [0.0175D, 0.0175D]
   IF NOT KEYWORD_SET(limits_nom) THEN limits_nom = limits_acc*3D
   
