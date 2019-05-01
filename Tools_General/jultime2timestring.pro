@@ -31,11 +31,11 @@ FUNCTION jultime2timestring, v, ONLYDATE=onlydate, HMSONLY=hmsonly, DATE_MDY=dat
 
   IF KEYWORD_SET(hmsonly) THEN timestring = $
     STRCOMPRESS(STRING(HH, FORMAT='(I02)')+':'+STRING(MN, FORMAT='(I02)')+':'+STRING(SS, FORMAT='(I02)'), /REMOVE_ALL)
-    
+
   IF KEYWORD_SET(ymd_clean) THEN timestring = $
     STRCOMPRESS(STRING(YYYY, FORMAT='(I04)') + STRING(MM, FORMAT='(I02)') + STRING(DD, FORMAT='(I02)') + $
                 STRING(HH, FORMAT='(I02)') + STRING(MN, FORMAT='(I02)'), /REMOVE_ALL)
-  
+
 
   RETURN, timestring
 

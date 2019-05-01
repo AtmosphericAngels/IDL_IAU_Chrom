@@ -2,8 +2,8 @@
 ;+
 ; NAME:
 ; HTOF_hrdata_tools
-; 
-; FUNCTIONS: 
+;
+; FUNCTIONS:
 ; - create_ref_hrdata, creates reference structure for high res data.
 ; - h5_get_masscal, retrieves calibration masses and parameters
 ; - h5_get_massaxis, retrieves mass axis (vector with mass value for every bin).
@@ -23,9 +23,9 @@ FUNCTION create_ref_hrdata
             ix_write:  PTR_NEW(/allocate_heap)  ,$
             spectra:   PTR_NEW(/allocate_heap)  ,$
             NbrWaveforms: 0L                    ,$
-            SiS: 0.                                }           
+            SiS: 0.                                }
   RETURN, strct
-  
+
 END
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
@@ -35,16 +35,16 @@ FUNCTION h5_get_tpsscript, file
     tpsscr_id = H5G_OPEN(file_id, 'TPSscripting')
       tpsscr_data = H5D_READ(H5D_OPEN(tpsscr_id, 'Data'))
   H5F_CLOSE, file_id
-  
+
   strct={script_time: tpsscr_data[0,*] ,$
          tps_code:    tpsscr_data[1,*] ,$
          set_val:     tpsscr_data[2,*] ,$
          exe_time:    tpsscr_data[3,*] ,$
          buf_ix:      tpsscr_data[4,*] ,$
          write_ix:    tpsscr_data[5,*]     }
-         
+
   RETURN, strct
-  
+
 END
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
@@ -59,16 +59,16 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
     MassCalibMode  = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibMode'))
     MassCalibFct   = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibration Function'))
     MassCalib_NPar = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibration nbrParameters'))
-    
+
     IF NOT KEYWORD_SET(CALPARMS) THEN BEGIN
       calparms=FLTARR(MassCalib_NPar)
       FOR i=0, MassCalib_NPar[0]-1 DO BEGIN
         id_string='MassCalibration p'+STRCOMPRESS(STRING(i+1), /REMOVE_ALL)
         calparms[i] = H5A_READ(H5A_OPEN_NAME(fulspec_id, id_string))
-      ENDFOR  
+      ENDFOR
     ENDIF
 
-    CASE MassCalibMode OF  
+    CASE MassCalibMode OF
       0: BEGIN ; i = p1*sqrt(m) + p2
            p1 = calparms[0]
            p2 = calparms[1]
@@ -78,7 +78,7 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
            p1 = calparms[0]
            p2 = calparms[1]
          END
-      2: BEGIN ; i = 
+      2: BEGIN ; i =
            p1 = calparms[0]
            p2 = calparms[1]
            p3 = calparms[2]
@@ -105,11 +105,11 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
            p4 = calparms[3]
          END
     ENDCASE
-    
+
     H5F_CLOSE, file_id
-    
+
   RETURN, massaxis
-  
+
 END
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
@@ -144,16 +144,16 @@ FUNCTION h5_get_masscal, file
   ENDFOR
   H5F_CLOSE, file_id
   calib={mode:MassCalibMode, calparms:calparms, masses:calmasses, bins:calbins, weights:calweights}
-  
+
   RETURN, calib
-  
+
 END
 ;---------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------------------------------------------------------------------------------------------
 FUNCTION extract_spectra, hr_data, rt_win, mass_win, F_HD=f_hd
-  
+
   PRINT, '  -> extracting spectra... '
-  
+
   w_rt_win  = WHERE((*hr_data.chromtime) GT rt_win[0] AND (*hr_data.chromtime) LT rt_win[1])
   n_spectra = N_ELEMENTS(w_rt_win)
   ix_write  = (*hr_data.ix_write)[w_rt_win]
@@ -169,7 +169,7 @@ FUNCTION extract_spectra, hr_data, rt_win, mass_win, F_HD=f_hd
   x0_mass_hd=REBIN(DOUBLE(x0_mass), n_bins*f_hd)
   x0_bins_hd=REBIN(DOUBLE(x0_bins), n_bins*f_hd)
 ;  x1_chromtime_hd=REBIN(DOUBLE(x_bins), N_ELEMENTS(x_chromtime_hd)*f_hd)
-  
+
   v0_inte=FLTARR(n_bins, n_spectra) ; array with all selected spectra intensities
   v0_inte_hd=FLTARR(n_bins*f_hd, n_spectra)
   FOR i=0, n_spectra-1 DO BEGIN
@@ -181,17 +181,17 @@ FUNCTION extract_spectra, hr_data, rt_win, mass_win, F_HD=f_hd
               n_spec: n_spectra ,$
               n_ppspec: n_bins ,$
               x0_mass: x0_mass ,$
-              x0_mass_hd: x0_mass_hd ,$  
-              x0_bins: x0_bins ,$  
-              x0_bins_hd: x0_bins_hd ,$  
-              x1_chromtime: x1_chromtime ,$  
-;              x1_chromtime_hd: x1_chromtime_hd ,$  
+              x0_mass_hd: x0_mass_hd ,$
+              x0_bins: x0_bins ,$
+              x0_bins_hd: x0_bins_hd ,$
+              x1_chromtime: x1_chromtime ,$
+;              x1_chromtime_hd: x1_chromtime_hd ,$
               v0_inte: v0_inte ,$
-              v0_inte_hd: v0_inte_hd $            
+              v0_inte_hd: v0_inte_hd $
              }
-             
+
   RETURN, extr_spec
-  
+
 END
 ;---------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------------------------------------------------------------------------------------------
@@ -203,7 +203,7 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
   intensity = DBLARR(n_fits)
   IF NOT KEYWORD_SET(nterms_fit) THEN nterms_fit = 6
   IF NOT KEYWORD_SET(nterms_base) THEN nterms_base = 1
-  
+
   IF KEYWORD_SET(use_hd) THEN BEGIN
     x=extr_spec.x0_mass_hd
     y=extr_spec.v0_inte_hd
@@ -211,18 +211,18 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
     x=extr_spec.x0_mass
     y=extr_spec.v0_inte
   ENDELSE
-  
+
   IF KEYWORD_SET(verbose) THEN BEGIN
     plots=OBJARR(3)
     plots[0]=plot(x,y[*,0], THICK=2, xtitle='mass [Th]', ytitle='intensity [mV]', DIMENSIONS=[1080,1080])
-    plots[1]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT) 
-    plots[2]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT) 
+    plots[1]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT)
+    plots[2]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT)
   ENDIF
-  
+
   FOR n=0, n_fits-1 DO BEGIN
     estfit = gaussfit(x, y[*,n], A_gau, NTERMS=nterms_fit)
     fit = gaussfit(x, y[*,n], A, ESTIMATES=A_gau, NTERMS=nterms_fit)
-    
+
     z = (x-A[1])/A[2]
     peak_int = A[0]*EXP(-z^2/2)
     CASE nterms_base OF
@@ -233,9 +233,9 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
 
     fit_area = int_tabulated(x, peak_int, /DOUBLE)
     IF (fit_area LT 0.) THEN fit_area = 0.
-   
+
     intensity[n] = fit_area
-    
+
     IF KEYWORD_SET(verbose) THEN BEGIN
       (plots[0]).Refresh, /DISABLE
       (plots[1]).Refresh, /DISABLE
@@ -252,24 +252,24 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
 
       Print, 'halt'
     ENDIF
-    
+
   ENDFOR
-  
+
   masstrace = { $
                time: extr_spec.x1_chromtime ,$
-               intensity: intensity $               
+               intensity: intensity $
                }
-               
+
   RETURN, masstrace
-  
+
 END
 ;---------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------------------------------------------------------------------------------------------
 FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum_spec, F_HD=f_hd, $
                       FITFCT=fitfct, ID=id, VERBOSE=verbose
-                         
+
   IF NOT KEYWORD_SET(ID) THEN ID='NA'
-  
+
   ; +++
   ; +++ Retention Time Settings (chromatographic time axis)
   rt_set    = rt_win
@@ -308,8 +308,8 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
   ; +++
   ; +++ Alternative Mass Intensity: gather spectra and build sum spectrum
   IF SIZE(v_inte, /N_DIMENSIONS) EQ 1 THEN v_inte_sum=TOTAL(v_inte) $ ; check possibility that only one spectrum was defined
-    ELSE v_inte_sum=TOTAL(v_inte,2) 
-  
+    ELSE v_inte_sum=TOTAL(v_inte,2)
+
   IF KEYWORD_SET(SUM_SPEC) THEN v_inte=v_inte_sum
 
   ; +++
@@ -369,14 +369,14 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
   match = matchmass(mass_cal.masses, meas_ion) ; function from wid_int_tools
   calmass_near = match[0]
   calmass_dif = match[2]
-  
+
 ; +++
 ; +++ asymetric lorentz fit: max int spectrum, use gaussian sigma to define asymetry
   match=matchmass(x_mass, (meas_ion-HWHM))
   lin=linfit([28.,555.],[2.,20.]) ; 28 eq. 2, 554 eq. 20
   asy_l = lin[0]+lin[1]*meas_ion ; mass peaks tend to become more symmetric the heavier the ion
   asy_r = 20
-  
+
 ; +++
 ; +++ max. intensity of selected spectrum or sum spec
     max_int=MAX(v_hd, ix_max)
@@ -384,18 +384,18 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
     IF (ix_max-dx_1sig*asy_l) LE 0 THEN ix_nsig_l = 0 $ ; ensure correct subscript range
       ELSE ix_nsig_l = ROUND(ix_max-dx_1sig*asy_l)
     IF (ix_max+dx_1sig*asy_r) GE n_bins THEN ix_nsig_r = n_bins-1 $
-      ELSE ix_nsig_r = ROUND(ix_max+dx_1sig*asy_r) 
+      ELSE ix_nsig_r = ROUND(ix_max+dx_1sig*asy_r)
 
     v=(v_hd)[ix_nsig_l:ix_nsig_r]
     x=x_mass[ix_nsig_l:ix_nsig_r]
     asyfit=mpfitpeak(x, v, A_asyfit, ESTIMATES=m_estimates, YERROR=yerror, /LORENTZIAN)
-    
+
 ;    p=plot(x,v, title=strcompress(string(asy_l)+':'+string(asy_r), /remove_all))
 ;    p=plot(x,asyfit,'r',/overplot)
     R_asy=meas_ion/(2.*A_asyfit[2])
     mass_acc_asy = (A_asyfit[1]-target_ion)/(A_asyfit[1]*1E-6)
 ;    print, 'max.int.spec.: ', r_asy
-    
+
   ; +++
   ; +++ summed spectra
 ;  max_int=MAX(v_inte_sum, ix_max)
@@ -407,7 +407,7 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
 ;  ;  p=plot(x,asyfit,'r',/overplot)
 ;  R_asys=meas_ion/(2.*A_asyfit[2])
 ;  print, 'max.int.spec.: ', r_asy, ' ++> sum.int.spec.: ', r_asys
-    
+
 ; +++
 ; +++ asymetric lorentz fit: all defined spectra
 ;  FOR i=0, n_spectra-1 DO BEGIN
@@ -417,7 +417,7 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
 ;    asyfit=mpfitpeak(x, v, A_asyfit, ESTIMATES=m_estimates, YERROR=yerror, /LORENTZIAN)
 ;;    p=plot(x,v)
 ;;    p=plot(x,asyfit,'r',/overplot)
-;    print, meas_ion/(2.*A_asyfit[2])    
+;    print, meas_ion/(2.*A_asyfit[2])
 ;  ENDFOR
 
 
@@ -456,30 +456,30 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
             binweight:1.-mean(binyerror)/mean(v_hd)  }
 
   RETURN, strct
-  
+
 END
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_nom, $
                           LIMITS_ACC=limits_acc, USE_PT_LIMITS=use_pt_limits, $
                           F_HD=f_hd, INTEGRATE=integrate, VERBOSE=verbose
-                                            
+
   t0=SYSTIME(1)
-  
-  IF NOT KEYWORD_SET(verbose) THEN verbose = 0 
+
+  IF NOT KEYWORD_SET(verbose) THEN verbose = 0
   IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100
   IF NOT KEYWORD_SET(limits_acc) THEN limits_acc = [0.0175D, 0.0175D]
   IF NOT KEYWORD_SET(limits_nom) THEN limits_nom = limits_acc*3D
-  
+
   targets = (peaktable.mass)[WHERE(peaktable.label NE 'nominal')] ; get m/Q traces to recalculate
                                                                   ; ! make sure to use 'nominal' as tagname in peaktable.
-  
+
   intensity = REFORM(peakdata, N_ELEMENTS(peakdata))              ; previous peakdata array
-  
+
   hr_data = read_tofwerkh5_hr(fname)                              ; get hr data
-  
+
   IF VERBOSE THEN print, 'hr data imported in [s]: ', SYSTIME(1)-t0
-  
+
   n_bufs = N_ELEMENTS((*hr_data.spectra)[0, 0,*, 0])
   n_writes = N_ELEMENTS((*hr_data.spectra)[0, 0, 0, *])
   ns_per_bin = 0.6255D                                            ; approx. ns per bin. DETECTOR-SPECIFIC!
@@ -490,66 +490,66 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
     t1=SYSTIME(1)
     target_mq = targets[i]
     ix_pt = WHERE(peaktable.mass EQ target_mq)
-    
+
     IF KEYWORD_SET(use_pt_limits) THEN $                         ; keyword: use border stored in peaktable of file
       limits_acc = [target_mq-((peaktable.lower_integration_limit)[ix_pt]), $
-                     ((peaktable.upper_integration_limit)[ix_pt])-target_mq]                                                                                   
+                     ((peaktable.upper_integration_limit)[ix_pt])-target_mq]
 
     w_nom = WHERE(*hr_data.massaxis GE target_mq-limits_nom[0] AND *hr_data.massaxis LE target_mq+limits_nom[1])
     n_wn = N_ELEMENTS(w_nom)
-     
+
     x_ns = w_nom*ns_per_bin ; x-axis in nanoseconds
     x_ns_hd = REBIN(DOUBLE(x_ns), n_wn*f_hd)
-    
+
     x_nom = (*hr_data.massaxis)[w_nom] ; m/q x-axis
-    x_nom_hd = REBIN(DOUBLE(x_nom), n_wn*f_hd) 
+    x_nom_hd = REBIN(DOUBLE(x_nom), n_wn*f_hd)
 
     y_nom = REFORM((*hr_data.spectra)[w_nom, 0, *, *], n_wn, n_bufs*n_writes)
     y_nom_hd = DBLARR(n_wn*f_hd, n_bufs*n_writes)
 
     IF VERBOSE THEN print, 'reprocessing intensity data of m/Q ', i, ' of', N_ELEMENTS(targets)
-    
+
     FOR j=0, n_bufs*n_writes-1 DO y_nom_hd[*, j]=REBIN(DOUBLE(y_nom[*,j]), n_wn*f_hd)
 
     w_target = WHERE(x_nom_hd GE target_mq-limits_acc[0] AND x_nom_hd LE target_mq+limits_acc[1])
     n_wt = N_ELEMENTS(w_target)
     x = x_ns_hd[w_target]
     y = y_nom_hd[w_target,*]/hr_data.nbrwaveforms ; get mean signal per spectrum in [mV]
-    
+
     IF VERBOSE THEN print, 'recreating masstrace...'
-    
+
     target_mq_trace = DBLARR(n_writes*n_bufs)
-    
+
     IF KEYWORD_SET(integrate) THEN $ ; calculate new intensity values / masstrace data
       FOR k=0, n_bufs*n_writes-1 DO target_mq_trace[k] = INT_TABULATED(x, y[*,k], /DOUBLE)/hr_data.SiS $
         ELSE $
           FOR k=0, n_bufs*n_writes-1 DO target_mq_trace[k] = TOTAL(y[*,k], /DOUBLE)/hr_data.SiS
-          
+
     ix_intensity = WHERE((mass) EQ target_mq) ; find indices of intensities of current target m/Q
     ; coerce index range; sometimes intensity values are missing and array length is LT n_writes*n_bufs
     IF N_ELEMENTS(ix_intensity) LT N_ELEMENTS(target_mq_trace) THEN BEGIN
       ix_intensity = ix_intensity[0:N_ELEMENTS(ix_intensity)-1]
       target_mq_trace = target_mq_trace[0:N_ELEMENTS(ix_intensity)-1]
     ENDIF
-    
+
     intensity[ix_intensity]=target_mq_trace                                                                                  ; apply new intensity values to input array
 
     t2=SYSTIME(1)
     IF VERBOSE THEN print, 'reprocessed in [s]: ', t2-t1
-    
+
     FreeVar, x_nom_hd                                                                                                        ; clean memory
     FreeVar, y_nom_hd
     FreeVar, x
     FreeVar, y
-    
-  ENDFOR    
+
+  ENDFOR
 
   FreeVar, hr_data
-  
+
   IF VERBOSE THEN print, 'file done. t: ', SYSTIME(1)-t0
 
   RETURN, intensity
-  
+
 END
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------

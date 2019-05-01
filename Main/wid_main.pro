@@ -490,7 +490,7 @@ widbase11 = WIDGET_BASE(widbase1, UNAME='widbase11', column=1)
       
     credits = WIDGET_BASE(mainbase, UNAME='credits', column=1)
      SEP = WIDGET_LABEL(credits, VALUE='--', /ALIGN_LEFT)
-     TXT = WIDGET_LABEL(credits, VALUE='(c) 2018 Univ. Frankfurt / IAU / Group A. Engel', /ALIGN_LEFT)
+     TXT = WIDGET_LABEL(credits, VALUE='(c) 2019 Univ. Frankfurt / IAU / Group A. Engel', /ALIGN_LEFT)
 
   
   widid.mainwid = mainbase 

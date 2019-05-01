@@ -9,16 +9,16 @@
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 PRO destroy_wids, ALL=all
-  
+
   COMMON WIDID
-  
+
     WIDGET_CONTROL, widid.intwid, BAD_ID=bad_id
       IF bad_id EQ 0 THEN WIDGET_CONTROL, widid.intwid, /CLEAR_EVENTS, /DESTROY
-    WIDGET_CONTROL, widid.mmviewerwid, BAD_ID=bad_id  
+    WIDGET_CONTROL, widid.mmviewerwid, BAD_ID=bad_id
       IF bad_id EQ 0 THEN WIDGET_CONTROL, widid.mmviewerwid, /CLEAR_EVENTS, /DESTROY
-    WIDGET_CONTROL, widid.mcviewerwid, BAD_ID=bad_id 
+    WIDGET_CONTROL, widid.mcviewerwid, BAD_ID=bad_id
       IF bad_id EQ 0 THEN WIDGET_CONTROL, widid.mcviewerwid, /CLEAR_EVENTS, /DESTROY
-    WIDGET_CONTROL, widid.plot_ctrls, BAD_ID=bad_id 
+    WIDGET_CONTROL, widid.plot_ctrls, BAD_ID=bad_id
       IF bad_id EQ 0 THEN WIDGET_CONTROL, widid.plot_ctrls, /CLEAR_EVENTS, /DESTROY
     WIDGET_CONTROL, widid.tpshskviewerwid, BAD_ID=bad_id
       IF bad_id EQ 0 THEN WIDGET_CONTROL, widid.tpshskviewerwid, /CLEAR_EVENTS, /DESTROY

@@ -47,7 +47,7 @@ FUNCTION create_refs
     thresh:    FLTARR(2)*!VALUES.F_NAN   } ; wenn nicht definiert, dann Integration in fixem Intervall
 
   RETURN, refs
-  
+
 END
 
 ;### RT_LOCK ###
@@ -60,7 +60,7 @@ FUNCTION create_refrt
     rt:      !Values.F_NaN }
 
   RETURN, refrt
-  
+
 END
 
 ;### INTEGRATION RESULTS ###
@@ -76,7 +76,7 @@ FUNCTION create_refi
     noise:      FLTARR(20)*!Values.F_NAN }
 
   RETURN, refi
-  
+
 END
 
 

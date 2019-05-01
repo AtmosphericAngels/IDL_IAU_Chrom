@@ -2,7 +2,7 @@
 ;+
 ; NAME:
 ; IAU_CHROM_MAIN
-; 
+;
 ; Idea and Conception:
 ; H.Boenisch , A.Engel
 ;
@@ -33,26 +33,25 @@
 @wid_tpshskviewer
 @wid_plotctrls
 ;------------------------------------------------------------------------------------------------------------------------
-PRO IAU_Chrom_v518
+PRO IAU_Chrom_v519
 
-  !Except=0
+  !Except = 0
 
   def_common
-  
+
   COMMON DATA
   COMMON COM_PLOT
 
-  path = 'E:\KIT_DATA\MPI_GHGGC_Data_netcdf'
-;  path = 'D:\'
+  path = 'D:\'
 
   error_handler_IO = 0
-  
+
   wid_main_ini
-  
+
 ;  Outdir='D:\PROGRAMMING\debugging\iau_chrom\rt'
 ;  sfile='D:\PROGRAMMING\IDL_WD\IAU_Chrom_v5X\IAU_Chrom_v518.sav'
 ;  MAKE_RT, 'IAU_Chrom_v518', Outdir, SAVEFILE=sfile, /OVERWRITE
-  
+
 END
 ;########################################################################################################################
 ; *** NOMENCLATURE / COMMONLY USED VARIABLES ***
@@ -67,25 +66,25 @@ END
 ; strct: structure
 ; w: where function result
 ;########################################################################################################################
-; *** KNOWN BUGS *** 
+; *** KNOWN BUGS ***
 ; ***
 ; - gumble integration only works properly with constant baseline
-; - gumble 2nd peak and baseline integration sometimes return negative area/height; doesn't make sense if 2nd peak 
+; - gumble 2nd peak and baseline integration sometimes return negative area/height; doesn't make sense if 2nd peak
 ;   only is used
 ; - multimass-viewer: relative abundances will disappear if a different chromatogram is selected. they can be recalled
 ;   by reselecting the substance.
 ;########################################################################################################################
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
-; 
+;
 ; 2018-11-12: v5.18
 ; - Fides Lefrancois: FUNCTION h5_get_massaxis: added function for MassCalibMode = 0
-; 
+;
 ; 2018-03-06: v5.18
 ; - updated import routine for Almsco/Markes Tof cdfs. added check if scan index vector contains duplicate entries.
 ;   Note: these duplicate entries seem to be created if the "dynamic baseline subtraction" of the Benchtof software is
 ;   used.
-; 
+;
 ; 2017-11-24: v5.17
 ; - updated the manual; screenshots and scripting feature.
 ; ***
@@ -116,7 +115,7 @@ END
 ; 2017-08-10: v5.16
 ; - updated cdf2idl_strct routine, added closing of ncid.
 ; - bugfix on read_iauchromdbfile function: empty cells are now imported correctly.
-; - main wid / call of script: added questions if noise should be calculated and if Tofwerk peakdata should be 
+; - main wid / call of script: added questions if noise should be calculated and if Tofwerk peakdata should be
 ;   recalculated.
 ; - added refresh of main wid droplists after a db script has been processed.
 ; - FUNCTION jultime2timestring: changed keyword name from "dateonly" to "onlydate" to avoid ambiguous keywrd error.
@@ -147,20 +146,20 @@ END
 ; - FUNCTION int_bl_fixpoints: added width calculation
 ; - FUNCTION int_baseline_gau: modified so that different baseline fitfunctions (1st and 2nd order) are available.
 ;                              Changed number of data points used for baseline calculation from 18 to 12 (6 on each side).
-; - integration methods: removed 'gauss_fix'                              
+; - integration methods: removed 'gauss_fix'
 ; ***
 ; 2017-05-31: v5.14
 ; - integration widget: removed option to export default settings (redundant)
 ; - put functions for db reftable read/write in rw_db_reftable.pro
 ; - coded FUNCTION int_bl_fixpoints and integrated it into call_integration procedure.
-;                  -> still misses peak width determination.   
+;                  -> still misses peak width determination.
 ; ***
 ; 2017-05-30: v5.14
 ; - added folder 'db_features' to iau_chrom project
 ; - added FUNCTION read_iauchromdbfile (loads database ref table)
 ; - added FUNCTION write_iauchromdbfile (saves database ref table)
 ; - integration methods: added method 'Fix_2point_BL' in common vars definitions.
-; - integration methods: added FUNCTION int_bl_fixpoints 
+; - integration methods: added FUNCTION int_bl_fixpoints
 ;                        (not coded yet and also not yet implemented in call_integration procedure)
 ; ***
 ; 2017-05-24: v5.14
@@ -193,7 +192,7 @@ END
 ; - modified functions for data import: added keyword DEF_FILE to override pickfile dialog.
 ; ***
 ; 2016-10-18: v5.1
-; - minor tweaks: rewritten plot controls widget, renamed some fields on tps hsk viewer. set main widget and 
+; - minor tweaks: rewritten plot controls widget, renamed some fields on tps hsk viewer. set main widget and
 ;   integration widget to autosize
 ; ***
 ;################### older versions chronological ########################################################################

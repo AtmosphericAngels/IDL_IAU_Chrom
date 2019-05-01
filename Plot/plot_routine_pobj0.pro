@@ -5,17 +5,17 @@
 ;
 ; AUTHOR:
 ; S.Sala, modifications F.Obersteiner
-; 
-; INFO: 
+;
+; INFO:
 ; specific for plot0
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x_0c, V_0C=v_0c, X_0D=x_0d, V_0D=v_0d, X_0E=x_0e, V_0E=v_0e, $
                         X_0F=x_0f, V_0F=v_0f, OVER=over, SET_COLORS=set_colors, SET_ZERO=set_zero, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange, $
                         SET_TITLE=set_title, XYTITLE=xytitle, GEN_LEGEND=gen_legend
-;t=systime(1)                       
+;t=systime(1)
   COMMON COM_PLOT
-  
+
   IF KEYWORD_SET(gen_legend) THEN BEGIN
     plotnames=STRARR(N_ELEMENTS(gen_legend))+ $
                      STRCOMPRESS(STRING(gen_legend, FORMAT='(D14.3)'), /REMOVE_ALL)+' Th'
@@ -32,7 +32,7 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
 ; check if only one datapoint
   IF N_ELEMENTS(x) LT 2 THEN set_zero = 1
   IF N_ELEMENTS(v) LT 2 THEN set_zero = 1
-  
+
 ;+++++++++++++++++++++++++++++
 ; keyword set_zero: reset plot data and x-/y-range
   IF KEYWORD_SET(set_zero) THEN BEGIN
@@ -47,24 +47,24 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
 ; keyword set_colors: set to color array or keep default
   colors=['k','r','g','b','deep_sky_blue','m','gold']
   IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)]=set_colors[0:(N_ELEMENTS(set_colors)-1)]
-   
+
 ;+++++++++++++++++++++++++++++
-; check keywords x- and yrange 
+; check keywords x- and yrange
   IF NOT KEYWORD_SET(xrange) THEN $
     xrange = [MIN(x,/NAN), MAX(x,/NAN)]
-    
+
   IF NOT KEYWORD_SET(yrange) THEN BEGIN
     offset = (MAX(v,/NAN)-MIN(v,/NAN))*0.05
     yrange = [MIN(v,/NAN)-offset, MAX(v,/NAN)+offset]
   ENDIF
-  
+
   IF KEYWORD_SET(fix_xyrange) THEN BEGIN
     xrange = (p_obj0[0]).xrange
     yrange = (p_obj0[0]).yrange
   ENDIF
-  
+
 ;+++++++++++++++++++++++++++++
-; check keyword set_title  
+; check keyword set_title
   IF NOT KEYWORD_SET(SET_TITLE) THEN title='' ELSE set_title=title
 
 ;+++++++++++++++++++++++++++++
@@ -75,7 +75,7 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
     (p_obj0[0]).Ytitle=xytitle[1]
     (p_obj0[0]).Refresh
   ENDIF
-  
+
 ;+++++++++++++++++++++++++++++
 ; cases of keyword over:
   CASE over OF
@@ -110,7 +110,7 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
         (p_obj0[5]).Refresh
         (p_obj0[6]).Refresh
       END
-      
+
     1: $
       BEGIN ; set data for p_obj0
         (p_obj0[0]).Refresh, /DISABLE

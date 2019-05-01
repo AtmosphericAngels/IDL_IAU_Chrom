@@ -13,10 +13,10 @@
 PRO wid_plotctrls
 
   COMMON WIDID
-  
+
   plotctrl_base = WIDGET_BASE(TITLE='Plot_Ctrls', MBAR=menubaseID, COLUMN=1, XOFF=200, YOFF=50, /BASE_ALIGN_CENTER)
 
-  tabs  = WIDGET_TAB(plotctrl_base)
+  tabs = WIDGET_TAB(plotctrl_base)
     p0_base = WIDGET_BASE(tabs, TITLE="plot_0", ROW=10)
       sep   = WIDGET_LABEL(p0_base, Value=' *** ')
       xti   = WIDGET_LABEL(p0_base, Value=' XRANGE: ')
@@ -28,11 +28,11 @@ PRO wid_plotctrls
       yrb   = WIDGET_BASE(p0_base, TAB_MODE=1, column=2)
       y0    = WIDGET_COMBOBOX(yrb, value='0.00', uname='p0_y0', /DYNAMIC_RESIZE, TAB_MODE=1, /EDITABLE)
       y1    = WIDGET_COMBOBOX(yrb, value='1.00', uname='p0_y1', /DYNAMIC_RESIZE, TAB_MODE=1, /EDITABLE)
-      sep   = WIDGET_LABEL(p0_base, Value=' *** ')    
+      sep   = WIDGET_LABEL(p0_base, Value=' *** ')
       setp0 = WIDGET_BUTTON(p0_base, value='Set!', uname='p0_set')
       sep   = WIDGET_LABEL(p0_base, Value=' *** ')
       getp0 = WIDGET_BUTTON(p0_base, value='Get current X-/Y-RANGE', uname='p0_get')
-      
+
     p1_base = WIDGET_BASE(tabs, TITLE="plot_1", ROW=10)
       sep   = WIDGET_LABEL(p1_base, Value=' *** ')
       xti   = WIDGET_LABEL(p1_base, Value=' XRANGE: ')
@@ -48,12 +48,12 @@ PRO wid_plotctrls
       setp1 = WIDGET_BUTTON(p1_base, value='Set!', uname='p1_set', /ALIGN_CENTER)
       sep   = WIDGET_LABEL(p1_base, Value=' *** ')
       getp1 = WIDGET_BUTTON(p1_base, value='Get current X-/Y-RANGE', uname='p1_get', /ALIGN_CENTER)
-          
-  
+
+
   widid.plot_ctrls = plotctrl_base
   WIDGET_CONTROL, plotctrl_base, /REALIZE
   XMANAGER, 'wid_plotctrls_handle', plotctrl_base, /NO_BLOCK, event_handler='wid_plotctrls_handle'
-  
+
 END
 
 PRO wid_plotctrls_handle, event
@@ -66,7 +66,7 @@ PRO wid_plotctrls_handle, event
 
   CASE uname OF
     '':
-  
+
     'p0_x0': $ ; check numeric (0=reset), check LT x1 (false: x1=x0+1)
       BEGIN
         ID=WIDGET_INFO(event.top, find_by_uname='p0_x0')
@@ -258,7 +258,7 @@ PRO wid_plotctrls_handle, event
             x1=x0+1.
             WIDGET_CONTROL, ID, SET_VALUE=STRING(x0+1.)
           ENDIF
-   
+
           ID=WIDGET_INFO(event.top, find_by_uname='p1_y0')
           WIDGET_CONTROL, ID, GET_VALUE=y0
           y0=FLOAT(y0)
@@ -269,14 +269,14 @@ PRO wid_plotctrls_handle, event
             y1=y0+1.
             WIDGET_CONTROL, ID, SET_VALUE=STRING(y0+1.)
           ENDIF
-  
+
           p1_XRANGE=[x0,x1]
           p1_YRANGE=[y0,y1]
           (p_obj1[0]).xrange=p1_xrange
           (p_obj1[0]).yrange=p1_yrange
-  
+
         END
 
   ENDCASE
-  
+
 END

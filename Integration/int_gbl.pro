@@ -124,14 +124,14 @@ FUNCTION Integrate_GumbelPeak, xval, yval $
 ;+++++++++++++++++++++++
   A=FLTARR(3+nterms_base)
   A[0]=A_gau[0]
-  
+
   IF timescale EQ 'Minutes' THEN init_parm_A1 = 60 ELSE init_parm_A1 = 1 ; 60: minutes / 1: seconds
-  A[1]=init_parm_A1 
-  
+  A[1]=init_parm_A1
+
   A[2]=A_gau[1]
   A[3:*]=A_gau[3:*]
   fita=bytarr(n_elements(A))+1
-  
+
 ;+++++++++++++++++++++++
 ; Fit peak
 ;+++++++++++++++++++++++
@@ -139,10 +139,10 @@ FUNCTION Integrate_GumbelPeak, xval, yval $
   v=y[w_fit_win]
 
   IF n_elements(A) GE n_elements(v) THEN RETURN, strct
-  
+
   fit=CURVEFIT(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelPeak_PROC',$
                ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=10e-3,YERROR=yerr)
-            
+
 ;+++++++++++++++++++++++
 ; Output peak parameters of curvefit (PARAMETER)
 ;+++++++++++++++++++++++
@@ -243,14 +243,14 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
    IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[10,20]
    IF NOT keyword_set(rt_win) THEN rt_win =[min(xval,/nan),max(xval,/nan)]
-   
+
 ;   xval=xval*60D
 ;   RT_WIN=rt_win*60D
 
    nsigma_fit_gum1=fltarr(2)
    nsigma_fit_gum2=nsigma_fit
-  
-   
+
+
    ;+++++++++++++++++++++++
    ; Create output structure (strct) for chromatographic parameters
    ;+++++++++++++++++++++++
@@ -300,7 +300,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    ;+++++++++++++++++++++++
    int_win=[A_gau[1]-nsigma_int[0]*A_gau[2],A_gau[1]+nsigma_int[1]*A_gau[2]]
    w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]),nw_int_win)
-   
+
 	 ;+++++++++++++++++++++++
    ; Calculate smoothed (Savitzky-Goolay-Filter) chromatogram (dvdt0) and its second derivative (dvdt2)
    ;+++++++++++++++++++++++
@@ -312,14 +312,14 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    degree=4
    ;+++++++++++++++++++++++
    ; skip and return strct if width LT degree
-   ;+++++++++++++++++++++++  
+   ;+++++++++++++++++++++++
    IF width LT degree THEN RETURN, strct
-       
+
    order=0
    svgf=savgol(width,width,order,degree)*(factorial(order)/(dt^order))
    IF N_ELEMENTS(v) LE N_ELEMENTS(svgf) THEN RETURN, strct ; ensure that convol data is compatible with kernel
    dvdt0=convol(v,svgf,/edge_trunc)
-   
+
    order=2
    svgf=savgol(width,width,order,degree)*(factorial(order)/(dt^order))
    dvdt2=convol(v,svgf,/edge_trunc)
@@ -330,7 +330,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    t=x[w_rt_win]
    v=y[w_rt_win]
    vmax=max(v,wvmax)
-   
+
    tmax=t[wvmax]
 
    ;+++++++++++++++++++++++
@@ -364,11 +364,11 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
                ,INT_WIN=int_win_gum1,PEAK_INT=peak_int_gum1,BASE_INT=base_int_gum1 $
                ,PARAMETER=A_gum1,TIMESCALE=timescale,VERBOSE=0)
 
-   
+
    ;+++++++++++++++++++++++
    ; check if 1st gbl integration failed, if yes then return
    ;+++++++++++++++++++++++
-   IF FINITE(ires_gum1.area) EQ 0 THEN RETURN, strct 
+   IF FINITE(ires_gum1.area) EQ 0 THEN RETURN, strct
    IF ires_gum1.comment EQ 'Not Integrated' THEN RETURN, strct
 
    ;+++++++++++++++++++++++
@@ -400,7 +400,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    ;+++++++++++++++++++++++
    IF FINITE(ires_gum1.area) EQ 0 THEN RETURN, strct
    IF ires_gum2.comment EQ 'Not Integrated' THEN RETURN, strct
-   
+
    ;+++++++++++++++++++++++
    ; Define window for peak fitting of Gumbel_2 (FIT_WIN_GUM2)
    ;+++++++++++++++++++++++
@@ -493,15 +493,15 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    strct.te=max(t,/nan)
    strct.flag=1
    strct.comment='Integrated'
-   
+
    ;+++++++++++++++++++++++
    ; Post-Processing: remove NAN and substitute with 0. if values are supplied by first gumble integration
    ;+++++++++++++++++++++++
    IF strct.hght1 GT 0 AND FINITE(strct.hght2) EQ 0 THEN strct.hght2 = 0.
    IF strct.area1 GT 0 AND FINITE(strct.area2) EQ 0 THEN strct.area2 = 0.
- 
-   
-   
+
+
+
    IF keyword_set(verbose) THEN BEGIN
       print,'Double Gumbel:'
       print,vmax,tmax
@@ -626,7 +626,7 @@ PRO int_gbl
 ;                    ,INT_WIN=int_win,PEAK_INT1=peak_int1,PEAK_INT2=peak_int2,BASE_INT=base_int  $
 ;                    ,PARAMETER=A,VERBOSE=1)
 ;ENDELSE
-;                    
+;
 ;;print, file_basename(fname_cdf),b.area1, b.area2
 ;
 ;

@@ -56,7 +56,7 @@ function validateName, varname
 	      name = strcompress(name+"_"+pieces[i])
 	   endfor
 	endif
-	
+
    ; If the name contains a colon replace it with an underscore.
 	if (strpos(name, ':') NE -1) then begin
 	   pieces = str_sep(name,':')
@@ -66,7 +66,7 @@ function validateName, varname
 	      name = strcompress(name+"_"+pieces[i])
 	   endfor
 	endif
-	
+
 	; If the name contains a at sign replace it with an underscore.
 	if (strpos(name, '@') NE -1) then begin
 	   pieces = str_sep(name,'@')
@@ -76,9 +76,9 @@ function validateName, varname
 	      name = strcompress(name+"_"+pieces[i])
 	   endfor
 	endif
-	
+
    if (strmatch(name,'case',/fold) EQ 1) then name='_case'
-   
+
 	; Return the file name.
 	return, name
 
@@ -173,7 +173,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 			ENDELSE
 		ENDFOR
 	ENDFOR
-	
+
 	; Close the netcdf file.
 	NCDF_CLOSE, ncid
 

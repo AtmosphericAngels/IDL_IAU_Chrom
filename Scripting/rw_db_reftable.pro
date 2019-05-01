@@ -5,7 +5,7 @@
 ;
 ; PURPOSE
 ; FUNCTION read_iauchromdbfile reads iau_chrom database reference table and returns collected data.
-; FUNCTION write_iauchromdbfile writes iau_chrom database reference table with specific filename generated from 
+; FUNCTION write_iauchromdbfile writes iau_chrom database reference table with specific filename generated from
 ; date and time.
 ;
 ;-
@@ -65,7 +65,7 @@ FUNCTION read_iauchromdbfile, FILE=file, PATH=path
   ENDFOR ; end loop through experiments
 
   RETURN, info_strct
-  
+
 END
 
 ;------------------------------------------------------------------------------------------------------------------------
@@ -91,9 +91,9 @@ FUNCTION write_iauchromdbfile, info_strct, PATH=path, UTC=utc
   n_lines_hdr = LONG(info_strct.header[0])
   n_exp = N_ELEMENTS(info_strct.data.active)
   cnf_str = STRARR(n_exp)
-  
+
   info_strct.header[-3] = jultime2timestring(SYSTIME(/JULIAN))+';;;;;;;;;;;'
-  
+
   FOR i=0, n_exp-1 DO $
     cnf_str[i] = $
     STRING(info_strct.data[i].active, FORMAT='(I)') + sep + $
@@ -116,5 +116,5 @@ FUNCTION write_iauchromdbfile, info_strct, PATH=path, UTC=utc
   FREE_LUN, lun
 
   RETURN, 1
-  
+
 END

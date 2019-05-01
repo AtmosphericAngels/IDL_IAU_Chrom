@@ -2,7 +2,7 @@
 ;+
 ; NAME:
 ; PRO wid_mmassviewer_ini / PRO wid_mmassviewer_handle
-; 
+;
 ; AUTHOR:
 ; F.Obersteiner, Nov.2013. Last modified July 2015.
 ;-
@@ -15,14 +15,14 @@ PRO wid_mmassviewer_ini
 
   COMMON DATA
   COMMON WIDID
-  
+
   DEVICE, Get_Screen_Size = ScreenSize
           XCenter=FIX(ScreenSize[0])
-          YCenter=FIX(ScreenSize[1])   
-  
+          YCenter=FIX(ScreenSize[1])
+
   mmviewerbase = WIDGET_BASE(title='Viewer: Multiple Masses', mbar=mmv_menu, column=1, $
                 xoff=0.10*screenSize[0], yoff=0.05*screensize[1], /BASE_ALIGN_CENTER)
-              
+
       f_men = WIDGET_BUTTON(mmv_menu, VALUE='File', /MENU)
         f_ext = WIDGET_BUTTON(f_men, VALUE='Exit', uname='exit')
       c_men = WIDGET_BUTTON(mmv_menu, VALUE='Config', /MENU)
@@ -31,7 +31,7 @@ PRO wid_mmassviewer_ini
         p_res = WIDGET_BUTTON(p_men, VALUE='Reset', uname='reset')
         p_rct = WIDGET_BUTTON(p_men, VALUE='Recreate Textfields', uname='recr_txt', /SEPARATOR)
         p_gel = WIDGET_BUTTON(p_men, VALUE='Generate Legend', uname='gen_leg')
-      
+
       ID = WIDGET_DROPLIST(mmviewerbase, value='', title = 'Chromatogram ', uname='sel_chrom', /DYNAMIC_RESIZE, /ALIGN_CENTER)
         WIDGET_CONTROL, ID, set_value=FILE_BASENAME(chrom.fname)
       su_psb = WIDGET_BASE(mmviewerbase, uname='su_psb', column=1, map=0)
@@ -42,55 +42,55 @@ PRO wid_mmassviewer_ini
           WIDGET_CONTROL, su_psb, map=1
         ENDIF
       sep = WIDGET_LABEL(mmviewerbase, Value=' *** ')
-    
+
       cb_mass_value = ['none', 'TIC', STRING(tot_uniqm, FORMAT='(D14.4)')]             ; generate content for mass-comboboxes
       lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_0 (black)', uname='sel_mass0_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass0', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value='  ', /ALIGN_LEFT)
       lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_1 (red)', uname='sel_mass1_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass1', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value='  ', /ALIGN_LEFT)
-      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_2 (green)', uname='sel_mass2_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)      
+      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_2 (green)', uname='sel_mass2_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass2', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value='  ', /ALIGN_LEFT)
-      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_3 (blue)', uname='sel_mass3_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)    
+      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_3 (blue)', uname='sel_mass3_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass3', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value='  ', /ALIGN_LEFT)
-      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_4 (cyan)', uname='sel_mass4_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)      
+      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_4 (cyan)', uname='sel_mass4_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass4', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value=' ', /ALIGN_LEFT)
-      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_5 (magenta)', uname='sel_mass5_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)     
+      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_5 (magenta)', uname='sel_mass5_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass5', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       lbl = WIDGET_LABEL(mmviewerbase, value='  ', /ALIGN_LEFT)
-      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_6 (yellow)', uname='sel_mass6_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)      
+      lbl = WIDGET_LABEL(mmviewerbase, value='m/Q_6 (yellow)', uname='sel_mass6_lbl', /DYNAMIC_RESIZE, /ALIGN_CENTER)
       ID = WIDGET_COMBOBOX(mmviewerbase, value='#', uname='sel_mass6', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
       WIDGET_CONTROL, ID, set_value = cb_mass_value
-      
+
       sep = WIDGET_LABEL(mmviewerbase, Value=' *** ')
       chkb = WIDGET_BASE(mmviewerbase, column=1, /NONEXCLUSIVE)
       fix_xyrange = WIDGET_BUTTON(chkb, value='Fix X-/Y-RANGE (Plot0)', uname='fix_xyrange', /ALIGN_CENTER)
       WIDGET_CONTROL, fix_xyrange, set_button = 0
       substr_bgr = WIDGET_BUTTON(chkb, value='Substract Min.Intensity in Plot X-RANGE', uname='substr_bgr', /ALIGN_CENTER)
       WIDGET_CONTROL, substr_bgr, set_button = 0
-      
+
       sep = WIDGET_LABEL(mmviewerbase, Value=' ')
 
-    widid.mmviewerwid = mmviewerbase   
+    widid.mmviewerwid = mmviewerbase
     WIDGET_CONTROL, mmviewerbase, /REALIZE
     XMANAGER, 'wid_mmassviewer_handle', mmviewerbase, /NO_BLOCK, event_handler='wid_mmassviewer_handle'
-    
+
 END
 
 ; ********************************************************************************************************************************************************
@@ -113,8 +113,8 @@ PRO wid_mmassviewer_handle, event
       RETURN
     ENDIF
   END
-  
-  
+
+
   check_pobjects, p_obj=['p_obj0', ''] ; needs only plot 0
   uname = WIDGET_INFO(event.id, /uname)
   uname_chrom_list = ['sel_chrom']
@@ -124,40 +124,40 @@ PRO wid_mmassviewer_handle, event
   mmv_subtitle = 'Viewer: Multiple Masses'
   fix_xyrange=WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
   bgr_substr=WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='substr_bgr'), /BUTTON_SET)
-  
+
   selchrom_id = WIDGET_INFO(event.top, find_by_uname='sel_chrom') ; chrom 0 selection
   dsel = WIDGET_INFO(selchrom_id, /droplist_select)
-  
+
   IF chrom[0].instr_type EQ 3 THEN nomonly=1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
-     
-  CASE uname OF 
+
+  CASE uname OF
      'exit' : $
        BEGIN
          refresh_text_pobj0, SET_ZERO=1                                 ; reset plot and textfields
-         plot_routine_pobj0, SET_ZERO=1       
+         plot_routine_pobj0, SET_ZERO=1
          FREEVAR, cb_mass_strct                                         ; clear variables from memory
          widid.mmviewerwid=-1                                           ; set viewer widget id to zero
-         IF event.SELECT THEN WIDGET_CONTROL, event.top, /DESTROY       ; close widget window 
+         IF event.SELECT THEN WIDGET_CONTROL, event.top, /DESTROY       ; close widget window
       END
-             
+
      'reset': $
        BEGIN
          FREEVAR, cb_mass_strct                                         ; free variables
-         
+
          FOR i=0, N_ELEMENTS(uname_mass_list)-1 DO BEGIN                ; reset all comboboxes
-         ID = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[i])   
+         ID = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[i])
             WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=0
-         ENDFOR        
+         ENDFOR
          WIDGET_CONTROL, selchrom_id, SET_DROPLIST_SELECT=0
          ID = WIDGET_INFO(event.top, find_by_uname='fix_xyrange')
             WIDGET_CONTROL, ID, SET_BUTTON=0
          ID = WIDGET_INFO(event.top, find_by_uname='substr_bgr')
             WIDGET_CONTROL, ID, SET_BUTTON=0
-            
+
          refresh_text_pobj0, SET_ZERO=1                                 ; reset plot and textfields
          plot_routine_pobj0, SET_ZERO=1
        END
-        
+
      'load_subst' : $
        BEGIN
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
@@ -172,11 +172,11 @@ PRO wid_mmassviewer_handle, event
               refr_status, message='reloading msinfo...'
               refs=read_subst(PATH=path, USE_NOM=use_nom)
               refi=create_refi()
-              subst=add_ires2subst(refs, refi)                          ; reload subst (overwrite)         
-              empty_chrom = create_empty_chromstrct(chrom, /CHROM_ONLY) ; reload msinfo (overwrite)     
-              STRUCT_ASSIGN, chrom, empty_chrom                             
-              chrom=empty_chrom              
-              chrom=add_subst2chrom(chrom, subst)                                           
+              subst=add_ires2subst(refs, refi)                          ; reload subst (overwrite)
+              empty_chrom = create_empty_chromstrct(chrom, /CHROM_ONLY) ; reload msinfo (overwrite)
+              STRUCT_ASSIGN, chrom, empty_chrom
+              chrom=empty_chrom
+              chrom=add_subst2chrom(chrom, subst)
               refr_status, message='msinfo reloaded.'
             ENDIF
         ENDELSE
@@ -185,28 +185,28 @@ PRO wid_mmassviewer_handle, event
          su_ps = WIDGET_INFO(event.top, find_by_uname='subs_preset')
          WIDGET_CONTROL, su_ps, set_value=STRING(chrom[0].subst.name) ; fill droplist with substance list
        END
-       
+
      'subs_preset' : $
        BEGIN
          su_ps = WIDGET_INFO(event.top, find_by_uname='subs_preset')
          subst_sel = WIDGET_INFO(su_ps, /DROPLIST_SELECT)
          subst_sel_masses = chrom[dsel].subst[subst_sel].mass
          subst_rel_abds = chrom[dsel].subst[subst_sel].rel_abd
-  
+
          FOR i=0, N_ELEMENTS(subst_sel_masses)-1 DO BEGIN ; loop to set cboxes to substance fragment masses from msinfo file
-          
-           IF i GT N_ELEMENTS(uname_mass_list)-1 THEN BREAK ; abort if more masses specified than can be displayed        
-           
+
+           IF i GT N_ELEMENTS(uname_mass_list)-1 THEN BREAK ; abort if more masses specified than can be displayed
+
            sel_mass=matchmass(tot_uniqm, subst_sel_masses[i], limit_dif=.5)
-           ix_sel_mass = sel_mass[1] ; will be -1 if mass not found         
-           
+           ix_sel_mass = sel_mass[1] ; will be -1 if mass not found
+
            IF (ix_sel_mass EQ -1) THEN ix_add = 1 ELSE ix_add = 2
            IF FINITE(subst_sel_masses[i]) EQ 0 THEN ix_add = 0 ; mass was NaN, select 'none' in combobox
-           
-           cbi_id = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[i])   
+
+           cbi_id = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[i])
            WIDGET_CONTROL, cbi_id, SET_COMBOBOX_SELECT=ix_sel_mass+ix_add
          ENDFOR
-        
+
          cb_mass_strct = refresh_cboxes_mass(event, SEL_CHROM=dsel, UNAME_MASS_LIST=uname_mass_list)
          pdata_strct = {}
          FOR i=0, n_plot-1 DO BEGIN
@@ -262,6 +262,6 @@ PRO wid_mmassviewer_handle, event
                              XRANGE=pdata.xrange, YRANGE=pdata.yrange, OVER=1234567
          refresh_text_pobj0, CB_DATA_STRCT=cb_mass_strct, CHROM=chrom, SUBST_REL_ABDS=subst_rel_abds, SET_SUBTITLE=mmv_subtitle, TOT_UNIQM=tot_uniqm
         END
-    ENDCASE 
-    
+    ENDCASE
+
 END

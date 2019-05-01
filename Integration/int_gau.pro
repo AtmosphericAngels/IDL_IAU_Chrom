@@ -2,17 +2,17 @@
 ;+
 ; NAME:
 ; FUNCTION int_gau
-; 
+;
 ; created by: H. Boenisch
 ; last modified: F. Obersteiner, Apr 2015.
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 @peak_detection
 ;------------------------------------------------------------------------------------------------------------------------
-FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTERMS_BASE=nterms_base, RT_WIN=rt_win, $ 
+FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTERMS_BASE=nterms_base, RT_WIN=rt_win, $
                   INT_WIN=int_win, FIT_WIN=fit_win,  PEAK_RET=peak_ret, BASE_RET=base_ret,  PEAK_FIT=peak_fit, $
                   BASE_FIT=base_fit, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, TAXIS=taxis, $
-                  VERBOSE=verbose, CHK_NOISE=chk_noise, TIMESCALE=timescale, RTWINisFITWIN=rtwinisfitwin                    
+                  VERBOSE=verbose, CHK_NOISE=chk_noise, TIMESCALE=timescale, RTWINisFITWIN=rtwinisfitwin
 ;t0=systime(1)
 
   IF NOT keyword_set(nsigma_fit)  THEN nsigma_fit=[15,15]
@@ -25,8 +25,8 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   IF timescale EQ 'Minutes' THEN timescale = 60. ELSE timescale = 1. ; 60: minutes / 1: seconds
   nterms = nterms_base + 3 ; nterms paramenter for gaussfit function
   ; datapoints per second? -> gauss min sigma
-  
-  
+
+
    strct=$
       {$
       rt: !VALUES.D_NAN, $
@@ -38,31 +38,31 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
       flag: 0 ,$
       comment:'Not Integrated'$
       }
-  
+
     vd=where(finite(xval+yval),nvd)
     IF (nvd LE 0) THEN RETURN, strct
     x=xval[vd]
     y=yval[vd]
-      
+
   IF N_ELEMENTS(x) LE nterms_base THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak detection.', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   A=FLTARR(nterms)*!VALUES.D_NAN
   A_temp=peak_detection(x,y, RT_WIN=rt_win, NTERMS_BASE=nterms_base, VERBOSE=verbose) ; NTERMS_BASE=bl_type)
-  
+
   A[0:N_ELEMENTS(A_temp)-1]=A_temp ; coerce array range if fixed parameters used in peak_detection
-  
+
   IF FINITE(A[1]) EQ 0 THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('No peak found.', /INFORMATION)
-    RETURN, strct   
+    RETURN, strct
   ENDIF
-       
+
   ; window with data for gaussfit sigma as defined in info file
   w_rt_win=WHERE((x GE rt_win[0]) AND (x LE rt_win[1]), nw_rt_win)
   IF KEYWORD_SET(rtwinisfitwin) THEN BEGIN
@@ -70,15 +70,15 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
     nw_fit_win=nw_rt_win
   ENDIF ELSE $
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
-  
+
   IF nw_fit_win LE N_ELEMENTS(A) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak fit.', /INFORMATION)
     RETURN, strct
   ENDIF
-  
-;+++++++++++++++++++++++  
+
+;+++++++++++++++++++++++
 ; actual peak fit... w_int_win: time axis position within +/- n_sigma_int of peak fit
 ;+++++++++++++++++++++++
 
@@ -94,21 +94,21 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for integration', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   IF (A[0] LT 1.5*chk_noise) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   IF A[1] LT rt_win[0] OR A[1] GT rt_win[1] THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fitted peak out of RT window', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   ; enforce a minimum number of datapoints per peak: 5 points within +- 2.5 sigma
   n_dpps=((rt_win[1]-rt_win[0])*timescale)/N_ELEMENTS(w_rt_win) ; datapoints per second
   min_sig=((n_dpps*5.)/5.)/timescale ; equals 5 datapoints in 5 sigma
@@ -118,7 +118,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Low standard deviation: too few datapoints', /INFORMATION)
     RETURN, strct
   ENDIF
- 
+
   taxis=x[w_int_win]
   int_win=[x[w_int_win[0]],x[w_int_win[-1]]]
   fit_win=[x[w_fit_win[0]],x[w_fit_win[-1]]]
@@ -163,7 +163,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
     2: base_ret=A[3]+A[4]*t
     3: base_ret=A[3]+A[4]*t+A[5]*t^2
   ENDCASE
-  
+
   area=int_tabulated(x[w_int_win],peak_int,/double)
   IF (area LT 0.) THEN BEGIN
     strct.flag=-1;
@@ -171,7 +171,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Negative fit area', /INFORMATION)
     RETURN, strct
   ENDIF
- 
+
   strct.rt=A[1]
   strct.hght=A[0]
   strct.area=area
@@ -180,14 +180,14 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   strct.wdth=A[2]
   strct.flag=1
   strct.comment='Integrated'
-  
+
   IF KEYWORD_SET(verbose) THEN BEGIN
     PRINT, 'n datapoints used for fit: ',  N_ELEMENTS(w_fit_win)
     PRINT, 'integrated n fitted datapoints: ', N_ELEMENTS(w_int_win)
     p_int_gau  = plot(t, v, TITLE='Int_Gau')
     p0_int_gau = plot(t, peak_int, 'r', /OVERPLOT)
   ENDIF
-  
+
   RETURN, strct
-    
+
 END

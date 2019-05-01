@@ -26,10 +26,10 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       thick_p0=[1,1,1,1,1,1,1,1,1,1]
       p_obj0[0]=plot([0.,0.], XTITLE = '$t_{R}$', YTITLE = 'Intensity', COLOR=col_p0[0], THICK=1, LINESTYLE=0, $
                      WINDOW_TITLE='IAU_Chrom_v'+STRCOMPRESS(STRING(version, FORMAT='(F4.2)'), /REMOVE_ALL)+': Plot0', $
-                     LOCATION=[0.5*screenSize[0], 0*screenSize[1]], dimensions=[0.7*screensize[0],0.45*screensize[1]], $ 
+                     LOCATION=[0.5*screenSize[0], 0*screenSize[1]], dimensions=[0.7*screensize[0],0.45*screensize[1]], $
                      MARGIN=[0.1,0.09,0.03,0.12])
       FOR i=1, N_ELEMENTS(p_obj0)-1 DO p_obj0[i]=plot([0.,0.], COLOR=col_p0[i], THICK=thick_p0[i], LINESTYLE=linestyle_p0[i], /OVERPLOT)
-      
+
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
         IF chrom[0].t_scale EQ 'Seconds' THEN xtitle='$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
         CASE chrom[0].instr_type OF
@@ -42,7 +42,7 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
         p_obj0[0].xtitle=xtitle
         p_obj0[0].ytitle=ytitle
       ENDIF
-      
+
       textfsize_p0 = [12., 12., 12., 12., 12., 12., 12., 12., 12.]
       p_obj0_txt[0] = text(0.02,0.950, '', TARGET=p_obj0[0], FONT_SIZE=textfsize_p0[0])
       p_obj0_txt[1] = text(0.26,0.950, '', TARGET=p_obj0[1], FONT_SIZE=textfsize_p0[1])
@@ -52,7 +52,7 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       p_obj0_txt[5] = text(0.52,0.915, '', TARGET=p_obj0[5], FONT_SIZE=textfsize_p0[5])
       p_obj0_txt[6] = text(0.77,0.915, '', TARGET=p_obj0[6], FONT_SIZE=textfsize_p0[6])
       p_obj0_txt[7] = text(0.77,0.950, '', TARGET=p_obj0[7], FONT_SIZE=textfsize_p0[7])
-      p_obj0_txt[8] = text(0.10,0.015, '', TARGET=p_obj0[8], FONT_SIZE=textfsize_p0[8], FONT_STYLE='bf')      
+      p_obj0_txt[8] = text(0.10,0.015, '', TARGET=p_obj0[8], FONT_SIZE=textfsize_p0[8], FONT_STYLE='bf')
     ENDIF
   ENDIF
 
@@ -66,7 +66,7 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
                      LOCATION=[0.5*screenSize[0], 0.5*screenSize[1]], dimensions=[0.7*screensize[0],0.45*screensize[1]], $
                      MARGIN=[0.1,0.09,0.03,0.12])
       FOR i=1, N_ELEMENTS(p_obj1)-1 DO p_obj1[i]=plot([0.,0.], COLOR=col_p1[i], THICK=thick_p1[i], LINESTYLE=linestyle_p1[i], /OVERPLOT)
-          
+
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
         IF chrom[0].t_scale EQ 'Seconds' THEN xtitle='$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
         CASE chrom[0].instr_type OF
@@ -79,9 +79,9 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
         p_obj1[0].xtitle=xtitle
         p_obj1[0].ytitle=ytitle
       ENDIF
-      
+
       textfsize_p1 = [12., 12., 12., 12., 12., 12., 12.]
-      p_obj1_txt[0] = text(0.10, 0.94, '', TARGET=p_obj1[0], FONT_SIZE=textfsize_p1[0])  
+      p_obj1_txt[0] = text(0.10, 0.94, '', TARGET=p_obj1[0], FONT_SIZE=textfsize_p1[0])
       p_obj1_txt[1] = text(0.50, 0.90, '', TARGET=p_obj1[1], FONT_SIZE=textfsize_p1[1])
       p_obj1_txt[2] = text(0.10, 0.90, '', TARGET=p_obj1[2], FONT_SIZE=textfsize_p1[2])
       p_obj1_txt[3] = text(0.50, 0.94, '', TARGET=p_obj1[3], FONT_SIZE=textfsize_p1[3])
@@ -91,5 +91,5 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
 
     ENDIF
   ENDIF
-  
+
 END

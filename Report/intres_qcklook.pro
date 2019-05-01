@@ -17,9 +17,9 @@ PRO intres_qcklook, chrom, PATH=path
 ;generate output filename
   IF NOT KEYWORD_SET(path) THEN $
     path=DIALOG_PICKFILE(/DIRECTORY, PATH=path, TITLE="Choose directory to save postscript file.")
-    
+
   IF STRLEN(path) EQ 0 THEN RETURN
-  
+
   cdate = conc_date(chrom[0].jdate, SYSTIME(/julian), cdate1=cdate1)
   psfname = path+cdate+'_intresqcklook.ps'
 ;+++++++++++++++++++++++
@@ -53,16 +53,16 @@ PRO intres_qcklook, chrom, PATH=path
   mydevice = !D.NAME
   SET_PLOT, 'PS'
   DEVICE, FILENAME=psfname, /COLOR, /PORTRAIT, DECOMPOSED=1, XOFFSET=0, YOFFSET=0, XSIZE=21, YSIZE=29.7 ; A4 format [cm], no margin
-  
+
   FOR sel_subst=0, n_subst-1 DO BEGIN
-    
+
     !p.multi = [0, 0, 2, 0, 0] ; first page of sel_subst
     !X.MARGIN=[8,3]
     !Y.MARGIN=[4,2]
     !X.OMARGIN=[3,3]
     !Y.OMARGIN=[3,3]
     symsize=1.2
-    
+
     title = names[sel_subst]
     ytitle = 'rel. RT'
     v = rel_rt[sel_subst, *]
@@ -76,7 +76,7 @@ PRO intres_qcklook, chrom, PATH=path
       PLOTS, xval,vval, PSYM=8, COLOR='FF0000'x
       OPLOT, [0, n_chrom+1], [1,1], LINESTYLE=1
     ENDIF
-    
+
     xtitle = 'Measurement No.'
     ytitle = 'rel. A/H'
     v = rel_area[sel_subst, *] / rel_hght[sel_subst, *]
@@ -90,14 +90,14 @@ PRO intres_qcklook, chrom, PATH=path
       PLOTS, xval,vval, PSYM=8, COLOR='008000'x
       OPLOT, [0, n_chrom+1], [1,1], LINESTYLE=1
     ENDIF
-    
+
     !p.multi = [0, 0, 3, 0, 0] ; second page of sel_subst
     !X.MARGIN=[18,8]
     !Y.MARGIN=[6,4]
     !X.OMARGIN=[3,3]
     !Y.OMARGIN=[3,3]
     symsize=1.2
-    
+
     title = names[sel_subst]
     ytitle = 'rel. Area'
     v = rel_area[sel_subst, *]
@@ -111,7 +111,7 @@ PRO intres_qcklook, chrom, PATH=path
       PLOTS, xval,vval, PSYM=8, COLOR='FF0000'x
       OPLOT, [0, n_chrom+1], [1,1], LINESTYLE=1
     ENDIF
-        
+
     ytitle = 'rel. Height'
     v = rel_hght[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
@@ -124,7 +124,7 @@ PRO intres_qcklook, chrom, PATH=path
       PLOTS, xval,vval, PSYM=8, COLOR='008000'x
       OPLOT, [0, n_chrom+1], [1,1], LINESTYLE=1
     ENDIF
-    
+
     xtitle = 'Measurement No.'
     ytitle = 'rel. Noise'
     v = rel_noise[sel_subst, *]
@@ -138,16 +138,16 @@ PRO intres_qcklook, chrom, PATH=path
       PLOTS, xval,vval, PSYM=8, COLOR='0000FF'x
       OPLOT, [0, n_chrom+1], [1,1], LINESTYLE=1
     ENDIF
-     
+
   ENDFOR
-  
+
   !X.MARGIN=[10,3] ; reset system variables (plot)
   !Y.MARGIN=[4,2]
   !X.OMARGIN=[0,0]
   !Y.OMARGIN=[0,0]
   !P.MULTI = [0, 0, 1, 0, 0]
-  
+
   DEVICE, /CLOSE, DECOMPOSED=1
   SET_PLOT, mydevice
-  
+
 END

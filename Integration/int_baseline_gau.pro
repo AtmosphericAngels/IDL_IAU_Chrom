@@ -50,9 +50,9 @@ FUNCTION int_baseline_gau , xval, yval $
   ;+++++++++++++++++++++++
   t=x[w_rt_win]
   v=y[w_rt_win]
-  
+
   A_gau=peak_detection(t,v,RT_WIN=rt_win,NTERMS=nterms,PEAK=peak_ret,BASE=base_ret)
-  
+
   IF finite(A_gau[1]) EQ 0 THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
@@ -63,7 +63,7 @@ FUNCTION int_baseline_gau , xval, yval $
   ;+++++++++++++++++++++++
   int_win=[A_gau[1]-nsigma_int[0]*A_gau[2],A_gau[1]+nsigma_int[1]*A_gau[2]]
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
-  
+
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
@@ -78,14 +78,14 @@ FUNCTION int_baseline_gau , xval, yval $
   ;+++++++++++++++++++++++
   t=x[w_int_win]
   v=y[w_int_win]
-  
+
   taxis=x[w_int_win]
   IF N_ELEMENTS(t) LT 12 THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     RETURN, strct
   ENDIF
-  
+
   nidx=6 ; use n data points left and right of signal to fit baseline
   ts=x[w_int_win[0]+(indgen(nidx)-nidx/2)]
   te=x[w_int_win[-1]+(indgen(nidx)-nidx/2)]
@@ -101,14 +101,14 @@ FUNCTION int_baseline_gau , xval, yval $
   ENDCASE
 
   peak_int=v-base_int
-  
+
   IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
     RETURN, strct
   ENDIF
-    
+
   area=int_tabulated(t, peak_int, /DOUBLE)
   IF (area LT 0.) THEN BEGIN ;OR (A[0] LT chk_noise)
     strct.flag=-1;
@@ -116,7 +116,7 @@ FUNCTION int_baseline_gau , xval, yval $
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Negative fit', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
@@ -127,7 +127,7 @@ FUNCTION int_baseline_gau , xval, yval $
   strct.ts=mean(ts,/nan)
   strct.te=mean(te,/nan)
   strct.flag=1
-  strct.comment='Integrated' 
+  strct.comment='Integrated'
 
   IF verbose THEN BEGIN
     print,'BASELINE FIT PARAMS:'
@@ -152,5 +152,5 @@ FUNCTION int_baseline_gau , xval, yval $
   ENDIF
 
   RETURN, strct
-  
+
 END

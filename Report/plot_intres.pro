@@ -13,7 +13,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   IF NOT KEYWORD_SET(saveplot) THEN saveplot = 0
   IF NOT KEYWORD_SET(file_ext) THEN file_ext = '.ps'
   IF NOT KEYWORD_SET(relative) THEN relative = 0
-  
+
 ;+++++++++++++++++++++++
 ; Get data
   nchrom = N_ELEMENTS(chrom.fname)
@@ -24,25 +24,25 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   meas_no = INDGEN(nchrom)+1
   xrange = [0,MAX(meas_no)+1]
   title=chrom[0].subst[sel_subst_ix].name
-  
+
     FOR i=0, nchrom-1 DO BEGIN
       areas[i] = chrom[i].subst[sel_subst_ix].ires.area
       heights[i] = chrom[i].subst[sel_subst_ix].ires.height
       rets[i] = chrom[i].subst[sel_subst_ix].ires.rt
       a_vs_h[i] = areas[i] / heights[i]
     END
-    
+
   rel_areas = areas/MEAN(areas, /NAN)
 ;  rel_heights = heights/MEAN(heights, /NAN)
   rel_rets = rets/MEAN(rets, /NAN)
-                    
+
 ;  rel_a_vs_h = a_vs_h/MEAN(a_vs_h, /NAN)
 ;  rel_a_vs_h_range = [MIN(rel_a_vs_h, /NAN)-((MAX(rel_a_vs_h, /NAN)-MIN(rel_a_vs_h, /NAN))*0.1), $
 ;                      MAX(rel_a_vs_h, /NAN)+((MAX(rel_a_vs_h, /NAN)-MIN(rel_a_vs_h, /NAN))*0.1)]
-  
+
   ;+++++++++++++++++++++++
   ; plot
-  
+
   IF relative THEN BEGIN
     y0= rel_areas
     y1= rel_rets
@@ -60,17 +60,17 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
     y1range= [MIN(rets, /NAN)-((MAX(rets, /NAN)-MIN(rets, /NAN))*0.1), $
               MAX(rets, /NAN)+((MAX(rets, /NAN)-MIN(rets, /NAN))*0.1)]
     y0_title= 'Area'
-    y1_title= 'RT'          
+    y1_title= 'RT'
   ENDELSE
-  
-  p0=plot(meas_no, y0, XRANGE=xrange, YRANGE=y0range, LINESTYLE=6, SYMBOL="td", SYM_SIZE=1.5, $ 
+
+  p0=plot(meas_no, y0, XRANGE=xrange, YRANGE=y0range, LINESTYLE=6, SYMBOL="td", SYM_SIZE=1.5, $
           SYM_COLOR='r', SYM_THICK=2, NAME='Area', WINDOW_TITLE='Plot Report', LAYOUT=[1,2,1], YTITLE=y0_title, $
           TITLE=title)
-                  
+
   p1=plot(meas_no, y1, XRANGE=xrange, YRANGE=y1range, LINESTYLE=6, SYMBOL="s", SYM_SIZE=1.5, $
           SYM_COLOR='b', SYM_THICK=2, NAME='RT', CURRENT=1, LAYOUT=[1,2,2], $
           XTITLE='Measurment No.', YTITLE=y1_title)
-          
+
   IF saveplot THEN BEGIN
     exp_name = FILE_BASENAME(FILE_DIRNAME(FILE_DIRNAME(FILE_DIRNAME(chrom[0].fname))))
     p0.save, saveplot+'\'+exp_name+'_'+title+file_ext, RESOLUTION=300
@@ -88,7 +88,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   ;
   ;substratio=areas[1,*]/areas[0,*]
   ;p2=plot(meas_no, substratio, XRANGE=xrange)
-  
+
   ;cal_areas=fltarr(nsubst)
   ;he_areas=fltarr(nsubst,3)
   ;
@@ -104,7 +104,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
 END
 
 ; double y axis plot
-; 
+;
 ;x=indgen(100)
 ;y0=indgen(100)
 ;y1=(indgen(100)-1000)*(-1)

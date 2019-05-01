@@ -41,27 +41,27 @@ FUNCTION calc_TIC_BenchTOF, chrom, sel_chrom
   vd_time = time[WHERE(FINITE(time) EQ 1)]
   x_tic = vd_time[UNIQ(vd_time, SORT(vd_time))]
   v_tic = x_tic*!Values.F_NAN
-  
+
   ix=WHERE(time[0:-2] NE time[1:*])
   ix=[0,ix,N_ELEMENTS(time)]
-  
-  FOR j=0L, N_ELEMENTS(x_tic)-1 DO BEGIN 
+
+  FOR j=0L, N_ELEMENTS(x_tic)-1 DO BEGIN
     IF ix[j+1] GT ix[j] THEN v_tic[j]=TOTAL((*chrom[sel_chrom].intensity)[ix[j]:ix[j+1]-1]) $
       ELSE v_tic[j]=(*chrom[sel_chrom].intensity)[ix[j]]
   ENDFOR
-  
+
   tic={intensity:v_tic,$
        time:x_tic}
-       
+
   RETURN, tic
-  
+
 END
 
 ; **************************************************************************************
 
 FUNCTION calc_TIC_HTOF, chrom, sel_chrom, NOMONLY=nomonly
 ;+++++++++++++++++++++++
-; Get general data 
+; Get general data
   uniq_mass = get_uniq_mass(chrom, SEL_CHROM=sel_chrom)
   IF KEYWORD_SET(nomonly) THEN $
     uniq_mass = uniq_mass[WHERE((*chrom[0].peaktable).label EQ 'nominal')]
@@ -78,13 +78,13 @@ FUNCTION calc_TIC_HTOF, chrom, sel_chrom, NOMONLY=nomonly
     msel = WHERE(*chrom[sel_chrom].mass EQ FIX(uniq_mass[i], type=4), nvd)
     v = (*chrom[sel_chrom].intensity)[msel]
     v_tic = v_tic+v
-  ENDFOR  
+  ENDFOR
 
   tic={intensity:v_tic,$
        time:x_tic}
-       
+
   RETURN, tic
-  
+
 END
 
 ; **************************************************************************************
@@ -102,7 +102,7 @@ FUNCTION calc_TIC_QP, chrom, sel_chrom
   xint=xbmin+FINDGEN(nxint)*xbsize
   nxintm=nxint-1
   xintm=(xint(1:nxint-1)+xint(0:nxint-2))*0.5
-  
+
 ;+++++++++++++++++++++++
 ; Intensity: fist mass trace / Time-Axis
   msel = WHERE(*chrom[sel_chrom].mass EQ FIX(uniq_mass[0], type=4), nvd)
@@ -116,7 +116,7 @@ FUNCTION calc_TIC_QP, chrom, sel_chrom
     v_tic[v_nan] = 0.
 ;  t_where1= SYSTIME(1)
   x_tic = xintm
- 
+
 ;+++++++++++++++++++++++
 ; loop all masses and sum up intensities
   FOR i=1, N_ELEMENTS(uniq_mass)-1 DO BEGIN
@@ -125,14 +125,14 @@ FUNCTION calc_TIC_QP, chrom, sel_chrom
     x = (*chrom[sel_chrom].time)[msel]
     vmean=Hist_QP_TIC(v, x, xbmin, xbmax, xbsize, nxintm)
        v_nan = WHERE(FINITE(vmean, /nan)) ; replace NANs with zeros to avoid errors
-       vmean[v_nan] = 0.   
+       vmean[v_nan] = 0.
     v_tic = v_tic+vmean
-  ENDFOR 
+  ENDFOR
   tic={intensity:v_tic,$
        time:x_tic}
 
   RETURN, tic
-  
+
 END
 
 ; **************************************************************************************
@@ -153,5 +153,5 @@ FUNCTION calc_tic, chrom, sel_chrom, NOMONLY=nomonly
   ENDCASE
 
   RETURN, tic
-  
+
 END
