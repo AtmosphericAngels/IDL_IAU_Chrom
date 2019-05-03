@@ -63,17 +63,19 @@ END
 ;
 ;
 ;************************************************************************************************************************
-FUNCTION Integrate_GumbelPeak, xval, yval $
-                             , NTERMS_BASE=nterms_base, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int $
-                             , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
-                             , FIT_WIN=fit_win, PEAK_FIT=peak_fit, BASE_FIT=base_fit  $
-                             , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
-                             , PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose
+FUNCTION Integrate_GumbelPeak, xval, yval, $
+                               NTERMS_BASE=nterms_base, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, $
+                               RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret,  $
+                               FIT_WIN=fit_win, PEAK_FIT=peak_fit, BASE_FIT=base_fit,  $
+                               INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, $
+                               PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, $
+                               VERBOSE=verbose
 
   IF NOT keyword_set(NTERMS_BASE) THEN  nterms_base=1
   IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
   IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[10,20]
   IF NOT keyword_set(timescale) THEN timescale='Minutes' ; not set case: restoring old chromatogram
+  IF NOT keyword_set(cv_tol) THEN cv_tol = 10E-6
 
 ;+++++++++++++++++++++++
 ; Create output structure (strct) for chromatographic parameters
@@ -140,8 +142,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval $
 
   IF n_elements(A) GE n_elements(v) THEN RETURN, strct
 
-  fit=CURVEFIT(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelPeak_PROC',$
-               ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=10e-3,YERROR=yerr)
+  fit=curvefit(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelPeak_PROC',$
+               ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=cv_tol,YERROR=yerr)
 
 ;+++++++++++++++++++++++
 ; Output peak parameters of curvefit (PARAMETER)
@@ -232,17 +234,18 @@ END
 ;
 ;
 ;************************************************************************************************************************
-FUNCTION Integrate_GumbelDoublePeak, xval, yval $
-                              , NTERMS_BASE=nterms_base, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int $
-                              , RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret  $
-                              , FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit  $
-                              , INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int  $
-                              , PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose
+FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
+                                     NTERMS_BASE=nterms_base, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, $
+                                     RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret,  $
+                                     FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit,  $
+                                     INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
+                                     PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, VERBOSE=verbose
 
 	 IF NOT keyword_set(NTERMS_BASE) THEN nterms_base=1
    IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
    IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[10,20]
    IF NOT keyword_set(rt_win) THEN rt_win =[min(xval,/nan),max(xval,/nan)]
+   IF NOT keyword_set(cv_tol) THEN cv_tol = 10E-6
 
 ;   xval=xval*60D
 ;   RT_WIN=rt_win*60D
@@ -357,12 +360,12 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    t=x
    v=y
 
-   ires_gum1=Integrate_GumbelPeak(t,v $
-               ,NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum1,NSIGMA_INT=nsigma_int_gum1 $
-               ,RT_WIN=rt_win,PEAK_RET=peak_ret_gum1,BASE_RET=base_ret_gum1  $
-               ,FIT_WIN=fit_win_gum1,PEAK_FIT=peak_fit_gum1,BASE_FIT=base_fit_gum1 $
-               ,INT_WIN=int_win_gum1,PEAK_INT=peak_int_gum1,BASE_INT=base_int_gum1 $
-               ,PARAMETER=A_gum1,TIMESCALE=timescale,VERBOSE=0)
+   ires_gum1=Integrate_GumbelPeak(t,v, $
+                                  NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum1,NSIGMA_INT=nsigma_int_gum1, $
+                                  RT_WIN=rt_win,PEAK_RET=peak_ret_gum1,BASE_RET=base_ret_gum1,  $
+                                  FIT_WIN=fit_win_gum1,PEAK_FIT=peak_fit_gum1,BASE_FIT=base_fit_gum1, $
+                                  INT_WIN=int_win_gum1,PEAK_INT=peak_int_gum1,BASE_INT=base_int_gum1, $
+                                  PARAMETER=A_gum1,TIMESCALE=timescale,VERBOSE=0)
 
 
    ;+++++++++++++++++++++++
@@ -388,12 +391,12 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    v=y
    v[w_rt_win]=y[w_rt_win]-peak_ret_gum1
 
-   ires_gum2=Integrate_GumbelPeak(t,v $
-               ,NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum2,NSIGMA_INT=nsigma_int_gum2 $
-               ,RT_WIN=rt_win,PEAK_RET=peak_ret_gum2,BASE_RET=base_ret_gum2  $
-               ,FIT_WIN=fit_win_gum2,PEAK_FIT=peak_fit_gum2,BASE_FIT=base_fit_gum2 $
-               ,INT_WIN=int_win_gum2,PEAK_INT=peak_int_gum2,BASE_INT=base_int_gum2 $
-               ,PARAMETER=A_gum2,TIMESCALE=timescale,VERBOSE=verbose)
+   ires_gum2=Integrate_GumbelPeak(t,v, $
+                                  NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum2,NSIGMA_INT=nsigma_int_gum2, $
+                                  RT_WIN=rt_win,PEAK_RET=peak_ret_gum2,BASE_RET=base_ret_gum2,  $
+                                  FIT_WIN=fit_win_gum2,PEAK_FIT=peak_fit_gum2,BASE_FIT=base_fit_gum2, $
+                                  INT_WIN=int_win_gum2,PEAK_INT=peak_int_gum2,BASE_INT=base_int_gum2, $
+                                  PARAMETER=A_gum2,TIMESCALE=timescale,VERBOSE=verbose)
 
    ;+++++++++++++++++++++++
    ; check if 2nd gbl integration, if yes then return
@@ -429,8 +432,8 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval $
    ;+++++++++++++++++++++++
    t=x[w_fit_win]
    v=y[w_fit_win]
-   fit=CURVEFIT(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelDoublePeak_PROC',$
-                  ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=10e-3,YERROR=yerr)
+   fit=curvefit(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelDoublePeak_PROC',$
+                ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=cv_tol,YERROR=yerr)
 
    ;+++++++++++++++++++++++
    ; Output fitted peak parameters (PARAMETER)
