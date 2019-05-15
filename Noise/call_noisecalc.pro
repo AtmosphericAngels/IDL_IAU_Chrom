@@ -16,7 +16,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 PRO call_noisecalc, sel_chrom, sel_name, event, $
                     NOISE_UNAME=noise_uname, DELAY=delay, PLOT=plot, $
-                    INSDATA_WARN=insdata_warn
+                    NO_WARN=no_warn
   COMMON DATA
   ;COMMON COM_PLOT
 
@@ -35,7 +35,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
   IF NOT KEYWORD_SET(noise_uname) THEN noise_uname='noise_pres'
   IF NOT KEYWORD_SET(delay) THEN delay=0.
   IF NOT KEYWORD_SET(plot) THEN plot=0
-  IF NOT KEYWORD_SET(insdata_warn) THEN insdata_warn=1 ; warning if insufficient data on by default
+  IF NOT KEYWORD_SET(no_warn) THEN no_warn=0 ; warning if insufficient data on by default
 
   ;+++++++++++++++++++++++++++++
   ; call specified operation
@@ -43,7 +43,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
       'noise_pres': $ ; apply settings to selected chrom
         BEGIN
           noise_win=chrom[sel_chrom].subst[sel_name].noise_win
-          strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, INSDATA_WARN=insdata_warn)
+          strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints LE 3 THEN BEGIN
               IF plot EQ 1 THEN msg=DIALOG_MESSAGE('Not enough datapoints for noise calculation found in specified retention time window.', /INFORMATION)
               RETURN; Not enough datapoints found for noise calculation
@@ -64,7 +64,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
         BEGIN
           chrom[sel_chrom].subst[sel_name].noise_win = subst[sel_name].noise_win
           noise_win=subst[sel_name].noise_win
-          strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, INSDATA_WARN=insdata_warn)
+          strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints  LE 3 THEN BEGIN
               IF plot EQ 1 THEN msg=DIALOG_MESSAGE('Not enough datapoints for noise calculation found in specified retention time window.', /INFORMATION)
               RETURN; Not enough datapoints found for noise calculation
@@ -87,7 +87,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
           FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
             chrom[i].subst[sel_name].quant = sel_quant
             chrom[i].subst[sel_name].noise_win = noise_win
-            strct = calc_noise_fct(chrom, i, sel_name, tot_uniqm, NOISE_WIN=noise_win, INSDATA_WARN=insdata_warn)
+            strct = calc_noise_fct(chrom, i, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints GT 3 THEN BEGIN
               noise[sel_quant] = strct.noise
               chrom[i].subst[sel_name].ires.noise = noise
@@ -113,7 +113,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
           FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
             chrom[i].subst[sel_name].quant = subst[sel_name].quant
             chrom[i].subst[sel_name].noise_win = subst[sel_name].noise_win
-            strct = calc_noise_fct(chrom, i, sel_name, tot_uniqm, NOISE_WIN=noise_win, INSDATA_WARN=insdata_warn)
+            strct = calc_noise_fct(chrom, i, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints GT 3 THEN BEGIN
               noise[sel_quant] = strct.noise
               chrom[i].subst[sel_name].ires.noise = noise

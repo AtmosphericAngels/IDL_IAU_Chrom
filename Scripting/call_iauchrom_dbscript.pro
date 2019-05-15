@@ -133,9 +133,9 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
             chrom[sel_chrom].subst[sel_name].sigma=subst[sel_name].sigma
             chrom[sel_chrom].subst[sel_name].quant=subst[sel_name].quant
             chrom[sel_chrom].subst[sel_name].method=subst[sel_name].method
-            IF calcnoise THEN call_noisecalc, sel_chrom, sel_name, 0, PLOT=0, INSDATA_WARN=0, $
+            IF calcnoise THEN call_noisecalc, sel_chrom, sel_name, 0, /NO_WARN, $
                                               NOISE_UNAME='noise_def_pres'
-            call_integration, sel_chrom, sel_name, PLOT=0
+            call_integration, sel_chrom, sel_name
           ENDFOR ; end integration loop: chromatograms
         ENDFOR ; end integration loop: substances
 

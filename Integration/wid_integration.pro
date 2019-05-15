@@ -263,7 +263,7 @@ PRO wid_integration_handle, event
                   chrom[sel_chrom].subst[sel_name].quant=subst[sel_name].quant
                   chrom[sel_chrom].subst[sel_name].method=subst[sel_name].method
                   IF WIDGET_INFO(event.id, /uname) EQ 'bat_int_noise' THEN $
-                    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_def_pres', PLOT=0, INSDATA_WARN=1
+                    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_def_pres', /NO_WARN
                   call_integration, sel_chrom, sel_name, PLOT=0
                 ENDFOR
               ENDFOR
@@ -273,7 +273,7 @@ PRO wid_integration_handle, event
               FOR sel_name=0, n_subst-1 DO BEGIN
                 FOR sel_chrom=0, n_chrom-1 DO BEGIN
                   IF WIDGET_INFO(event.id, /uname) EQ 'bat_int_noise' THEN $
-                    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_pres', PLOT=0, INSDATA_WARN=1
+                    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_pres', /NO_WARN
                   call_integration, sel_chrom, sel_name, plot=0
                 ENDFOR
               ENDFOR
@@ -620,7 +620,7 @@ PRO wid_integration_handle, event
         RETURN
       ENDIF
     ENDIF
-    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME=WIDGET_INFO(event.id, /uname), DELAY=wait, PLOT=1
+    call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME=WIDGET_INFO(event.id, /uname), DELAY=wait, /PLOT
   ENDIF
 
 

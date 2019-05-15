@@ -16,7 +16,7 @@
 ;
 ; KEYWORDS:
 ; verbose: triggers print & plot
-; insdata_warn: activates warning if insufficient datapoints are used for noise calcualtion
+; no_warn: deactivates warning if insufficient datapoints are used for noise calcualtion
 ;
 ; RETURN VALUE:
 ; noise, 3*SD deviation of signal vs. fit, same dimension as f_x / chrom.intensity
@@ -24,7 +24,7 @@
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 FUNCTION calc_noise_fct, chrom, sel_chrom, sel_name, tot_uniqm, $
-                         NOISE_WIN=noise_win, VERBOSE=verbose, INSDATA_WARN=insdata_warn
+                         NOISE_WIN=noise_win, VERBOSE=verbose, NO_WARN=no_warn
   ;+++++++++++++++++++++++++++++
   ; get quantifier ion & mass trace
   quant=chrom[sel_chrom].subst[sel_name].quant
@@ -67,13 +67,13 @@ FUNCTION calc_noise_fct, chrom, sel_chrom, sel_name, tot_uniqm, $
            yfit : yfit, $
            noisemass : sel_masstrace}
 
-  IF KEYWORD_SET(insdata_warn) THEN BEGIN
+  IF NOT KEYWORD_SET(no_warn) AND strct.ndatapoints LT 20 THEN BEGIN
     filename=FILE_BASENAME(chrom[sel_chrom].fname)
     substance=chrom[sel_chrom].subst[sel_name].name
     pre='Warning: Noise calculated over less than 20 datapoints '
     suf='('+substance+' in '+filename+').'
     warn_mess=pre+suf
-    IF strct.ndatapoints LT 20 THEN msg=DIALOG_MESSAGE(warn_mess, /INFORMATION)
+    msg=DIALOG_MESSAGE(warn_mess, /INFORMATION)
   END
 
   ;PRINT, file_basename(chrom[sel_chrom].fname), strct.ndatapoints, strct.noisemass, strct.noise
