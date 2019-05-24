@@ -532,12 +532,12 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
       target_mq_trace = target_mq_trace[0:N_ELEMENTS(ix_intensity)-1]
     ENDIF
 
-    intensity[ix_intensity]=target_mq_trace                                                                                  ; apply new intensity values to input array
+    intensity[ix_intensity]=target_mq_trace ; apply new intensity values to input array
 
     t2=SYSTIME(1)
     IF VERBOSE THEN print, 'reprocessed in [s]: ', t2-t1
 
-    FreeVar, x_nom_hd                                                                                                        ; clean memory
+    FreeVar, x_nom_hd ; clean memory
     FreeVar, y_nom_hd
     FreeVar, x
     FreeVar, y

@@ -20,7 +20,7 @@ PRO intres2txt_allsubst, chrom, PATH=path
 
   ;IF chrom[0].iauchrom_vers EQ '(not specified)' THEN iauchrom_vers='IAU_CHROM' ELSE iauchrom_vers='IAU_CHROM_v'+chrom[0].iauchrom_vers
 
-  OPENW, lun, fname, /get_lun
+  OPENW, lun, fname, /GET_LUN
   ;PRINTF, lun, '***'
   ;PRINTF, lun,  'Results generated with:'
   ;PRINTF, lun, iauchrom_vers

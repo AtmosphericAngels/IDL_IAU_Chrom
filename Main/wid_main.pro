@@ -197,6 +197,17 @@ PRO wid_main_handle, event
         chrom.instr_type = 6 ; 0:not defined, 1:QPMS or SFMS, 2:ALMSCO_TOFMS, 3:TW_TOFMS, 4:GhostECD, 5:AED, 6:GHGGC_FID or _ECD
         refr_status, message='files loaded.'
       END
+; **EXPORT**************************************************************************************************************************************      
+    'gwerks_export': $
+      BEGIN
+        IF SIZE(chrom, /TYPE) NE 8 OR STRLEN(chrom[0].fname) EQ 0 THEN BEGIN
+          !NULL=DIALOG_MESSAGE('Please load Data first.', /INFORMATION)
+        ENDIF ELSE BEGIN
+          refr_status, message='exporting files for GCWERKS...' 
+          gwerks_export, chrom, PATH=path
+          refr_status, message='export done.' 
+        ENDELSE
+      END
 ; **********************************************************************************************************************************************  
 ; ********************************************************************************************************************************************** 
 ; ********************************************************************************************************************************************** 
@@ -457,7 +468,9 @@ PRO wid_main_ini
       ID = WIDGET_BUTTON(load_ID, VALUE='AutoSpec SFMS *.cdf', UNAME = 'agilent_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='GHG ECD/FID *.nc', UNAME = 'ecd_fid_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='GhOST ECD *.txt', UNAME = 'ecd_txt')
-      ID = WIDGET_BUTTON(load_ID, VALUE='Tofwerk TOFMS *.h5', UNAME = 'tofwerk_h5')      
+      ID = WIDGET_BUTTON(load_ID, VALUE='Tofwerk TOFMS *.h5', UNAME = 'tofwerk_h5')
+    expt_ID = WIDGET_BUTTON(file_ID, VALUE='Export...', /MENU)
+      ID = WIDGET_BUTTON(expt_ID, VALUE='GCWERKS txt', UNAME = 'gwerks_export')      
     ID = WIDGET_BUTTON(file_ID, VALUE='Save Experiment', UNAME = 'sav_exp', /SEPARATOR)
     ID = WIDGET_BUTTON(file_ID, VALUE='Restore Experiment', UNAME = 'res_exp')
     ID = WIDGET_BUTTON(file_ID, VALUE='Set Filepath...', UNAME = 'set_path', /SEPARATOR)    
