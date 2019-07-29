@@ -21,7 +21,7 @@ PRO gwerks_export, chrom, PATH=path
   FOR fno=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
     unqm = get_uniq_mass(chrom, SEL_CHROM=fno)
     time = *chrom[fno].time
-    IF chrom[fno].t_scale EQ 'Minutes' THEN time = time*60D
+    IF chrom[fno].t_scale EQ 'Minutes' THEN time *= 60D
     mass = *chrom[fno].mass
     intensity = *chrom[fno].intensity
     
