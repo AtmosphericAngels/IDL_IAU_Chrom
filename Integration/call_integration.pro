@@ -169,7 +169,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                           RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret,  $
                                           FIT_WIN=fit_win, PEAK_FIT=peak_fit, BASE_FIT=base_fit,  $
                                           INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int,  $
-                                          PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)  ;TW 2019.08.08. *******************************/
+                                          PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
             rt=strct.ret
             area=strct.area

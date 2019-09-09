@@ -69,7 +69,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
                                FIT_WIN=fit_win, PEAK_FIT=peak_fit, BASE_FIT=base_fit,  $
                                INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, $
                                PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, $
-                               VERBOSE=verbose
+                               VERBOSE=verbose,$
+                               CHK_NOISE=chk_noise
 
   IF NOT keyword_set(NTERMS_BASE) THEN  nterms_base=1
   IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
@@ -173,6 +174,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     2: base_int=A[3]+A[4]*t
     3: base_int=A[3]+A[4]*t+A[5]*t^2
   ENDCASE
+  
+  peak_area = int_tabulated(t,peak_int,/double) ;/*******************************TW 2019.09.04.
 
 ;+++++++++++++++++++++++
 ; Calculate peak inside retention time window (PEAK_RET) and baseline (BASE_RET)
@@ -186,6 +189,31 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     3: base_ret=A[3]+A[4]*t+A[5]*t^2
   ENDCASE
 
+
+  ;/*******************************TW 2019.09.04.
+  IF (A[0] LT 1.5*chk_noise) THEN BEGIN
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
+    RETURN, strct
+  ENDIF
+  
+  IF (peak_area LE 0) THEN BEGIN
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Peak area negative number', /INFORMATION)
+    RETURN, strct
+  ENDIF
+
+  IF A[2] LT rt_win[0] OR A_gau[1] GT rt_win[1] THEN BEGIN
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fitted peak out of RT window', /INFORMATION)
+    RETURN, strct
+  ENDIF
+  ;TW 2019.09.04. *******************************/
+ 
+ 
 ;+++++++++++++++++++++++
 ; Calculate chromatographic parameters (peak area, height and retention time)
 ;+++++++++++++++++++++++
@@ -199,8 +227,10 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
   strct.te=max(t,/nan)
   strct.flag=1
   strct.comment='Integrated'
+  
 
-  IF verbose THEN BEGIN
+
+  IF (verbose and (strct.flag ne -1)) THEN BEGIN ;TW 2019.09.04. *******************************/
     print,'GUMBEL FIT PRAMS:'
     print,A_gau
     print,A
