@@ -24,15 +24,31 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
   t = x[w_ret_win]
   v = y[w_ret_win]
 
+;/*******************************TW 2019.08.08. 
+  Est4 = [$
+    max(v),$
+    (rt_win[1] + rt_win[0]) / 2.  ,$
+    0,$
+    min(v)$
+    ]
+    
+  CASE nterms_peakdet of
+    4: Est = Est4
+    5: Est = [Est4,0]
+    6: Est = [Est4,0,0]
+  ENDCASE
+  ;TW 2019.08.08. *******************************/  
+  
+
   IF (nw_ret_win LE nterms_peakdet) THEN RETURN, A   ; not enought datapoints in rt window
 
   IF (nw_ret_win GT nterms_peakdet) THEN BEGIN
     width = -999
     IF nterms_peakdet NE 4 THEN BEGIN ; if non-constant baseline selected:
-      v_fit1 = gaussfit(t,v,A0,NTERMS=4) ; first fit, constant baseline, to get more reliable estimate for peak width
+      v_fit1 = gaussfit(t,v,A0,NTERMS=4,Estimates=Est4) ; first fit, constant baseline, to get more reliable estimate for peak width  ;TW 2019.08.08. *******************************/ 
       width = A0[2]
     ENDIF
-    v_fit1 = gaussfit(t,v,A,NTERMS=nterms_peakdet)
+    v_fit1 = gaussfit(t,v,A,NTERMS=nterms_peakdet,Estimates=Est)  ;TW 2019.08.08. *******************************/ 
     IF width NE -999 THEN A[2]=width
   ENDIF
 
