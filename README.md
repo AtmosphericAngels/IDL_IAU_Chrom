@@ -206,7 +206,7 @@ MCV, plot tab **Recreate Textfields**. Recreates the textfields on Plot0 at thei
 Viewer: Multiple Masses (MMV)
 -----------------------------
 
-![8](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/08_Window_MMV_Plot.png)
+![8](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/08_Window_MMV_Plot.PNG)
 
 Fig. 8 - Mulit Mass Viewer widget with plot window.
 
@@ -225,7 +225,7 @@ MMV, plot tab **Generate Legend**. Displays a plot legend naming the selected ma
 Data Analysis: Integrate!
 =========================
 
-![9](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/09_Window_PI_Plot.png)
+![9](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/09_Window_PI_Plot.PNG)
 
 Fig. 9 - Peak integration widget with plot window. Integrated chromatographic signal shown.
 
@@ -332,7 +332,7 @@ Fig. 14 shows an example of an integrated signal. From the two signals found in 
 
 Note that the fit is composed of a solid and a dashed line, red for the peak and blue for the baseline. The **solid line** shows you, which data (x-coordinate) has been used for the fit. The **dashed line** shows the complete fit. The fit integration is always equivalent to ± 15 sigma.
 
-![14](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/14_Window_PI_gauss.png)
+![14](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/14_Window_PI_gauss.PNG)
 
 Fig. 14 - Integration plot. Black, solid line: m/Q intensity recorded over time (dI/dt). Red, solid line: data in this x-section are used to calculate the fit function. Red, dashed line: resulting fit curve. Blue: baseline.
 
@@ -413,7 +413,7 @@ To calculate a noise level on a specific m/Q, a retention time window (Left Boun
 Data Analysis: Fragment Ratios
 ==============================
 
-![15](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/15_Window_FragR_Plots.png)
+![15](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/15_Window_FragR_Plots.PNG)
 
 Fig. 15 -- Fragment ratio calculator widget with plots.
 
@@ -502,19 +502,3 @@ What the report-file (.txt) tells you
   [4.2.4 Integration: methods 17]: #integration-methods
   [4.2.5 Noise calculation 18]: #noise-calculation
   [5 Data Analysis: Fragment Ratios 19]: #data-analysis-fragment-ratios
-  [1]: https://github.com/MrFuppes/IDL_IAU_Chrom/blob/master/doc/img/01_WidMain.png {width="2.625in" height="2.1745964566929135in"}
-  [2]: media/image2.png {width="3.3958333333333335in" height="2.4772265966754157in"}
-  [3]: media/image3.png {width="2.875in" height="2.323629702537183in"}
-  [4]: media/image4.png {width="2.6875in" height="2.1831430446194227in"}
-  [5]: media/image5.png {width="1.5625in" height="2.4358978565179354in"}
-  [6]: media/image6.png {width="3.0520833333333335in" height="2.3566721347331585in"}
-  [7]: media/image7.PNG {width="6.141936789151356in" height="2.7393208661417323in"}
-  [8]: media/image8.PNG {width="5.946593394575678in" height="2.816389982502187in"}
-  [9]: media/image9.PNG {width="6.458333333333333in" height="3.774288057742782in"}
-  [10]: media/image10.png {width="2.1769695975503063in" height="4.943000874890639in"}
-  [11]: media/image11.png {width="2.4864381014873143in" height="1.4083333333333334in"}
-  [12]: media/image12.png {width="2.454341644794401in" height="1.4076367016622922in"}
-  [13]: media/image13.png {width="2.274094488188976in" height="1.185952537182852in"}
-  [14]: media/image14.PNG {width="6.3in" height="3.897222222222222in"}
-  [15]: media/image15.PNG {width="6.3in" height="4.591666666666667in"}
-  [16]: media/image16.PNG {width="3.2083333333333335in" height="4.757183945756781in"}
