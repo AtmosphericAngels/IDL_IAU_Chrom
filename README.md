@@ -293,12 +293,13 @@ Signal integration: Settings
 
 The dropdown-menu "Flag" contains five different flags for selected chromatogram and substance. The following table lists the meanings of the flag values:
 
-  **-2**   **Bad Peak** -- To be set manually by the user. Denotes unusable / faulty data. If the integration is applied (to all chromatograms), this chromatogram will be skipped.
-  -------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **-1**   **No Peak Found** -- Automatically set. Indicates that the integration routine has found and integrated a signal in the selected data (chromatogram and m/Q).
-  **0**    **Not Integrated** -- Initial state. Indicates that the integration was not (yet) called for this set of data. Initial state of all data when the integration widget is first started.
-  **1**    **Integrated** -- Automatically set. Chromatographic signal found and integrated.
-  **2**    **Integrated (man.)** -- Automatically set. Denotes integration settings that have been changed in comparison to other chromatograms (selected species).
+| flag   | meaning                | explanation |
+| ------ | ---------------------- | --- |
+| **-2** | **Bad Peak**           |  To be set manually by the user. Denotes unusable / faulty data. If the integration is applied (to all chromatograms), this chromatogram will be skipped. |
+| **-1** | **No Peak Found**      |  Automatically set. Indicates that the integration routine has found and integrated a signal in the selected data (chromatogram and m/Q). |
+| **0**  | **Not Integrated**     |  Initial state. Indicates that the integration was not (yet) called for this set of data. Initial state of all data when the integration widget is first started. |
+| **1**  | **Integrated**         |  Automatically set. Chromatographic signal found and integrated. |
+| **2**  | **Integrated (man.)**  |  Automatically set. Denotes integration settings that have been changed in comparison to other chromatograms (selected species). |
 
 **Droplist "Delay"**: Lets you select a delay (pause) between integrations, i.e. if applying an integration setting to all chromatograms.
 
