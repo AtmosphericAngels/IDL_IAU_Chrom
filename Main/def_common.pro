@@ -5,14 +5,14 @@
 ;
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
-PRO def_common
+PRO def_common, v
 ;+++++++++++++++++++++++
   COMMON DATA, $
          chrom, instr_type, fragdata, error_handler_IO, exp_info, intm, $ ; rtlock
          path, subst, uniq_mass, tot_uniqm, version
 
 
-  version = 5.19 ; current version
+  version = v
 
   fragdata = 0
   exp_info = 0

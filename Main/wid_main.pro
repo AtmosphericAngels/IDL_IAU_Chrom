@@ -456,7 +456,7 @@ PRO wid_main_ini
   COMMON DATA
   COMMON WIDID
 
-  title = 'IAU_Chrom_v'+STRCOMPRESS(STRING(version, FORMAT='(F4.2)'), /REMOVE_ALL)
+  title = 'IAU_Chrom_v'+version
       
   mainbase = WIDGET_BASE(TITLE=title, UNAME='mainwid', MBAR=menubaseID, COLUMN=1)
     
