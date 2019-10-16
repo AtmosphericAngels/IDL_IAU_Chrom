@@ -93,7 +93,7 @@ Technical Notes
 
 The IAU\_Chrom main widget is shown in Fig. 1.
 
-![doc/img/01_WidMain.png][1]
+![1](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/01_WidMain.png)
 
 Fig. 1 - Main widget.
 
