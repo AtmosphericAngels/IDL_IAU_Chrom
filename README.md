@@ -191,7 +191,7 @@ Data analysis: Tools to get an impression
 Viewer: Multiple Chroms (MCV)
 -----------------------------
 
-![7](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/07_Window_MCV_Plot.png)
+![7](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/07_Window_MCV_Plot.PNG)
 
 Fig. 7 - Multi Chrom Viewer widget with plot window.
 
