@@ -1,6 +1,6 @@
 # IAU\_Chrom 5.17+ Readme
 
-*Content* {#content .Inhaltsverzeichnisberschrift}
+*Content*
 =========
 
 [1 Overview and workflow 1]
@@ -93,7 +93,7 @@ Technical Notes
 
 The IAU\_Chrom main widget is shown in Fig. 1.
 
-![][1]
+![https://github.com/MrFuppes/IDL_IAU_Chrom/blob/master/doc/img/01_WidMain.png][1]
 
 Fig. 1 - Main widget.
 
