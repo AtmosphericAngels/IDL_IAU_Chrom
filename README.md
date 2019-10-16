@@ -191,7 +191,7 @@ Data analysis: Tools to get an impression
 Viewer: Multiple Chroms (MCV)
 -----------------------------
 
-![7](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/07_Window_MCV+Plot.png)
+![7](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/07_Window_MCV_Plot.png)
 
 Fig. 7 - Multi Chrom Viewer widget with plot window.
 
@@ -206,7 +206,7 @@ MCV, plot tab **Recreate Textfields**. Recreates the textfields on Plot0 at thei
 Viewer: Multiple Masses (MMV)
 -----------------------------
 
-![8](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/08_Window_MMV+Plot.png)
+![8](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/08_Window_MMV_Plot.png)
 
 Fig. 8 - Mulit Mass Viewer widget with plot window.
 
@@ -225,7 +225,7 @@ MMV, plot tab **Generate Legend**. Displays a plot legend naming the selected ma
 Data Analysis: Integrate!
 =========================
 
-![9](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/09_Window_PI+Plot.png)
+![9](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/09_Window_PI_Plot.png)
 
 Fig. 9 - Peak integration widget with plot window. Integrated chromatographic signal shown.
 
@@ -413,7 +413,7 @@ To calculate a noise level on a specific m/Q, a retention time window (Left Boun
 Data Analysis: Fragment Ratios
 ==============================
 
-![15](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/15_Window_FragR+Plots.png)
+![15](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/15_Window_FragR_Plots.png)
 
 Fig. 15 -- Fragment ratio calculator widget with plots.
 
