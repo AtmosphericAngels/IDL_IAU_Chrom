@@ -102,7 +102,7 @@ All further widgets (plots, tools) appear as soon as called/required.
 Main widget: "File" tab
 -----------------------
 
-![][2]
+![2](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/02_WidMain_File.png)
 
 Fig. 2 - File menu on main widget.
 
@@ -127,7 +127,7 @@ Fig. 2 - File menu on main widget.
 Main widget: "DataAnalysis" tab
 -------------------------------
 
-![][3]
+![3](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/03_WidMain_DataAnalysis.png)
 
 Fig. 3 - Main widget, data analysis tab.
 
@@ -138,7 +138,7 @@ Fig. 3 - Main widget, data analysis tab.
 Main widget: "Viewer" tab
 -------------------------
 
-![][4]
+![4](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/04_WidMain_Viewer.png)
 
 Fig. 4 - Main widget, viewer tab.
 
@@ -150,14 +150,14 @@ Viewer ' '**TPS HSK**': Opens a viewer widget for the housekeeping data recorded
 
 'Viewer ' '**Show Controls**': Opens a widget that allows you to control the plots' x- and y-ranges without using the „shiftkey-click-drag" method on the plot widgets. (Fig. 5).
 
-![][5]
+![5](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/05_WidPlotctrl.png)
 
 Fig. 5 - Plot controls widget.
 
 Main widget: "Advanced" tab (scripting)
 ---------------------------------------
 
-![][6]
+![6](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/06_WidMain_Adv.png)
 
 Fig. 6 -- Main widget, advanced tab.
 
@@ -191,7 +191,7 @@ Data analysis: Tools to get an impression
 Viewer: Multiple Chroms (MCV)
 -----------------------------
 
-![][7]
+![7](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/07_Window_MCV+Plot.png)
 
 Fig. 7 - Multi Chrom Viewer widget with plot window.
 
@@ -206,7 +206,7 @@ MCV, plot tab **Recreate Textfields**. Recreates the textfields on Plot0 at thei
 Viewer: Multiple Masses (MMV)
 -----------------------------
 
-![][8]
+![8](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/08_Window_MMV+Plot.png)
 
 Fig. 8 - Mulit Mass Viewer widget with plot window.
 
@@ -225,7 +225,7 @@ MMV, plot tab **Generate Legend**. Displays a plot legend naming the selected ma
 Data Analysis: Integrate!
 =========================
 
-![][9]
+![9](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/09_Window_PI+Plot.png)
 
 Fig. 9 - Peak integration widget with plot window. Integrated chromatographic signal shown.
 
@@ -242,13 +242,13 @@ The upper plot window (plot0) shows the full mass trace of selected chromatogram
 Signal integration widget
 -------------------------
 
-![][10]
+![10](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/10_WidInt.png)
 
 Fig. 10 - Integration widget.
 
 ### Integration widget: "Config" tab
 
-![][11]
+![11](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/11_WidInt_Config.png)
 
 Fig. 11 - Integration widget, config tab.
 
@@ -260,7 +260,7 @@ Fig. 11 - Integration widget, config tab.
 
 ### Integration widget: "BatchProcess" tab
 
-![][12]
+![12](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/12_WidInt_BatchProcess.png)
 
 Fig. 12 - Integration widget, batch processing tab.
 
@@ -270,7 +270,7 @@ Fig. 12 - Integration widget, batch processing tab.
 
 ### Integration widget: "Report" tab
 
-![][13]
+![13](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/13_WidInt_Report.png)
 
 Fig. 13 - Integration widget, report tab.
 
@@ -332,7 +332,7 @@ Fig. 14 shows an example of an integrated signal. From the two signals found in 
 
 Note that the fit is composed of a solid and a dashed line, red for the peak and blue for the baseline. The **solid line** shows you, which data (x-coordinate) has been used for the fit. The **dashed line** shows the complete fit. The fit integration is always equivalent to ± 15 sigma.
 
-![][14]
+![14](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/14_Window_PI_gauss.png)
 
 Fig. 14 - Integration plot. Black, solid line: m/Q intensity recorded over time (dI/dt). Red, solid line: data in this x-section are used to calculate the fit function. Red, dashed line: resulting fit curve. Blue: baseline.
 
@@ -413,13 +413,13 @@ To calculate a noise level on a specific m/Q, a retention time window (Left Boun
 Data Analysis: Fragment Ratios
 ==============================
 
-![][15]
+![15](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/15_Window_FragR+Plots.png)
 
 Fig. 15 -- Fragment ratio calculator widget with plots.
 
 This tool can analyse ratios of different ions fragmented from a molecule. Prerequisite: chromatographic data and ms.info file loaded or experiment restored. Additionally requires: eifrags.txt - a config file that tells the software which signals to compare to analyse a specific substance. To match substance information from ms.info and eifrags.txt, substance names have to be spelled equally in both files (case-sensitive!).
 
-![][16]
+![16](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/16_WidFragRat.png)
 
 Fig. 16 - FragRat Calc widget.
 
