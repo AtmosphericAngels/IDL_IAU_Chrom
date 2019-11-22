@@ -43,6 +43,11 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   x=xval[vd]
   y=yval[vd]
 
+  ; apply Savitzky-Gulay-filter to y
+
+  sg_filter=savgol() ;get SG-parameters
+  y=convol(y);apply SG-filter
+
   ; Define retention time window (RT_WIN)
   ;+++++++++++++++++++++++
   w_rt_win=where((x GE rt_win[0]) AND (x LE rt_win[1]),nw_rt_win)
