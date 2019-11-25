@@ -42,11 +42,15 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   IF (nvd LE 0) THEN RETURN,strct
   x=xval[vd]
   y=yval[vd]
+  y_raw=y ;save for integration
 
   ; apply Savitzky-Gulay-filter to y
+  nleft = 3 ;provide these in GUI in future versions
+  nright = nleft ;keep both variables in case of future needs
+  sg_degree = 3 ;polynomial used for smoothing
 
-  sg_filter=savgol() ;get SG-parameters
-  y=convol(y);apply SG-filter
+  sg_filter=savgol(nleft,nright,0,sg_degree,) ;get SG-parameters
+  y=convol(y,sg_filter) ;apply SG-filter
 
   ; Define retention time window (RT_WIN)
   ;+++++++++++++++++++++++
@@ -69,6 +73,9 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   ;+++++++++++++++++++++++
   int_win=[A_gau[1]-nsigma_int[0]*A_gau[2],A_gau[1]+nsigma_int[1]*A_gau[2]]
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
+
+  ;get const baseline from left point
+  bl_left_=
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
