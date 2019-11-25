@@ -74,8 +74,9 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   int_win=[A_gau[1]-nsigma_int[0]*A_gau[2],A_gau[1]+nsigma_int[1]*A_gau[2]]
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
 
-  ;get const baseline from left point
-  bl_left_=
+  ;get min and max value for Peak height
+  Peak_base = min(y[w_int_win])
+  Peak_top = max(y_raw[w_int_win])
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
