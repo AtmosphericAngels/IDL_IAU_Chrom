@@ -1,7 +1,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;+
 ; NAME:
-; int_no_fit_smooth_peak_height
+; int_SavGol_bl
 ;
 ; MODIFICATION HISTORY:
 ; T. Wagenhäuser, November 2019: created from "int_baseline_gau"
@@ -14,7 +14,7 @@
 @peak_detection
 ;------------------------------------------------------------------------------------------------------------------------
 
-FUNCTION int_peak_height_no_fit_SG , xval, yval $
+FUNCTION int_SavGol_bl, xval, yval $
                           , NTERMS_BASE=nterms_base, NSIGMA_INT=nsigma_int $
                           , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
                           , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
