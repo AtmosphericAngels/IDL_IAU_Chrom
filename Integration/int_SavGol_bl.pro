@@ -79,13 +79,15 @@ FUNCTION int_SavGol_bl, xval, yval $
   Peak_top = max(y_raw[w_int_win]) ;max from raw data
   Peak_height = Peak_top - Peak_min
 
+stop
+
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     RETURN, strct
   ENDIF
 
-  ; Output fitted peak parameters (PARAMETER)
+  ; Output fitted peak parameters (PARAMETER) ;TW note: to where?
   ;+++++++++++++++++++++++
   parameter=A_gau
 

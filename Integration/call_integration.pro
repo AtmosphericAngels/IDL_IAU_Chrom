@@ -288,7 +288,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
           ENDIF
         END
   ; ****************************************************************************************************************************************************
-      'SavlGol_bl': $
+      'SavGol_bl': $
         BEGIN
           strct=int_SavGol_bl(x,v, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
                                  INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, CHK_NOISE=chk_noise)
