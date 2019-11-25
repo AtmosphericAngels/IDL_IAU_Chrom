@@ -75,8 +75,9 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
 
   ;get min and max value for Peak height
-  Peak_base = min(y[w_int_win])
-  Peak_top = max(y_raw[w_int_win])
+  Peak_min = min(y[w_int_win]) ;min from Savitzky-Gulay
+  Peak_top = max(y_raw[w_int_win]) ;max from raw data
+  Peak_height = Peak_top - Peak_min
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
