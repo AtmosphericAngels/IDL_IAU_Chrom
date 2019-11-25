@@ -47,9 +47,9 @@ FUNCTION int_peak_height_no_fit_SG , xval, yval $
   ; apply Savitzky-Gulay-filter to y
   nleft = 3 ;provide these in GUI in future versions
   nright = nleft ;keep both variables in case of future needs
-  sg_degree = 3 ;polynomial used for smoothing
+  sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
-  sg_filter=savgol(nleft,nright,0,sg_degree,) ;get SG-parameters
+  sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
   y=convol(y,sg_filter) ;apply SG-filter
 
   ; Define retention time window (RT_WIN)
