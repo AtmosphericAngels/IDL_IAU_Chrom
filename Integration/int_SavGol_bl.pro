@@ -75,11 +75,12 @@ FUNCTION int_SavGol_bl, xval, yval $
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
 
   ;get min and max value for Peak height
-  Peak_min = min(y[w_int_win]) ;min from Savitzky-Gulay
-  Peak_top = max(y_raw[w_int_win]) ;max from raw data
+  Peak_top = max(y_raw[w_int_win], w_rt_raw) ;max from raw data; save index: rt_raw
+  Peak_min_l = min(y[w_int_win[0] : w_rt_raw]) ;left min from Savitzky-Gulay
+  Peak_min_r = min(y[w_rt_raw : w_int_win[-1]]) ;right min from Savitzky-Gulay
+  Peak_min = min([Peak_min_l, Peak_min_r]) ;choose lower value
   Peak_height = Peak_top - Peak_min
 
-stop
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
     strct.flag=-1;
@@ -103,6 +104,7 @@ stop
     RETURN, strct
   ENDIF
 
+stop
   nidx=6 ; use n data points left and right of signal to fit baseline
   ts=x[w_int_win[0]+(indgen(nidx)-nidx/2)]
   te=x[w_int_win[-1]+(indgen(nidx)-nidx/2)]
