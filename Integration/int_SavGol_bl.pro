@@ -74,10 +74,16 @@ FUNCTION int_SavGol_bl, xval, yval $
   int_win=[A_gau[1]-nsigma_int[0]*A_gau[2],A_gau[1]+nsigma_int[1]*A_gau[2]]
   w_int_win=where((x GE int_win[0]) AND (x LE int_win[1]), nw_int_win)
 
+
+  ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
+  ;+++++++++++++++++++++++
+  t=x[w_int_win]
+  v=y[w_int_win]
+  
   ;get min and max value for Peak height
   Peak_top = max(y_raw[w_int_win], w_rt_raw) ;max from raw data; save index: rt_raw
-  Peak_min_l = min(y[w_int_win[0] : w_rt_raw]) ;left min from Savitzky-Gulay
-  Peak_min_r = min(y[w_rt_raw : w_int_win[-1]]) ;right min from Savitzky-Gulay
+  Peak_min_l = min(v[0 : w_rt_raw], w_min_l) ;left min from Savitzky-Gulay
+  Peak_min_r = min(v[w_rt_raw : -1], w_min_r) ;right min from Savitzky-Gulay
   Peak_min = min([Peak_min_l, Peak_min_r]) ;choose lower value
   Peak_height = Peak_top - Peak_min
 
@@ -88,14 +94,11 @@ FUNCTION int_SavGol_bl, xval, yval $
     RETURN, strct
   ENDIF
 
-  ; Output fitted peak parameters (PARAMETER) ;TW note: to where?
+  ; Output fitted peak parameters (PARAMETER) ;TW20191125 note: to where?
   ;+++++++++++++++++++++++
   parameter=A_gau
 
-  ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
-  ;+++++++++++++++++++++++
-  t=x[w_int_win]
-  v=y[w_int_win]
+
 
   taxis=x[w_int_win]
   IF N_ELEMENTS(t) LT 12 THEN BEGIN
@@ -104,12 +107,14 @@ FUNCTION int_SavGol_bl, xval, yval $
     RETURN, strct
   ENDIF
 
-stop
+
   nidx=6 ; use n data points left and right of signal to fit baseline
   ts=x[w_int_win[0]+(indgen(nidx)-nidx/2)]
   te=x[w_int_win[-1]+(indgen(nidx)-nidx/2)]
   vs=y[w_int_win[0]+(indgen(nidx)-nidx/2)]
   ve=y[w_int_win[-1]+(indgen(nidx)-nidx/2)]
+
+stop
 
   IF (nterms_base GT 1) THEN A=poly_fit([ts,te],[vs,ve],nterms_base-1)
 
