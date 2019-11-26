@@ -170,6 +170,8 @@ FUNCTION int_SavGol_bl, xval, yval $
   strct.flag=1
   strct.comment='Integrated'
 
+  IF (n_sigma_int[0] LT 3.) XOR (n_sigma_int[1] LT 3.) THEN strct.area=!values.d_nan ;one shouldn't accidently use partly integrated peaks
+
   IF verbose THEN BEGIN
     print,'BASELINE FIT PARAMS:'
     print,A_gau
