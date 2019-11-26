@@ -76,13 +76,15 @@ FUNCTION int_SavGol_bl, xval, yval $
 
   ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
   ;+++++++++++++++++++++++
-  t=x[w_int_win] ;redundant?
+  t=x[w_int_win] ;replace rt window with int window
+  v_SG=y_SG[w_int_win] ;replace rt window with int window
   v=y[w_int_win] ;raw signal
 
   ;get min and max value for Peak height
   Peak_top = max(y[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
   Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
+  w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
   Peak_height = Peak_top - Peak_min ;move this to after creation of baseline
 
@@ -114,14 +116,14 @@ FUNCTION int_SavGol_bl, xval, yval $
  ; ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
 
 ;*********** min baseline ************
-  ts=x[w_min_l]
-  te=x[w_min_r]
+  ts=x[w_int_win[w_min_l]]
+  te=x[w_int_win[w_min_r]]
   vs=Peak_min_l
   ve=Peak_min_r
 
 
-stop
-  IF (nterms_base GT 1) THEN A=poly_fit([ts,te],[vs,ve],nterms_base-1) ;works with both: mean baseline and with min baseline
+
+  IF (nterms_base GT 1) THEN A=poly_fit([ts,te],[vs,ve],nterms_base-1, /DOUBLE) ;works with both: mean baseline and with min baseline
 
   IF (nterms_base GT 2) THEN BEGIN
     strct.flag=0;
@@ -140,7 +142,7 @@ stop
 
   peak_int=v-base_int
 
-  IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top'
+  IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top' together with 'Peak_height'
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
@@ -155,7 +157,7 @@ stop
     RETURN, strct
   ENDIF
 
-stop
+
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
