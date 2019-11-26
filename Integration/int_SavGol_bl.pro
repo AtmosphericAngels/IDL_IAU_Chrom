@@ -84,7 +84,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
-  Peak_height = Peak_top - Peak_min
+  Peak_height = Peak_top - Peak_min ;move this to after creation of baseline
 
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
@@ -107,11 +107,11 @@ FUNCTION int_SavGol_bl, xval, yval $
   ENDIF
 
 ;************ mean baseline option************
- nidx=6 ; use n data points left and right of signal to fit baseline
- ts=x[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
- te=x[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
- vs=y[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
- ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
+ ; nidx=6 ; use n data points left and right of signal to fit baseline
+ ; ts=x[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+ ; te=x[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
+ ; vs=y[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+ ; ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
 
 ;*********** min baseline ************
   ts=x[w_min_l]
@@ -134,13 +134,13 @@ stop
     1: if min_sel EQ 0 then BEGIN
           base_int = Peak_min_l + REPLICATE(0, nw_int_win)
        ENDIF ELSE base_int = Peak_min_r + REPLICATE(0, nw_int_win)
-    ; 1: base_int=mean([vs,ve])+REPLICATE(0,nw_int_win) ;
+    ; 1: base_int=mean([vs,ve])+REPLICATE(0,nw_int_win) ;in case of mean baseline
     2: base_int=A[0]+A[1]*t
   ENDCASE
 
   peak_int=v-base_int
 
-  IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN
+  IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top'
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
@@ -155,6 +155,7 @@ stop
     RETURN, strct
   ENDIF
 
+stop
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
