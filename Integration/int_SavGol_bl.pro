@@ -42,7 +42,6 @@ FUNCTION int_SavGol_bl, xval, yval $
   IF (nvd LE 0) THEN RETURN,strct
   x=xval[vd]
   y=yval[vd]
-  y_raw=y ;save for integration
 
   ; apply Savitzky-Gulay-filter to y
   nleft = 3 ;provide these in GUI in future versions
@@ -50,7 +49,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
-  y=convol(y,sg_filter) ;apply SG-filter
+  y_SG=convol(y,sg_filter) ;apply SG-filter
 
   ; Define retention time window (RT_WIN)
   ;+++++++++++++++++++++++
@@ -59,9 +58,9 @@ FUNCTION int_SavGol_bl, xval, yval $
   ; Detect Gauss Peak inside retention time window (RT_WIN)
   ;+++++++++++++++++++++++
   t=x[w_rt_win]
-  v=y[w_rt_win]
+  v_SG=y_SG[w_rt_win] ;Sav-Gol-filtered signal
 
-  A_gau=peak_detection(t,v,RT_WIN=rt_win,NTERMS=nterms,PEAK=peak_ret,BASE=base_ret)
+  A_gau=peak_detection(t,v_SG,RT_WIN=rt_win,NTERMS=nterms,PEAK=peak_ret,BASE=base_ret)
 
   IF finite(A_gau[1]) EQ 0 THEN BEGIN
     strct.flag=-1;
@@ -77,13 +76,13 @@ FUNCTION int_SavGol_bl, xval, yval $
 
   ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
   ;+++++++++++++++++++++++
-  t=x[w_int_win]
-  v=y[w_int_win]
+  t=x[w_int_win] ;redundant?
+  v=y[w_int_win] ;raw signal
 
   ;get min and max value for Peak height
-  Peak_top = max(y_raw[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
-  Peak_min_l = min(v[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
-  Peak_min_r = min(v[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
+  Peak_top = max(y[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
+  Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
   Peak_height = Peak_top - Peak_min
 
