@@ -200,7 +200,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret,  $
                                            FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit,  $
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
-                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose)
+                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
             wpeak=1
             rt=strct.ret1
@@ -231,7 +231,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret,  $
                                            FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit,  $
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
-                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose)
+                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
             wpeak=2
             rt=strct.ret2
@@ -262,7 +262,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret,  $
                                            FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit,  $
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
-                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose)
+                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
             wpeak=3
             rt=(strct.ret1+strct.ret2)/2D

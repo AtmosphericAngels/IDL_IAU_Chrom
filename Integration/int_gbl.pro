@@ -269,7 +269,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
                                      RT_WIN=rt_win, PEAK_RET1=peak_ret1, PEAK_RET2=peak_ret2, BASE_RET=base_ret,  $
                                      FIT_WIN=fit_win, PEAK_FIT1=peak_fit1, PEAK_FIT2=peak_fit2, BASE_FIT=base_fit,  $
                                      INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
-                                     PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, VERBOSE=verbose
+                                     PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, VERBOSE=verbose, CHK_NOISE=chk_noise
 
 	 IF NOT keyword_set(NTERMS_BASE) THEN nterms_base=1
    IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
@@ -395,7 +395,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
                                   RT_WIN=rt_win,PEAK_RET=peak_ret_gum1,BASE_RET=base_ret_gum1,  $
                                   FIT_WIN=fit_win_gum1,PEAK_FIT=peak_fit_gum1,BASE_FIT=base_fit_gum1, $
                                   INT_WIN=int_win_gum1,PEAK_INT=peak_int_gum1,BASE_INT=base_int_gum1, $
-                                  PARAMETER=A_gum1,TIMESCALE=timescale,VERBOSE=0)
+                                  PARAMETER=A_gum1,TIMESCALE=timescale,VERBOSE=0, CHK_NOISE=chk_noise)
 
 
    ;+++++++++++++++++++++++
@@ -426,7 +426,7 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
                                   RT_WIN=rt_win,PEAK_RET=peak_ret_gum2,BASE_RET=base_ret_gum2,  $
                                   FIT_WIN=fit_win_gum2,PEAK_FIT=peak_fit_gum2,BASE_FIT=base_fit_gum2, $
                                   INT_WIN=int_win_gum2,PEAK_INT=peak_int_gum2,BASE_INT=base_int_gum2, $
-                                  PARAMETER=A_gum2,TIMESCALE=timescale,VERBOSE=verbose)
+                                  PARAMETER=A_gum2,TIMESCALE=timescale,VERBOSE=verbose, CHK_NOISE=chk_noise)
 
    ;+++++++++++++++++++++++
    ; check if 2nd gbl integration, if yes then return
