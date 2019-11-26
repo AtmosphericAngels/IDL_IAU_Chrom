@@ -88,7 +88,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   Peak_height = Peak_top - Peak_min
 
 
-  IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN
+  IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
     strct.flag=-1;
     strct.comment='No Peak Found'
     RETURN, strct
@@ -107,16 +107,24 @@ FUNCTION int_SavGol_bl, xval, yval $
     RETURN, strct
   ENDIF
 
-
+;************ mean baseline option************
 ;  nidx=6 ; use n data points left and right of signal to fit baseline
 ;  ts=x[w_int_win[0]+(indgen(nidx)-nidx/2)]
 ;  te=x[w_int_win[-1]+(indgen(nidx)-nidx/2)]
 ;  vs=y[w_int_win[0]+(indgen(nidx)-nidx/2)]
 ;  ve=y[w_int_win[-1]+(indgen(nidx)-nidx/2)]
 
-stop
+;*********** min baseline ************
+  ts=x[w_min_l]
+  te=x[w_min_r]
+  vs=Peak_min_l
+  ve=Peak_min_r
 
-  IF (nterms_base GT 1) THEN BEGIN ;A=poly_fit([ts,te],[vs,ve],nterms_base-1)
+
+stop
+  IF (nterms_base GT 1) THEN A=poly_fit([ts,te],[vs,ve],nterms_base-1) ;works with both: mean baseline and with min baseline
+
+  IF (nterms_base GT 2) THEN BEGIN
     strct.flag=0;
     strct.comment='Not Integrated'
     RETURN, strct
@@ -124,8 +132,11 @@ stop
 
 
   CASE nterms_base OF
-    0: if min_sel EQ 0 then base_int=Peak_min_l+REPLICATE(0, nw_int_win) ELSE base_int=Peak_min_r+REPLICATE(0, nw_int_win)
-    1: base_int=mean([Peak_min_l,Peak_min_r])+REPLICATE(0,nw_int_win)
+    1: if min_sel EQ 0 then BEGIN
+          base_int = Peak_min_l + REPLICATE(0, nw_int_win)
+       ENDIF ELSE base_int = Peak_min_r + REPLICATE(0, nw_int_win)
+    ; 1: base_int=mean([vs,ve])+REPLICATE(0,nw_int_win) ;
+    2: base_int=A[0]+A[1]*t
   ENDCASE
 
   peak_int=v-base_int
