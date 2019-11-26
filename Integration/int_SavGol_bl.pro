@@ -81,9 +81,9 @@ FUNCTION int_SavGol_bl, xval, yval $
   v=y[w_int_win]
 
   ;get min and max value for Peak height
-  Peak_top = max(y_raw[w_int_win], w_rt_raw) ;max from raw data; save index: rt_raw
-  Peak_min_l = min(v[0 : w_rt_raw], w_min_l) ;left min from Savitzky-Gulay
-  Peak_min_r = min(v[w_rt_raw : -1], w_min_r) ;right min from Savitzky-Gulay
+  Peak_top = max(y_raw[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  Peak_min_l = min(v[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
+  Peak_min_r = min(v[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
   Peak_height = Peak_top - Peak_min
 
@@ -108,11 +108,11 @@ FUNCTION int_SavGol_bl, xval, yval $
   ENDIF
 
 ;************ mean baseline option************
-;  nidx=6 ; use n data points left and right of signal to fit baseline
-;  ts=x[w_int_win[0]+(indgen(nidx)-nidx/2)]
-;  te=x[w_int_win[-1]+(indgen(nidx)-nidx/2)]
-;  vs=y[w_int_win[0]+(indgen(nidx)-nidx/2)]
-;  ve=y[w_int_win[-1]+(indgen(nidx)-nidx/2)]
+ nidx=6 ; use n data points left and right of signal to fit baseline
+ ts=x[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+ te=x[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
+ vs=y[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+ ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
 
 ;*********** min baseline ************
   ts=x[w_min_l]
