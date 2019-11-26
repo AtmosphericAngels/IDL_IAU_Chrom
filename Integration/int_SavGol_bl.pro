@@ -20,7 +20,7 @@ FUNCTION int_SavGol_bl, xval, yval $
                           , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
                           , PARAMETER=parameter, TAXIS=taxis, VERBOSE=verbose, CHK_NOISE=chk_noise
 
-  IF NOT keyword_set(NTERMS_BASE) THEN nterms_base=1 ; linear baseline by default
+  IF NOT keyword_set(NTERMS_BASE) THEN nterms_base=2 ; linear baseline by default
   IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[3,30]
   IF NOT keyword_set(RT_WIN) THEN rt_win=[min(xval,/nan),max(xval,/nan)]
   IF NOT KEYWORD_SET(chk_noise) THEN chk_noise = 0.
@@ -79,7 +79,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   ;+++++++++++++++++++++++
   t=x[w_int_win]
   v=y[w_int_win]
-  
+
   ;get min and max value for Peak height
   Peak_top = max(y_raw[w_int_win], w_rt_raw) ;max from raw data; save index: rt_raw
   Peak_min_l = min(v[0 : w_rt_raw], w_min_l) ;left min from Savitzky-Gulay
@@ -119,10 +119,10 @@ stop
   IF (nterms_base GT 1) THEN BEGIN ;A=poly_fit([ts,te],[vs,ve],nterms_base-1)
     strct.flag=0;
     strct.comment='Not Integrated'
-    RETURN, strct    
+    RETURN, strct
   ENDIF
-  
-  
+
+
   CASE nterms_base OF
     0: if min_sel EQ 0 then base_int=Peak_min_l+REPLICATE(0, nw_int_win) ELSE base_int=Peak_min_r+REPLICATE(0, nw_int_win)
     1: base_int=mean([Peak_min_l,Peak_min_r])+REPLICATE(0,nw_int_win)
