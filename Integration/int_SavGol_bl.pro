@@ -15,6 +15,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 
 FUNCTION int_SavGol_bl, xval, yval $
+                          , y_SG=y_SG $
                           , NTERMS_BASE=nterms_base, NSIGMA_INT=nsigma_int $
                           , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
                           , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
