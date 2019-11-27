@@ -121,7 +121,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              int_pwin=WHERE(x GT int_win[0] AND x LT int_win[1])
+              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
               prange=[rt_win, int_win]
               xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
               yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
@@ -152,7 +152,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              int_pwin=WHERE(x GT int_win[0] AND x LT int_win[1])
+              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
               xrange = [rt_win[0]/1.025,rt_win[1]*1.025]
   ;            prange=[rt_win, int_win]
   ;            xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
