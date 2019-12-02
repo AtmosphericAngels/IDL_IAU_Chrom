@@ -45,9 +45,9 @@ FUNCTION int_SavGol_bl, xval, yval $
   y=yval[vd]
 
   ; apply Savitzky-Gulay-filter to y
-  nleft = 5 ;provide these in GUI in future versions
+  nleft = 3 ;provide these in GUI in future versions
   nright = nleft ;keep both variables in case of future needs
-  sg_degree = 8 ;polynomial used for smoothing, provide in future versions
+  sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
   y_SG=convol(y,sg_filter) ;apply SG-filter
@@ -87,7 +87,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
-  Peak_height = Peak_top - Peak_min ;move this to after creation of baseline
+  ; Peak_height = Peak_top - Peak_min ;move this after creation of baseline?
 
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
@@ -134,9 +134,7 @@ FUNCTION int_SavGol_bl, xval, yval $
 
 
   CASE nterms_base OF
-    1: if min_sel EQ 0 then BEGIN
-          base_int = Peak_min_l + REPLICATE(0, nw_int_win)
-       ENDIF ELSE base_int = Peak_min_r + REPLICATE(0, nw_int_win)
+    1: base_int = Peak_min + REPLICATE(0, nw_int_win)
     ; 1: base_int=mean([vs,ve])+REPLICATE(0,nw_int_win) ;in case of mean baseline
     2: base_int=A[0]+A[1]*t
   ENDCASE

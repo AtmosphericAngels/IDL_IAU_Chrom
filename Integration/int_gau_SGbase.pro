@@ -4,7 +4,7 @@
 ; FUNCTION int_gau_SGbase
 ;
 ; created by: Thomas Wagenhäuser from int_gau.pro 2019-12-02
-; last modified: 
+; last modified:
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 @peak_detection
@@ -68,9 +68,15 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   IF KEYWORD_SET(rtwinisfitwin) THEN BEGIN
     w_fit_win=w_rt_win
     nw_fit_win=nw_rt_win
-  ENDIF ELSE $
+    w_minfit_win=w_rt_win
+    nw_minfit_win=nw_rt_win
+  ENDIF ELSE BEGIN
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
-
+    
+    nsigma_minfit=[4,4] ; only get local SGbase minimum in case of high sigma window!
+    w_minfit_win=WHERE((x GE (A[1]-nsigma_minfit[0]*A[2])) AND (x LE(A[1]+nsigma_minfit[1]*A[2])), nw_minfit_win)
+  ENDELSE
+  
   IF nw_fit_win LE N_ELEMENTS(A) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
@@ -78,11 +84,72 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     RETURN, strct
   ENDIF
 
+
+; apply Savitzky-Gulay-filter to y
+  nleft = 3 ;provide these in GUI in future versions
+  nright = nleft ;keep both variables in case of future needs
+  sg_degree = 3 ;polynomial used for smoothing, provide in future versions
+
+  sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
+  y_SG=convol(y,sg_filter) ;apply SG-filter
+  v_SG=y_SG[w_minfit_win] ;replace rt window with fit window
+
+  ;get min and max value for Peak height
+  Peak_top = max(y[w_minfit_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
+  Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
+  w_min_r = w_min_r + w_rt_raw_t ;to get the right index!!
+  Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
+
+  w_base_ind = [w_min_l + w_minfit_win[0], w_min_r + w_minfit_win[0]]
+  if w_base_ind[0] eq 0 then BEGIN
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Index error.', /INFORMATION)
+    RETURN, strct
+  endif
+  w_base = [indgen(w_base_ind[0]), indgen(n_elements(y)-1 - w_base_ind[1], START=w_base_ind[1])]
+  y_SGbase = y
+
+
+  ;************ mean baseline option************ needs to be updated
+   ; nidx=6 ; use n data points left and right of signal to fit baseline
+   ; ts=x[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+   ; te=x[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
+   ; vs=y[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
+   ; ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
+
+  ;*********** min baseline ************
+    ts=x[w_base_ind[0]]
+    te=x[w_base_ind[1]]
+    vs=Peak_min_l
+    ve=Peak_min_r
+
+
+
+    IF (nterms_base GT 1) THEN A_base=poly_fit([ts,te],[vs,ve],nterms_base-1, /DOUBLE) ;works with both: mean baseline and with min baseline
+
+    IF (nterms_base GT 2) THEN BEGIN
+      strct.flag=0;
+      strct.comment='Not Integrated'
+      RETURN, strct
+    ENDIF
+
+;  t=x[w_fit_win]
+
+  CASE nterms_base OF
+    1: y_SGbase[w_base] = Peak_min
+    2: BEGIN $
+      base_int=A_base[0]+A_base[1]*x
+      y_SGbase[w_base] = base_int[w_base]
+      END
+  ENDCASE
+
 ;+++++++++++++++++++++++
 ; actual peak fit... w_int_win: time axis position within +/- n_sigma_int of peak fit
 ;+++++++++++++++++++++++
 
-  fit=gaussfit(x[w_fit_win],y[w_fit_win], A, NTERMS=nterms, ESTIMATES=A, YERROR=v_err)
+  fit=gaussfit(x[w_fit_win],y_SGbase[w_fit_win], A, NTERMS=nterms, ESTIMATES=A, YERROR=v_err)
   w_int_win=WHERE((x GE (A[1]-nsigma_int[0]*A[2])) AND (x LE(A[1]+nsigma_int[1]*A[2])), nw_int_win)
 
 ;+++++++++++++++++++++++
