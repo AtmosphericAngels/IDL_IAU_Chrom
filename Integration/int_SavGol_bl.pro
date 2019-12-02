@@ -160,7 +160,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
-  strct.hght=MAX(peak_int,wmax)
+  strct.hght=MAX(peak_int,wmax);Peak_top-0.067
   strct.rt=t[wmax]
   strct.area=area
   strct.wdth=A_gau[2]
