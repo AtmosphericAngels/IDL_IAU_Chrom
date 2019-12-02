@@ -45,9 +45,9 @@ FUNCTION int_SavGol_bl, xval, yval $
   y=yval[vd]
 
   ; apply Savitzky-Gulay-filter to y
-  nleft = 5 ;provide these in GUI in future versions
+  nleft = 3 ;provide these in GUI in future versions
   nright = nleft ;keep both variables in case of future needs
-  sg_degree = 8 ;polynomial used for smoothing, provide in future versions
+  sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
   y_SG=convol(y,sg_filter) ;apply SG-filter
