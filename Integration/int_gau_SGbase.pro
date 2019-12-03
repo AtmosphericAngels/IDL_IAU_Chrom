@@ -72,11 +72,11 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     nw_minfit_win=nw_rt_win
   ENDIF ELSE BEGIN
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
-    
+
     nsigma_minfit=[4,4] ; only get local SGbase minimum in case of high sigma window!
     w_minfit_win=WHERE((x GE (A[1]-nsigma_minfit[0]*A[2])) AND (x LE(A[1]+nsigma_minfit[1]*A[2])), nw_minfit_win)
   ENDELSE
-  
+
   IF nw_fit_win LE N_ELEMENTS(A) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
