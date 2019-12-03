@@ -5,17 +5,15 @@
 ;
 ; MODIFICATION HISTORY:
 ; T. Wagenhäuser, November 2019: created from "int_baseline_gau"
-; F. Obersteiner, June 2017: modified so that different baseline fits are available.
-;                            changed number of data points used for baseline fitting from 18 to 12.
-; F. Obersteiner, June 2014: implemented in IAU_chrom 4.8.
-; H. Boenisch, August, 2012: created.
-;-
+
 ;------------------------------------------------------------------------------------------------------------------------
 @peak_detection
 ;------------------------------------------------------------------------------------------------------------------------
 
 FUNCTION int_SavGol_interpol, xval, yval $
-                          , y_SG=y_SG $
+                          , x_SG= t_ipol $
+                          , y_SG=v_SG_ipol $
+                          , z = v_ipol $
                           , NTERMS_BASE=nterms_base, NSIGMA_INT=nsigma_int $
                           , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
                           , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
@@ -92,8 +90,8 @@ FUNCTION int_SavGol_interpol, xval, yval $
   ; interpol Peak top:
   ipol_win = [(w_rt_raw_t-10):(w_rt_raw_t+10)]
   t_ipol = interpol(t[ipol_win],N_ELEMENTS(t[ipol_win])*10)
-  v_SG_ipol = interpol(v_SG[ipol_win],t[ipol_win],t_ipol,/LSQUADRATIC)
-  v_ipol = interpol(v[ipol_win],t[ipol_win],t_ipol,/LSQUADRATIC)
+  v_SG_ipol = interpol(v_SG[ipol_win],t[ipol_win],t_ipol,/S)
+  v_ipol = interpol(v[ipol_win],t[ipol_win],t_ipol,/S)
 
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
@@ -166,17 +164,16 @@ FUNCTION int_SavGol_interpol, xval, yval $
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
-  strct.hght=MAX(peak_int,wmax);Peak_top-0.067
+  strct.hght=max(v_ipol);MAX(peak_int,wmax);Peak_top-0.067
   strct.rt=t[wmax]
-  strct.area=area
+  strct.area=max(v_SG_ipol);area
   strct.wdth=A_gau[2]
   strct.ts=mean(ts,/nan)
   strct.te=mean(te,/nan)
   strct.flag=1
   strct.comment='Integrated'
 
-  IF (nsigma_int[0] LT 3.) XOR (nsigma_int[1] LT 3.) THEN strct.area=!values.d_nan ;one shouldn't accidently use partly integrated peaks
-
+  
   IF verbose THEN BEGIN
     print,'BASELINE FIT PARAMS:'
     print,A_gau
