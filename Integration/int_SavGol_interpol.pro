@@ -144,6 +144,9 @@ FUNCTION int_SavGol_interpol, xval, yval $
   ENDCASE
 
   peak_int=v_SG-base_int
+  base_int_ipol = base_int[ipol_win]
+  peak_int_ipol_r = v_ipol - base_int_ipol
+  peak_int_ipol_SG = v_SG_ipol - base_int_ipol
 
   IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top' together with 'Peak_height'
     strct.flag=-1;
@@ -164,16 +167,16 @@ FUNCTION int_SavGol_interpol, xval, yval $
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
-  strct.hght=max(v_ipol);MAX(peak_int,wmax);Peak_top-0.067
+  strct.hght=max(peak_int_ipol_r);MAX(peak_int,wmax);Peak_top-0.067
   strct.rt=t[wmax]
-  strct.area=max(v_SG_ipol);area
+  strct.area=max(peak_int_ipol_SG);area
   strct.wdth=A_gau[2]
   strct.ts=mean(ts,/nan)
   strct.te=mean(te,/nan)
   strct.flag=1
   strct.comment='Integrated'
 
-  
+
   IF verbose THEN BEGIN
     print,'BASELINE FIT PARAMS:'
     print,A_gau
