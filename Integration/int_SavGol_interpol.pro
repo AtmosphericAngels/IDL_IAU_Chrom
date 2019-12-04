@@ -145,6 +145,7 @@ FUNCTION int_SavGol_interpol, xval, yval $
 
   peak_int=v_SG-base_int
   base_int_ipol = base_int[ipol_win]
+  base_int_ipol = interpol(base_int_ipol,N_ELEMENTS(base_int_ipol)*10)
   peak_int_ipol_r = v_ipol - base_int_ipol
   peak_int_ipol_SG = v_SG_ipol - base_int_ipol
 
