@@ -73,7 +73,10 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   ENDIF ELSE BEGIN
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
 
-    nsigma_minfit=[4,4] ; only get local SGbase minimum in case of high sigma window!
+
+    nsigma_minfit=[4.,4.] ; only get local SGbase minimum in case of high nsigma_fit window!
+    if nsigma_fit[0] lt 4 then nsigma_minfit[0] = nsigma_fit[0]
+    if nsigma_fit[1] lt 4 then nsigma_minfit[1] = nsigma_fit[1]
     w_minfit_win=WHERE((x GE (A[1]-nsigma_minfit[0]*A[2])) AND (x LE(A[1]+nsigma_minfit[1]*A[2])), nw_minfit_win)
   ENDELSE
 
@@ -101,7 +104,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
 
-  w_base_ind = [w_min_l + w_minfit_win[0], w_min_r + w_minfit_win[0]]
+  w_base_ind = [abs(w_min_l -1 + w_minfit_win[0]), abs(w_min_r +1 + w_minfit_win[0])] ;"-1" and "+1" in order to replace only neighbouring values (bug with los sigma)
   if w_base_ind[0] eq 0 then BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
