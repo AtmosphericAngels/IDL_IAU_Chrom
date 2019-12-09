@@ -3,55 +3,60 @@
 *Content*
 =========
 
-1 - [Overview and workflow]
+1 - [Overview and workflow](#overview-and-workflow)
 
-2 - [Features]
+2 - [Features](#features)
 
-2.1 - [Technical Notes]
+2.1 - [Technical Notes](#technical-notes)
 
-2.2 - [Main widget: "File" tab]
+2.2 - [Main widget: "File" tab](#main-widget-file-tab)
 
-2.3 - [Main widget: "DataAnalysis" tab]
+2.3 - [Main widget: "DataAnalysis" tab](#main-widget-dataanalysis-tab)
 
-2.4 - [Main widget: "Viewer" tab]
+2.4 - [Main widget: "Viewer" tab](#main-widget-viewer-tab)
 
-2.5 - [Main widget: "Advanced" tab (scripting)]
+2.5 - [Main widget: "Advanced" tab (scripting)](#main-widget-advanced-tab-scripting)
 
-2.6 - [Define your targets: "*ms.info*" config file]
+2.6 - [Define your targets: "*ms.info*" config file](#define-your-targets-ms-info-config-file)
 
-2.7 - [Define molecule fragments and ratios: "*fragments.txt"* config file]
+2.7 - [Define molecule fragments and ratios: "*fragments.txt"* config file](#define-molecule-fragments-and-ratios-fragments-txt-config-file)
 
-3 - [Data analysis: Tools to get an impression]
+3 - [Data analysis: Tools to get an impression](#data-analysis-tools-to-get-an-impression)
 
-3.1 - [Viewer: Multiple Chroms (MCV)]
+3.1 - [Viewer: Multiple Chroms (MCV)](#viewer-multiple-chroms-mcv)
 
-3.2 - [Viewer: Multiple Masses (MMV)]
+3.2 - [Viewer: Multiple Masses (MMV)](#viewer-multiple-masses-mmv)
 
-4 - [Data Analysis: Integrate!]
+4 - [Data Analysis: Integrate!](#data-analysis-integrate)
 
-4.1 - [Signal integration widget]
+4.1 - [Signal integration widget](#signal-integration-widget)
 
-4.1.1 - [Integration widget: "Config" tab]
+4.1.1 - [Integration widget: "Config" tab](#integration-widget-config-tab)
 
-4.1.2 - [Integration widget: "BatchProcess" tab]
+4.1.2 - [Integration widget: "BatchProcess" tab](#integration-widget-batchprocess-tab)
 
-4.1.3 - [Integration widget: "Report" tab]
+4.1.3 - [Integration widget: "Report" tab](#integration-widget-report-tab)
 
-4.1.4 - [Integration widget: "Plot" tab]
+4.1.4 - [Integration widget: "Plot" tab](#integration-widget-plot-tab)
 
-4.2 - [Signal integration: Settings]
+4.2 - [Signal integration: Settings](#signal-integration-settings)
 
-4.2.1 - [Flagging & Delay]
+4.2.1 - [Flagging & Delay](#flagging-delay)
 
-4.2.1 - [Retention time and peak integration]
+4.2.1 - [Retention time and peak integration](#retention-time-and-peak-integration)
 
-4.2.1 - [Integration: general tips]
+4.2.1 - [Integration: general tips](#integration-general-tips)
 
-4.2.1 - [Integration: methods]
+4.2.1 - [Integration: methods](#integration-methods)
 
-4.2.1 - [Noise calculation]
+4.2.1 - [Noise calculation](#noise-calculation)
 
-5 - [Data Analysis: Fragment Ratios]
+5 - [Data Analysis: Fragment Ratios](#data-analysis-fragment-ratios)
+
+
+---
+
+
 
 Overview and workflow
 =====================
@@ -59,15 +64,10 @@ Overview and workflow
 Analysis of chromatographic data in IAU\_Chrom is pretty straight-forward:
 
 1.  ***Load chromatographic data*** from various sources like e.g. the Agilent Quadrupole‑MS or the Tofwerk TOFMS (sect. 2).
-
 2.  ***Have a look*** at your data with the viewing tools (viewers) on the plot windows of IAU\_Chrom (sect. 3).
-
 3.  ***Define the species*** you want to analyse by loading the ms.info configuration file (sect. 2.5).
-
 4.  ***Integrate the signals*** of the defined substances and calculate the noise level on the respective baseline sections of the respective signals (sect. 4).
-
 5.  ***Save results*** in the form of an IDL binary file. That allows you to continue working on the experiment later on. Results can also be saved as text-files (sects. 2.2 and 4.1.3).
-
 6.  Specifically for mass spectrometric data, IAU\_Chrom offers the possibility to analyse molecule ***fragment ratios*** if multiple ions are recorded per species. Use the fragment ratio calculation tool to do so (sect. 5).
 
 Features
@@ -77,18 +77,14 @@ Technical Notes
 ----------------
 
 -   Compatibility. IAU\_Chrom is written in the IDL programming language on and for Windows machines (Win 7). Win 10 is known to cause problems of the plot windows (lagging etc. but no crash). A version for Unix-based systems does not exist.
-
 -   Version 5.02 and greater: Error handling is implemented which avoids total crashes for most errors. To avoid data loss in any case, save your experiment regularly.
-
 -   To use IAU\_Chrom on the system partition on your machine (C:\\), it might be necessary to run IDL or the IDL virtual machine as in administrator mode.
-
 -   To use the code version (not pre-compiled), an IDL installation (v8.4 or greater) is required.
 
 
 **Start IAU\_Chrom:**
 
 -   Runtime version, virtual machine only: run IAU\_Chrom\_vxxx.exe;
-
 -   Code version, IDL installed: open and run the IAU\_Chrom\_v5...pro from the root directory of the IAU\_Chrom project.
 
 The IAU\_Chrom main widget is shown in Fig. 1.
@@ -109,7 +105,6 @@ Fig. 2 - File menu on main widget.
 'File' '**Import...':** Import chromatographic (raw) data in different formats like netcdf (.nc) or hdf5 (.h5) from different instruments. Choice is based on the instrument that produced the data.
 
 -   To process measurement series, files should be named with an increasing index, like 01\_name, 02\_name or name\_01 and so on. \"name" in this case is a constant string. A useful tool to rename and/or enumerate files is Ant Renamer, http://www.antp.be/software/renamer.
-
 -   v5.13 and higher: IAU\_Chrom also checks for a measurement timestamp in the data file; if loaded files are not sorted by ascending timestamp, it will ask you if you wish to sort by that quantity.
 
 'File' '**Save Experiment**': Saves the current set of loaded data, settings used for analysis and results together in one binary file \*.sav. This file is only readable by IAU\_Chrom (IDL proprietary format).
@@ -144,11 +139,11 @@ Fig. 4 - Main widget, viewer tab.
 
 'Viewer' '**Multiple Chroms**': Opens a viewer widget that can display an overlay of up to seven chromatograms (one specific m/q), see sect. 3. Uses plot window 0 (upper). Requires: Chromatograms/experiment loaded.
 
-'Viewer ' '**Multiple m/Q**': Opens a viewer widget that can display an overlay of upt to seven m/q signals (one specific chromatogram), see sect. 3. Uses plot window 0 (upper). Requires: Chromatograms/experiment loaded.
+'Viewer' '**Multiple m/Q**': Opens a viewer widget that can display an overlay of upt to seven m/q signals (one specific chromatogram), see sect. 3. Uses plot window 0 (upper). Requires: Chromatograms/experiment loaded.
 
-Viewer ' '**TPS HSK**': Opens a viewer widget for the housekeeping data recorded by the TPS module of the Frankfurt GC-TOFMS. Uses plot window 0 (upper). Requires: Chromatograms/experiment fromt the Tofwerk TOFMS loaded.
+'Viewer' '**TPS HSK**': Opens a viewer widget for the housekeeping data recorded by the TPS module of the Frankfurt GC-TOFMS. Uses plot window 0 (upper). Requires: Chromatograms/experiment fromt the Tofwerk TOFMS loaded.
 
-'Viewer ' '**Show Controls**': Opens a widget that allows you to control the plots' x- and y-ranges without using the „shiftkey-click-drag" method on the plot widgets. (Fig. 5).
+'Viewer' '**Show Controls**': Opens a widget that allows you to control the plots' x- and y-ranges without using the „shiftkey-click-drag" method on the plot widgets. (Fig. 5).
 
 ![5](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/05_WidPlotctrl.png)
 
@@ -164,9 +159,7 @@ Fig. 6 -- Main widget, advanced tab.
 'Advanced' '**Run Database Script**': Allows to run a script that defines experiments including e.g.
 
 -   directory where data is found
-
 -   path of an ms.info file
-
 -   a definition which data should be imported (TOFMS, Quad-MS etc.)
 
 The database script is a .csv table which contains a description of its use in the header, it is therefore not described in detail here.
@@ -184,6 +177,11 @@ Define molecule fragments and ratios: "*fragments.txt"* config file
 -------------------------------------------------------------------
 
 Necessary to use the fragment ratios calculation tool, see sect. 5. Contains information on how which species fragments in 70 eV electron ionisation. E.g. CFC-12 (CF2Cl2) forms main ions of m/q 85 and 87, i.e. CF~2~^35^Cl^+^ and CF~2~^37^Cl^+^ with calculated m/q 84.96511 and 86.96216.
+
+
+---
+
+
 
 Data analysis: Tools to get an impression
 =========================================
@@ -222,6 +220,10 @@ MMV, plot tab **Recreate Textfields**. Recreates the textfields on Plot0 at thei
 
 MMV, plot tab **Generate Legend**. Displays a plot legend naming the selected mass traces.
 
+
+---
+
+
 Data Analysis: Integrate!
 =========================
 
@@ -230,9 +232,7 @@ Data Analysis: Integrate!
 Fig. 9 - Peak integration widget with plot window. Integrated chromatographic signal shown.
 
 -   data loaded
-
 -   ms.info loaded
-
 -   main widget data analysis peak integration/noise
 
 The lower plot window (plot1, Fig. 9) shows the integrated chromatographic signal.
@@ -322,7 +322,6 @@ Note: See section 4.2.3 for further hints which settings to select under which c
 General goal here are precise and accurate results. A relative calibration scheme is assumed (multiple calibration measurements within the measurement series). The choice how to configure the signal fit relies on two basic, opposing conditions (within the measurement series you analyse):
 
 1)  Chromatography is very stable, the peak shape does not change a lot.
-
 2)  Peak shape changes.
 
 In case 1), the Gaussian fit is a good choice in most cases. In this case, it is most important to "feed" as much data into the fit as possible. This will give you a very good (precise!) representation of the actual signal. For integration settings this means: use as high multiplier values (sigma left / sigma right) as possible. It does not matter if the shape of the signal is exactly matched by the fit, key here is *representation*, not resemblance. Accuracy is very good as long as the peak shape doesn't change significantly.
@@ -344,72 +343,58 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 **\'Baseline\_dynamicRT**\': (ms.info tag: \'bl\')
 
 -   IAU\_Chrom tries to detect a signal in the specified retention time window.
-
 -   The peak detection algorithm returns peak parameters like estimated retention time or full width at half maximum (2 sigma).
-
 -   Based on the sigma value from peak detection and the sigma multipliers on the integration widget, a retention time section "*int\_win*" is determined where baseline fitting and peak integration will be performed.
-
 -   At beginning and end of the *int\_win* section, 6 data points on each side are used to calculate a baseline fit (order based on the selection on the integration widget).
-
 -   All data points within *int\_win* are then integrated after baseline subtraction.
-
 -   although no actual peak fitting is performed, this method compensates for shifts in retention time as peak detection is used.
 
 **\'GaussFit\'**: (ms.info tag: \'gau\')
 
 -   Peak detection and determination of *int\_win* according to '\'Baseline\_dynamicRT'.
-
 -   Selection of data points to calculate the fit based on sigma multipliers (explanations see also sect. 4.2.3).
-
 -   Calculation of the peak fit as a Gaussian distribution.
-
 -   Integration of the fitted signal within ±15 sigma (you can't change this value).
 
 **\'GumbleFit\'**: (ms.info tag: \'gbl\')
 
 -   Peak detection and determination of *int\_win* according to '\'Baseline\_dynamicRT'.
-
 -   Selection of data points according to 'GaussFit'.
-
 -   Calculation of the peak fit as a Gumble distribution.
-
 -   Integration of the fitted signal within the sigma values you entered on the integration widget.
 
 **\'Dbl\_Gumble\_1stPeak**\': (ms.info tag: \'dblgbl\_1st\')
 
 -   See 'GumbleFit'.
-
 -   Assumes a double peak with the second (smaller) peak sitting on the right shoulder of the first (larger) peak.
-
 -   '\_1stPeak' the peak parameters of the first peak are returned by this function.
 
 **\'Dbl\_Gumble\_2ndPeak\'**: (ms.info tag: \'dblgbl\_2nd\')
 
 -   See 'GumbleFit' / 'Dbl\_Gumble\_1stPeak'
-
 -   '\_2ndPeak' the peak parameters of the second peak are returned by this function.
 
 **\'Dbl\_Gumble\_PeakSum\'**: (ms.info tag: \'dblgbl\_sum\')
 
 -   See 'GumbleFit' / 'Dbl\_Gumble\_1stPeak' / 'Dbl\_Gumble\_2ndPeak'
-
 -   'PeakSum' the peak parameters of both peaks are returned (e.g. sum of areas peak 1 + peak 2) by this function.
 
 **\'Fix\_2point\_BL\'**: (ms.info tag: \'bl\_fix\')
 
 -   the first and last data point in the specified retention time window are used to calculate a line between these points (=baseline).
-
 -   Integration of all data points in the retention time window after baseline subtraction.
-
 -   If a noise level was calculated, results are only returned if the detected peak height is greater than the 1.5-fold noise level (otherwise, the result is 'no peak found').
-
 -   If the integrated intensity (peak area) is below zero, a 'no peak found' is returned as well.
-
 -   since this method does not use peak detection, it also doesn't compensate a shift in retention time during a measurement series. On the one hand side, this might reduce precision -- but on the other hand side, signals that are difficult to integrate with other methods might be feasible with this method due to its simplicity.
 
 ### Noise calculation
 
 To calculate a noise level on a specific m/Q, a retention time window (Left Boundary & Right Boundary, see Fig. 10) has to be defined. In this section of the x-axis, a 2^nd^ order polynomial fit is calculated. The noise level is then calculated as the 3-fold standard deviation of the differences (residuals) between fit and data points.
+
+
+---
+
+
 
 Data Analysis: Fragment Ratios
 ==============================
@@ -424,58 +409,37 @@ This tool can analyse ratios of different ions fragmented from a molecule. Prere
 
 Fig. 16 - FragRat Calc widget.
 
-Configuration options on the widget
+**Configuration options on the widget**
 
 -   **Chromatogram**, **Substance** **Pre-set** and **Fragments**: set as desired.
-
 -   **Use nominal masses**: if checkbox is activated, ion masses (m/q) specified as decimal numbers will be rounded to integer values ("nominal masses"). If the data contains nominal and accurate m/q vectors, nominal values will be preferred. If data contains only accurate values, make sure to uncheck the box.
-
 -   **Try correct scanshift**: if activated, a simple correction is applied to the result that compensates the temporal shift of intensity values of different m/q signals. Note that this is only a "data correction", not a correction of possible spectral skewing from the MS. Has no effect on TOFMS data.
-
 -   **t\_R min, t\_R max**: retention time window; where the signal of interest is found in the chromatogram(s). Set the window so that an unambiguous identification of the signal is possible.
-
 -   **Peak int. sigma left/right**: Required setting if peak fits should be used to derive the ratio, see next point (Comparison). The software will try to detect a signal (peak) in the specified retention time window. Sigma left and right specify the data (in multiples of ½ FWHM of a fit estimate returned by the peak detection algorithm) that is used to calculate a Gaussian fit of the detected signal. Change these values to get a fit that resembles peak and baseline.
-
 -   **Comparison**: either select "Baseline/P2P" to perform a point-to-point comparison of data points or "Fit2Fit" to compare fitted curves to retrieve the ratio.
-
 -   **FragRat sigma left/right**: Determines which data points are used to calculate the ratio. Numbers entered are multiples of sigma, i.e. ½ FWHM of a Gaussian peak representing the signal (see peak integration).
 
-Some hints to get useful results
+**Some hints to get useful results**
 
 -   "save experiment" option (main widget): fragment ratio results and config file will not be saved. Make sure to save results as .txt (option on fragrat calc widget)
-
 -   fragrat sigma left/right can strongly influence the result. Make sure to use equal values here if comparing different measurements.
-
 -   ***Special note*** on scanning-type mass spectrometers, switching and recording m/q sequentially: ion composition in the ion source might have changed during the time it takes the instrument to switch from one m/q to another ("spectral skew"). A point-2-point ratio consequently might be biased ("comparing apples with apple-like pears"). To minimise the inaccuracy introduced by spectral skew, e.g. only points should be compared that are not located at the steepest parts of the signal flanks (max. dI/dt). The configuration options expressed in multiples of sigma can help in that respect, try e.g. sigma \< 1 in case of doubt.
 
-What the report-file (.txt) tells you
+**What the report-file (.txt) tells you**
 
 -   **File**: data file name
-
 -   **m/q\_f1**: m/q of fragment 1
-
 -   **m/q\_f2**: m/q of fragment 2
-
 -   **ratio**: mean ratio of all ratios calculated (point-2-point comparisons)
-
 -   **rsd**: relative standard deviation of all ratios calculated
-
 -   **n\_dp**: number of data points used to calculate the mean ratio
-
 -   **RTp1**: retention time at peak apex of fragment 1
-
 -   **dRT**: temporal shift; retention time at peak apex of fragment 2 signal minus retention time at peak apex of fragment 1 signal
-
 -   **peakint\_sl**: sigma multiplier used for peak integration
-
 -   **peakint\_sr**: sigma multiplier used for peak integration
-
 -   **fragrat\_sl**: sigma multiplier used for determination of the retention time window within which to calculate the ratio
-
 -   **fragrat\_sr**: sigma multiplier used for determination of the retention time window within which to calculate the ratio
-
 -   **a\_ratio**: ratio of (fitted) peak areas
-
 -   **h\_ratio**: ratio of (fitted) peak heights
 
   [1 Overview and workflow 1]: #overview-and-workflow
