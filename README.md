@@ -3,55 +3,55 @@
 *Content*
 =========
 
-[1 Overview and workflow 1]
+1 - [Overview and workflow]
 
-[2 Features 2]
+2 - [Features]
 
-[2.1 Technical Notes 2]
+2.1 - [Technical Notes]
 
-[2.2 Main widget: "File" tab 3]
+2.2 - [Main widget: "File" tab]
 
-[2.3 Main widget: "DataAnalysis" tab 4]
+2.3 - [Main widget: "DataAnalysis" tab]
 
-[2.4 Main widget: "Viewer" tab 5]
+2.4 - [Main widget: "Viewer" tab]
 
-[2.5 Main widget: "Advanced" tab (scripting) 6]
+2.5 - [Main widget: "Advanced" tab (scripting)]
 
-[2.6 Define your targets: "*ms.info*" config file 6]
+2.6 - [Define your targets: "*ms.info*" config file]
 
-[2.7 Define molecule fragments and ratios: "*fragments.txt"* config file 7]
+2.7 - [Define molecule fragments and ratios: "*fragments.txt"* config file]
 
-[3 Data analysis: Tools to get an impression 8]
+3 - [Data analysis: Tools to get an impression]
 
-[3.1 Viewer: Multiple Chroms (MCV) 8]
+3.1 - [Viewer: Multiple Chroms (MCV)]
 
-[3.2 Viewer: Multiple Masses (MMV) 9]
+3.2 - [Viewer: Multiple Masses (MMV)]
 
-[4 Data Analysis: Integrate! 10]
+4 - [Data Analysis: Integrate!]
 
-[4.1 Signal integration widget 11]
+4.1 - [Signal integration widget]
 
-[4.1.1 Integration widget: "Config" tab 11]
+4.1.1 - [Integration widget: "Config" tab]
 
-[4.1.2 Integration widget: "BatchProcess" tab 12]
+4.1.2 - [Integration widget: "BatchProcess" tab]
 
-[4.1.3 Integration widget: "Report" tab 13]
+4.1.3 - [Integration widget: "Report" tab]
 
-[4.1.4 Integration widget: "Plot" tab 13]
+4.1.4 - [Integration widget: "Plot" tab]
 
-[4.2 Signal integration: Settings 14]
+4.2 - [Signal integration: Settings]
 
-[4.2.1 Flagging & Delay 14]
+4.2.1 - [Flagging & Delay]
 
-[4.2.2 Retention time and peak integration 14]
+4.2.1 - [Retention time and peak integration]
 
-[4.2.3 Integration: general tips 15]
+4.2.1 - [Integration: general tips]
 
-[4.2.4 Integration: methods 17]
+4.2.1 - [Integration: methods]
 
-[4.2.5 Noise calculation 18]
+4.2.1 - [Noise calculation]
 
-[5 Data Analysis: Fragment Ratios 19]
+5 - [Data Analysis: Fragment Ratios]
 
 Overview and workflow
 =====================
