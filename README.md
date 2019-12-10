@@ -1,4 +1,4 @@
-# IAU\_Chrom 5.17+ Readme
+# IAU_Chrom 5.17+ Readme
 
 *Content*
 =========
@@ -61,14 +61,14 @@
 Overview and workflow
 =====================
 
-Analysis of chromatographic data in IAU\_Chrom is pretty straight-forward:
+Analysis of chromatographic data in IAU_Chrom is pretty straight-forward:
 
 1.  ***Load chromatographic data*** from various sources like e.g. the Agilent Quadrupole‑MS or the Tofwerk TOFMS (sect. 2).
-2.  ***Have a look*** at your data with the viewing tools (viewers) on the plot windows of IAU\_Chrom (sect. 3).
+2.  ***Have a look*** at your data with the viewing tools (viewers) on the plot windows of IAU_Chrom (sect. 3).
 3.  ***Define the species*** you want to analyse by loading the ms.info configuration file (sect. 2.5).
 4.  ***Integrate the signals*** of the defined substances and calculate the noise level on the respective baseline sections of the respective signals (sect. 4).
 5.  ***Save results*** in the form of an IDL binary file. That allows you to continue working on the experiment later on. Results can also be saved as text-files (sects. 2.2 and 4.1.3).
-6.  Specifically for mass spectrometric data, IAU\_Chrom offers the possibility to analyse molecule ***fragment ratios*** if multiple ions are recorded per species. Use the fragment ratio calculation tool to do so (sect. 5).
+6.  Specifically for mass spectrometric data, IAU_Chrom offers the possibility to analyse molecule ***fragment ratios*** if multiple ions are recorded per species. Use the fragment ratio calculation tool to do so (sect. 5).
 
 Features
 ========
@@ -76,18 +76,18 @@ Features
 Technical Notes 
 ----------------
 
--   Compatibility. IAU\_Chrom is written in the IDL programming language on and for Windows machines (Win 7). Win 10 is known to cause problems of the plot windows (lagging etc. but no crash). A version for Unix-based systems does not exist.
+-   Compatibility. IAU_Chrom is written in the IDL programming language on and for Windows machines (Win 7, 10). A version for Unix-based systems does not exist.
 -   Version 5.02 and greater: Error handling is implemented which avoids total crashes for most errors. To avoid data loss in any case, save your experiment regularly.
--   To use IAU\_Chrom on the system partition on your machine (C:\\), it might be necessary to run IDL or the IDL virtual machine as in administrator mode.
--   To use the code version (not pre-compiled), an IDL installation (v8.4 or greater) is required.
+-   To use IAU_Chrom on the system partition on your machine (C:\\), it might be necessary to run IDL or the IDL virtual machine with elevated rights ("administrator mode").
+-   To use the source code version (not pre-compiled), an IDL installation (v8.4 or higher) is required.
 
 
-**Start IAU\_Chrom:**
+**Start IAU_Chrom:**
 
--   Runtime version, virtual machine only: run IAU\_Chrom\_vxxx.exe;
--   Code version, IDL installed: open and run the IAU\_Chrom\_v5...pro from the root directory of the IAU\_Chrom project.
+-   Runtime version, virtual machine only: run IAU_Chrom\_vxxx.exe
+-   Code version, IDL installed: open and run the IAU_Chrom\IAU_Chrom.pro from the root directory of the IAU_Chrom project.
 
-The IAU\_Chrom main widget is shown in Fig. 1.
+The IAU_Chrom main widget is shown in Fig. 1.
 
 ![1](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/01_WidMain.png)
 
@@ -102,18 +102,18 @@ Main widget: "File" tab
 
 Fig. 2 - File menu on main widget.
 
-'File' '**Import...':** Import chromatographic (raw) data in different formats like netcdf (.nc) or hdf5 (.h5) from different instruments. Choice is based on the instrument that produced the data.
+'File' '**Import...':** Import chromatographic (raw) data in different formats like netcdf (.nc/.cdf) or hdf5 (.h5) from different instruments. Choice is based on the instrument that produced the data.
 
 -   To process measurement series, files should be named with an increasing index, like 01\_name, 02\_name or name\_01 and so on. \"name" in this case is a constant string. A useful tool to rename and/or enumerate files is Ant Renamer, http://www.antp.be/software/renamer.
--   v5.13 and higher: IAU\_Chrom also checks for a measurement timestamp in the data file; if loaded files are not sorted by ascending timestamp, it will ask you if you wish to sort by that quantity.
+-   v5.13 and higher: IAU_Chrom also checks for a measurement timestamp in the data file; if loaded files are not sorted by ascending timestamp, it will ask you if you wish to sort by that quantity.
 
-'File' '**Save Experiment**': Saves the current set of loaded data, settings used for analysis and results together in one binary file \*.sav. This file is only readable by IAU\_Chrom (IDL proprietary format).
+'File' '**Save Experiment**': Saves the current set of loaded data, settings used for analysis and results together in one binary file \*.sav. This file is only readable by IAU_Chrom (IDL proprietary format).
 
 'File' '**Restore Experiment**': Restores a \*.sav / IDL binary file.
 
 'File' '**Set Filepath...**': Set the default directory where to look for save files etc.
 
-'File' '**Exit IAU\_Chrom**': Closes the program.
+'File' '**Exit IAU_Chrom**': Closes the program.
 
 (main widget) **Time Axis Format**: Change units of the x-axis to seconds or minutes. Chose the desired unit before loading data, otherwise results will be deleted. Restoring an experiment will automatically select the unit used in this experiment.
 
@@ -154,13 +154,13 @@ Main widget: "Advanced" tab (scripting)
 
 ![6](https://raw.githubusercontent.com/MrFuppes/IDL_IAU_Chrom/master/doc/img/06_WidMain_Adv.png)
 
-Fig. 6 -- Main widget, advanced tab.
+Fig. 6 - Main widget, advanced tab.
 
 'Advanced' '**Run Database Script**': Allows to run a script that defines experiments including e.g.
 
 -   directory where data is found
 -   path of an ms.info file
--   a definition which data should be imported (TOFMS, Quad-MS etc.)
+-   a definition which data should be imported (TOFMS, QPMS etc.)
 
 The database script is a .csv table which contains a description of its use in the header, it is therefore not described in detail here.
 
@@ -171,12 +171,12 @@ To analyse data, a configuration file is necessary that specifies target species
 
 A prompt to select an ms.info config file appears as soon as you call the integration widget from the DataAnalysis menu. It can also be re-loaded from the integration widget, see sect. 4. Be aware that if you integrate signals and then choose to re-load the ms.info config file, results will be reset (deleted) to ensure coherency of calculation results and configuration (integration parameters etc.).
 
-The ms.info file can be opened and edited e.g. to add a new substance with a text editor like e.g. Notepad++ or also with Excel. Make sure that the formatting stays intact after editing, i.e. leave no superfluous tabs, spaces, linefeeds etc.
+The ms.info file can be opened and edited e.g. to add a new substance with a text editor like e.g. Notepad++. Make sure that the formatting stays intact after editing, i.e. leave no superfluous tabs, spaces, linefeeds etc.
 
 Define molecule fragments and ratios: "*fragments.txt"* config file
 -------------------------------------------------------------------
 
-Necessary to use the fragment ratios calculation tool, see sect. 5. Contains information on how which species fragments in 70 eV electron ionisation. E.g. CFC-12 (CF2Cl2) forms main ions of m/q 85 and 87, i.e. CF~2~^35^Cl^+^ and CF~2~^37^Cl^+^ with calculated m/q 84.96511 and 86.96216.
+Necessary to use the fragment ratios calculation tool, see sect. 5. Contains information on how which species fragments in 70 eV electron ionisation. E.g. CFC-12 (CF<sub>2</sub>Cl<sub>2</sub>) forms main ions of m/q 85 and 87, i.e. CF<sub>2</sub><sup>35</sup>Cl<sup>+</sup> and CF<sub>2</sub><sup>37</sup>Cl<sup>+</sup> with calculated m/q 84.96511 and 86.96216.
 
 
 ---
@@ -313,7 +313,7 @@ Note: See section 4.2.3 for further hints which settings to select under which c
 
 **Peak Integration: Method.** Selectes the integration method. Choices are *Baseline*, *Gaussfit* and different variants of a *Gumble-Fit*.
 
-**Peak Integration: Baseline Fitfunction.** Different baseline functions are available, chose between *constant* (no inclination), *linear* (with inclination) und *quadratic* (2^nd^ order polynomial).
+**Peak Integration: Baseline Fitfunction.** Different baseline functions are available, chose between *constant* (no inclination), *linear* (with inclination) und *quadratic* (2<sup>nd</sup> order polynomial).
 
 **Peak Integration: Sigma left / Sigma right.** These parameters determine, which data left and right of the signal apex are used to calculate the fit. 1 sigma is equivalent to the sigma (half width) of a Gaussian fit resembling the signal. The value you enter is a multiplier for this sigma value.
 
@@ -342,7 +342,7 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 
 **\'Baseline\_dynamicRT**\': (ms.info tag: \'bl\')
 
--   IAU\_Chrom tries to detect a signal in the specified retention time window.
+-   IAU_Chrom tries to detect a signal in the specified retention time window.
 -   The peak detection algorithm returns peak parameters like estimated retention time or full width at half maximum (2 sigma).
 -   Based on the sigma value from peak detection and the sigma multipliers on the integration widget, a retention time section "*int\_win*" is determined where baseline fitting and peak integration will be performed.
 -   At beginning and end of the *int\_win* section, 6 data points on each side are used to calculate a baseline fit (order based on the selection on the integration widget).
@@ -389,7 +389,7 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 
 ### Noise calculation
 
-To calculate a noise level on a specific m/Q, a retention time window (Left Boundary & Right Boundary, see Fig. 10) has to be defined. In this section of the x-axis, a 2^nd^ order polynomial fit is calculated. The noise level is then calculated as the 3-fold standard deviation of the differences (residuals) between fit and data points.
+To calculate a noise level on a specific m/Q, a retention time window (Left Boundary & Right Boundary, see Fig. 10) has to be defined. In this section of the x-axis, a 2<sup>nd</sup> order polynomial fit is calculated. The noise level is then calculated as the 3-fold standard deviation of the differences (residuals) between fit and data points.
 
 
 ---
