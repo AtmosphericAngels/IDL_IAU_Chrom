@@ -87,8 +87,22 @@ FUNCTION int_SavGol_interpol, xval, yval $
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
   ; Peak_height = Peak_top - Peak_min ;move this after creation of baseline?
 
+
+  ;condition, so the program won't raise an error in case of a bad chromatogram
+  if (w_rt_raw_t eq 0) or (w_rt_raw_t eq (n_elements(w_int_win)-1))then begin
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Negative fit', /INFORMATION)
+    RETURN, strct
+  endif
+
   ; interpol Peak top:
-  ipol_win = [(w_rt_raw_t-10):(w_rt_raw_t+10)]
+  ipolwin_extend = 10
+  ipol_win = [(w_rt_raw_t-ipolwin_extend):(w_rt_raw_t+ipolwin_extend)]
+  while (ipol_win[0] lt 0) OR (ipol_win[-1] ge nw_int_win) do begin ;condition, so the program won't raise an error in case of a bad chromatogram
+    ipolwin_extend -= 1
+    ipol_win = [(w_rt_raw_t-ipolwin_extend):(w_rt_raw_t+ipolwin_extend)]
+  endwhile
   t_ipol = interpol(t[ipol_win],N_ELEMENTS(t[ipol_win])*10)
   v_SG_ipol = interpol(v_SG[ipol_win],t[ipol_win],t_ipol,/S)
   v_ipol = interpol(v[ipol_win],t[ipol_win],t_ipol,/S)
