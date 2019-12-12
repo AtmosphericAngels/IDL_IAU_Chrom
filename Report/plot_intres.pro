@@ -33,7 +33,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
     END
 
   rel_areas = areas/MEAN(areas, /NAN)
-;  rel_heights = heights/MEAN(heights, /NAN)
+  rel_heights = heights/MEAN(heights, /NAN)
   rel_rets = rets/MEAN(rets, /NAN)
 
 ;  rel_a_vs_h = a_vs_h/MEAN(a_vs_h, /NAN)
@@ -46,30 +46,42 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   IF relative THEN BEGIN
     y0= rel_areas
     y1= rel_rets
+    y2= rel_heights
     y0range= [MIN(rel_areas, /NAN)-((MAX(rel_areas, /NAN)-MIN(rel_areas, /NAN))*0.1), $
               MAX(rel_areas, /NAN)+((MAX(rel_areas, /NAN)-MIN(rel_areas, /NAN))*0.1)]
     y1range= [MIN(rel_rets, /NAN)-((MAX(rel_rets, /NAN)-MIN(rel_rets, /NAN))*0.1), $
               MAX(rel_rets, /NAN)+((MAX(rel_rets, /NAN)-MIN(rel_rets, /NAN))*0.1)]
+    y2range= [MIN(rel_heights, /NAN)-((MAX(rel_heights, /NAN)-MIN(rel_heights, /NAN))*0.1), $
+              MAX(rel_heights, /NAN)+((MAX(rel_heights, /NAN)-MIN(rel_heights, /NAN))*0.1)]
     y0_title= 'Area/Area_Mean'
     y1_title= 'RT/RT_Mean'
+    y2_title= 'Height/Height_Mean'
   ENDIF ELSE BEGIN
     y0= areas
     y1= rets
+    y2= heights
     y0range= [MIN(areas, /NAN)-((MAX(areas, /NAN)-MIN(areas, /NAN))*0.1), $
               MAX(areas, /NAN)+((MAX(areas, /NAN)-MIN(areas, /NAN))*0.1)]
     y1range= [MIN(rets, /NAN)-((MAX(rets, /NAN)-MIN(rets, /NAN))*0.1), $
               MAX(rets, /NAN)+((MAX(rets, /NAN)-MIN(rets, /NAN))*0.1)]
+    y2range= [MIN(heights, /NAN)-((MAX(heights, /NAN)-MIN(heights, /NAN))*0.1), $
+              MAX(heights, /NAN)+((MAX(heights, /NAN)-MIN(heights, /NAN))*0.1)]
     y0_title= 'Area'
     y1_title= 'RT'
+    y2_title= 'Height'
   ENDELSE
-
+  dim = [1700,900]
   p0=plot(meas_no, y0, XRANGE=xrange, YRANGE=y0range, LINESTYLE=6, SYMBOL="td", SYM_SIZE=1.5, $
-          SYM_COLOR='r', SYM_THICK=2, NAME='Area', WINDOW_TITLE='Plot Report', LAYOUT=[1,2,1], YTITLE=y0_title, $
-          TITLE=title)
+          SYM_COLOR='r', SYM_THICK=2, NAME='Area', WINDOW_TITLE='Plot Report', LAYOUT=[1,3,1], YTITLE=y0_title, $
+          TITLE=title, DIMENSIONS=dim)
 
   p1=plot(meas_no, y1, XRANGE=xrange, YRANGE=y1range, LINESTYLE=6, SYMBOL="s", SYM_SIZE=1.5, $
-          SYM_COLOR='b', SYM_THICK=2, NAME='RT', CURRENT=1, LAYOUT=[1,2,2], $
-          XTITLE='Measurment No.', YTITLE=y1_title)
+          SYM_COLOR='b', SYM_THICK=2, NAME='RT', CURRENT=1, LAYOUT=[1,3,2], $
+          XTITLE='Measurment No.', YTITLE=y1_title, DIMENSIONS=dim)
+
+  p2=plot(meas_no, y2, XRANGE=xrange, YRANGE=y2range, LINESTYLE=6, SYMBOL="s", SYM_SIZE=1.5, $
+          SYM_COLOR='g', SYM_THICK=2, NAME='Height', CURRENT=1, LAYOUT=[1,3,3], $
+          XTITLE='Measurment No.', YTITLE=y2_title, DIMENSIONS=dim)
 
   IF saveplot THEN BEGIN
     exp_name = FILE_BASENAME(FILE_DIRNAME(FILE_DIRNAME(FILE_DIRNAME(chrom[0].fname))))
