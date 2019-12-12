@@ -70,7 +70,9 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
     y1_title= 'RT'
     y2_title= 'Height'
   ENDELSE
-  dim = [1700,900]
+  
+  DEVICE, Get_Screen_Size=screenSize
+  dim = [screenSize[0]*0.95,screenSize[1]*0.85]
   p0=plot(meas_no, y0, XRANGE=xrange, YRANGE=y0range, LINESTYLE=6, SYMBOL="td", SYM_SIZE=1.5, $
           SYM_COLOR='r', SYM_THICK=2, NAME='Area', WINDOW_TITLE='Plot Report', LAYOUT=[1,3,1], YTITLE=y0_title, $
           TITLE=title, DIMENSIONS=dim)
