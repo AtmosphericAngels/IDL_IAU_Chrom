@@ -1,21 +1,19 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;+
 ; NAME:
-; int_SavGol_bl
+; int_SavGol_interpol
 ;
 ; MODIFICATION HISTORY:
 ; T. Wagenhäuser, November 2019: created from "int_baseline_gau"
-; F. Obersteiner, June 2017: modified so that different baseline fits are available.
-;                            changed number of data points used for baseline fitting from 18 to 12.
-; F. Obersteiner, June 2014: implemented in IAU_chrom 4.8.
-; H. Boenisch, August, 2012: created.
-;-
+
 ;------------------------------------------------------------------------------------------------------------------------
 @peak_detection
 ;------------------------------------------------------------------------------------------------------------------------
 
-FUNCTION int_SavGol_bl, xval, yval $
-                          , y_SG=y_SG $
+FUNCTION int_SavGol_interpol, xval, yval $
+                          , x_SG= t_ipol $
+                          , y_SG=v_SG_ipol $
+                          , z = v_ipol $
                           , NTERMS_BASE=nterms_base, NSIGMA_INT=nsigma_int $
                           , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
                           , INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int  $
@@ -82,12 +80,32 @@ FUNCTION int_SavGol_bl, xval, yval $
   v=y[w_int_win] ;raw signal
 
   ;get min and max value for Peak height
-  Peak_top = max(y[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  Peak_top = max(y_SG[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
   Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
   ; Peak_height = Peak_top - Peak_min ;move this after creation of baseline?
+
+
+  ;condition, so the program won't raise an error in case of a bad chromatogram
+  if (w_rt_raw_t eq 0) or (w_rt_raw_t eq (n_elements(w_int_win)-1))then begin
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Negative fit', /INFORMATION)
+    RETURN, strct
+  endif
+
+  ; interpol Peak top:
+  ipolwin_extend = 10
+  ipol_win = [(w_rt_raw_t-ipolwin_extend):(w_rt_raw_t+ipolwin_extend)]
+  while (ipol_win[0] lt 0) OR (ipol_win[-1] ge nw_int_win) do begin ;condition, so the program won't raise an error in case of a bad chromatogram
+    ipolwin_extend -= 1
+    ipol_win = [(w_rt_raw_t-ipolwin_extend):(w_rt_raw_t+ipolwin_extend)]
+  endwhile
+  t_ipol = interpol(t[ipol_win],N_ELEMENTS(t[ipol_win])*10)
+  v_SG_ipol = interpol(v_SG[ipol_win],t[ipol_win],t_ipol,/S)
+  v_ipol = interpol(v[ipol_win],t[ipol_win],t_ipol,/S)
 
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
@@ -139,7 +157,11 @@ FUNCTION int_SavGol_bl, xval, yval $
     2: base_int=A[0]+A[1]*t
   ENDCASE
 
-  peak_int=v-base_int
+  peak_int=v_SG-base_int
+  base_int_ipol = base_int[ipol_win]
+  base_int_ipol = interpol(base_int_ipol,N_ELEMENTS(base_int_ipol)*10)
+  peak_int_ipol_r = v_ipol - base_int_ipol
+  peak_int_ipol_SG = v_SG_ipol - base_int_ipol
 
   IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top' together with 'Peak_height'
     strct.flag=-1;
@@ -160,16 +182,15 @@ FUNCTION int_SavGol_bl, xval, yval $
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
-  strct.hght=MAX(peak_int,wmax);Peak_top-0.067
+  strct.hght=max(peak_int_ipol_r);MAX(peak_int,wmax);Peak_top-0.067
   strct.rt=t[wmax]
-  strct.area=area
+  strct.area=max(peak_int_ipol_SG);area
   strct.wdth=A_gau[2]
   strct.ts=mean(ts,/nan)
   strct.te=mean(te,/nan)
   strct.flag=1
   strct.comment='Integrated'
 
-  IF (nsigma_int[0] LT 3.) XOR (nsigma_int[1] LT 3.) THEN strct.area=!values.d_nan ;one shouldn't accidently use partly integrated peaks
 
   IF verbose THEN BEGIN
     print,'BASELINE FIT PARAMS:'

@@ -1,7 +1,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;+
 ; NAME:
-; int_SavGol_bl
+; int_SavGol_top
 ;
 ; MODIFICATION HISTORY:
 ; T. Wagenhäuser, November 2019: created from "int_baseline_gau"
@@ -14,7 +14,7 @@
 @peak_detection
 ;------------------------------------------------------------------------------------------------------------------------
 
-FUNCTION int_SavGol_bl, xval, yval $
+FUNCTION int_SavGol_top, xval, yval $
                           , y_SG=y_SG $
                           , NTERMS_BASE=nterms_base, NSIGMA_INT=nsigma_int $
                           , RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret  $
@@ -82,7 +82,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   v=y[w_int_win] ;raw signal
 
   ;get min and max value for Peak height
-  Peak_top = max(y[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  Peak_top = max(y_SG[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
   Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
@@ -139,7 +139,7 @@ FUNCTION int_SavGol_bl, xval, yval $
     2: base_int=A[0]+A[1]*t
   ENDCASE
 
-  peak_int=v-base_int
+  peak_int=v_SG-base_int
 
   IF (MAX(peak_int,wmax) LT 1.5*chk_noise) THEN BEGIN ;kind of redundant with 'Peak_top' together with 'Peak_height'
     strct.flag=-1;
