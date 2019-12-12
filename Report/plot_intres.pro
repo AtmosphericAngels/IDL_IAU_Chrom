@@ -73,17 +73,18 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   
   DEVICE, Get_Screen_Size=screenSize
   dim = [screenSize[0]*0.95,screenSize[1]*0.85]
+  mar = [0.04,0.15,0.03,0.1]
   p0=plot(meas_no, y0, XRANGE=xrange, YRANGE=y0range, LINESTYLE=6, SYMBOL="td", SYM_SIZE=1.5, $
           SYM_COLOR='r', SYM_THICK=2, NAME='Area', WINDOW_TITLE='Plot Report', LAYOUT=[1,3,1], YTITLE=y0_title, $
-          TITLE=title, MARGIN=[0.04,0.1,0.03,0.1], DIMENSIONS=dim)
+          TITLE=title, MARGIN=mar, DIMENSIONS=dim)
 
   p2=plot(meas_no, y2, XRANGE=xrange, YRANGE=y2range, LINESTYLE=6, SYMBOL="s", SYM_SIZE=1.5, $
           SYM_COLOR='g', SYM_THICK=2, NAME='Height', CURRENT=1, LAYOUT=[1,3,2], $
-          YTITLE=y2_title, MARGIN=[0.04,0.1,0.03,0.1], DIMENSIONS=dim)
+          YTITLE=y2_title, MARGIN=mar, DIMENSIONS=dim)
           
   p1=plot(meas_no, y1, XRANGE=xrange, YRANGE=y1range, LINESTYLE=6, SYMBOL="s", SYM_SIZE=1.5, $
           SYM_COLOR='b', SYM_THICK=2, NAME='RT', CURRENT=1, LAYOUT=[1,3,3], $
-          XTITLE='Measurment No.', YTITLE=y1_title, MARGIN=[0.04,0.1,0.03,0.1], DIMENSIONS=dim)
+          XTITLE='Measurment No.', YTITLE=y1_title, MARGIN=mar, DIMENSIONS=dim)
 
   IF saveplot THEN BEGIN
     exp_name = FILE_BASENAME(FILE_DIRNAME(FILE_DIRNAME(FILE_DIRNAME(chrom[0].fname))))
