@@ -348,6 +348,64 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
             ENDIF ELSE plot_routine_pobj1, x, v, OVER=1, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
           ENDIF
         END
+
+  ; ****************************************************************************************************************************************************
+      'SavGol_top': $
+        BEGIN
+          strct=int_SavGol_top(x,v, y_SG=y_SG, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
+                                 INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, CHK_NOISE=chk_noise)
+
+            rt=strct.rt
+            height=strct.hght
+            area=strct.area
+            width=strct.wdth
+            ts=strct.ts
+            te=strct.te
+            flag=strct.flag
+            comment=strct.comment
+
+          IF plot THEN BEGIN
+            IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
+              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              prange=[rt_win, int_win]
+              xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
+              yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
+                        MAX(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)+offset]
+              plot_routine_pobj1, x, v, X_1A=x[int_pwin], V_1A=v[int_pwin], X_1B=x[int_pwin], V_1B=base_int, $
+                                  X_1E=0, V_1E=0, X_1F=x, V_1F=y_SG, $
+                                  OVER=12367, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+            ENDIF ELSE plot_routine_pobj1, x, v, OVER=1, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+          ENDIF
+        END
+
+  ; ****************************************************************************************************************************************************
+      'SavGol_ipol': $
+        BEGIN
+          strct=int_SavGol_interpol(x,v, x_SG=x_SG, y_SG=y_SG, z=z, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
+                                 INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, CHK_NOISE=chk_noise)
+
+            rt=strct.rt
+            height=strct.hght
+            area=strct.area
+            width=strct.wdth
+            ts=strct.ts
+            te=strct.te
+            flag=strct.flag
+            comment=strct.comment
+
+          IF plot THEN BEGIN
+            IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
+              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              prange=[rt_win, int_win]
+              xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
+              yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
+                        MAX(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)+offset]
+              plot_routine_pobj1, x, v, X_1A=x[int_pwin], V_1A=v[int_pwin], X_1B=x[int_pwin], V_1B=base_int, $
+                                  X_1E=x_SG, V_1E=z, X_1F=x_SG, V_1F=y_SG, $
+                                  OVER=12367, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+            ENDIF ELSE plot_routine_pobj1, x, v, OVER=1, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+          ENDIF
+        END
   ; ****************************************************************************************************************************************************
     ENDCASE
 

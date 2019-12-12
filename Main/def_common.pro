@@ -18,9 +18,9 @@ PRO def_common, v
   exp_info = 0
   intm = { $
             dlnames : ['Baseline_dynamicRT', 'GaussFit', 'Gauss_SGbase', 'GumbleFit','Dbl_Gumble_1stPeak','Dbl_Gumble_2ndPeak', $
-                       'Dbl_Gumble_PeakSum', 'Fix_2point_BL', 'SavGol_BL'] ,$ ;'Gauss_FIX'
+                       'Dbl_Gumble_PeakSum', 'Fix_2point_BL', 'SavGol_BL','SavGol_top','SavGol_interpol'] ,$ ;'Gauss_FIX'
           prgmnames : ['bl','gau','gau_SGbase','gbl','dblgbl_1st','dblgbl_2nd', $
-                       'dblgbl_sum', 'bl_fix', 'SavGol_bl']} ; 'gau_fix'
+                       'dblgbl_sum', 'bl_fix', 'SavGol_bl','SavGol_top','SavGol_ipol']} ; 'gau_fix'
 
   path = ''
   uniq_mass = 0 ; array with unique masses of a specific chromatogram
