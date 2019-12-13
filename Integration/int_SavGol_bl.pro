@@ -87,7 +87,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
-  ; Peak_height = Peak_top - Peak_min ;move this after creation of baseline?
+  Peak_height = Peak_top - Peak_min ;move this to after creation of baseline
 
 
   IF (nw_int_win LE n_elements(A)) OR (int_win[0] LT 0D) THEN BEGIN ;'A' not yet defined... look below (poly_fit)
@@ -134,7 +134,9 @@ FUNCTION int_SavGol_bl, xval, yval $
 
 
   CASE nterms_base OF
-    1: base_int = Peak_min + REPLICATE(0, nw_int_win)
+    1: if min_sel EQ 0 then BEGIN
+          base_int = Peak_min_l + REPLICATE(0, nw_int_win)
+       ENDIF ELSE base_int = Peak_min_r + REPLICATE(0, nw_int_win)
     ; 1: base_int=mean([vs,ve])+REPLICATE(0,nw_int_win) ;in case of mean baseline
     2: base_int=A[0]+A[1]*t
   ENDCASE
@@ -160,7 +162,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   ;+++++++++++++++++++++++
   ; Calculate chromatographic parameters (peak area, height and retention time)
   ;+++++++++++++++++++++++
-  strct.hght=MAX(peak_int,wmax);Peak_top-0.067
+  strct.hght=MAX(peak_int,wmax)
   strct.rt=t[wmax]
   strct.area=area
   strct.wdth=A_gau[2]
