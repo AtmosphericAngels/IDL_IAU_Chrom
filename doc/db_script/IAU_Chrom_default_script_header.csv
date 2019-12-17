@@ -28,3 +28,4 @@ hit_index (0.0-1.0) - n_peaks_found / def_substances*n_chromatograms.;;;;;;;;;;;
 ;;;;;;;;;;;
 # end of header #;;;;;;;;;;;
 active (boolean);exp_id (string);exp_descr (string);exp_data_dir (string);exp_data_tag (string);exp_msinfo_path (string);data_import_fct (string);savefile_path (string);save_txtreport (boolean);save_quicklook  (boolean);autoint_timestamp (string);hit_index (float)
+1;537-540_HIRES_samples_FID;HIRES sample analysis;E:\KIT_DATA\MPI_GHGGC_Data_netcdf\CARIBIC_FLIGHTS\537-540\__exported_FID_data\HIRES_FID;;E:\KIT_DATA\MPI_GHGGC_Data_netcdf\IDL_processing\IAU_Chrom\flights_cal_FID\config\F537-540_ms.info;ecd_fid_cdf;E:\KIT_DATA\MPI_GHGGC_Data_netcdf\CARIBIC_FLIGHTS\537-540\__IAU_CHROM_save_HIRES_FID\537-540_HIRES_FID_chrom.dat;0;0;;
