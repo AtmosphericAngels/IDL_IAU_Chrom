@@ -73,7 +73,7 @@ Analysis of chromatographic data in IAU_Chrom is pretty straight-forward:
 Features
 ========
 
-Technical Notes 
+Technical Notes
 ----------------
 
 -   Compatibility. IAU_Chrom is written in the IDL programming language on and for Windows machines (Win 7, 10). A version for Unix-based systems does not exist.
@@ -381,11 +381,18 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 
 **\'Fix\_2point\_BL\'**: (ms.info tag: \'bl\_fix\')
 
--   the first and last data point in the specified retention time window are used to calculate a line between these points (=baseline).
+-   The first and last data point in the specified retention time window are used to calculate a line between these points (=baseline).
 -   Integration of all data points in the retention time window after baseline subtraction.
 -   If a noise level was calculated, results are only returned if the detected peak height is greater than the 1.5-fold noise level (otherwise, the result is 'no peak found').
 -   If the integrated intensity (peak area) is below zero, a 'no peak found' is returned as well.
 -   since this method does not use peak detection, it also doesn't compensate a shift in retention time during a measurement series. On the one hand side, this might reduce precision -- but on the other hand side, signals that are difficult to integrate with other methods might be feasible with this method due to its simplicity.
+
+**\'SavGol\_BL\'**: (ms.info tag: \'SavGol\_bl\')
+
+-   In order to find a baseline, the data is smoothed with a Savitzky-Golay filter (nleft = nright = 3, sg_degree = 3). Finds the minima on the left and on the right side of the peak found with peak detection within the sigma left and sigma right interval using the smoothed data.
+-   In case of a constant baseline the lower minimum is used.
+-   In case of a linear baseline the baseline is fitted through both minima.
+-   Peak Area is calculated by subtracting the baseline from the raw data.
 
 ### Noise calculation
 
