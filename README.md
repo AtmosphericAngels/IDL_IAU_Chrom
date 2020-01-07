@@ -394,6 +394,7 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 -   In case of a constant baseline the lower minimum is used.
 -   In case of a linear baseline the baseline is fitted through both minima.
 -   Peak Area and Height are calculated by subtracting the baseline from the raw data.
+-   Does not calculate Area, if at least one of sigma left and sigma right is lower than 3.
 
 
 ### Noise calculation
