@@ -389,10 +389,12 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 
 **\'SavGol\_BL\'**: (ms.info tag: \'SavGol\_bl\')
 
--   In order to find a baseline, the data is smoothed with a Savitzky-Golay filter (nleft = nright = 3, sg_degree = 3). Finds the minima on the left and on the right side of the peak found with peak detection within the sigma left and sigma right interval using the smoothed data.
+-   Based on \'Baseline\_dynamicRT\'.
+-   In order to find a baseline, the data is smoothed with a Savitzky-Golay filter (nleft = nright = 3, sg_degree = 3). Peak detection and determination of int\_win according to \'Baseline\_dynamicRT\' - but using the smoothed data. Finds the minima on the left and on the right side of the peak found with peak detection within the sigma left and sigma right interval using the smoothed data.
 -   In case of a constant baseline the lower minimum is used.
 -   In case of a linear baseline the baseline is fitted through both minima.
--   Peak Area is calculated by subtracting the baseline from the raw data.
+-   Peak Area and Height are calculated by subtracting the baseline from the raw data.
+
 
 ### Noise calculation
 
