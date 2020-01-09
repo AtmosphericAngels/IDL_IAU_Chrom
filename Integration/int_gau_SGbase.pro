@@ -94,7 +94,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
-  y_SG=convol(y,sg_filter) ;apply SG-filter
+  y_SG=convol(y,sg_filter,/EDGE_WRAP) ;apply SG-filter
   v_SG=y_SG[w_minfit_win] ;replace rt window with fit window
 
   ;get min and max value for Peak height
