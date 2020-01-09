@@ -50,7 +50,7 @@ FUNCTION int_SavGol_bl, xval, yval $
   sg_degree = 3 ;polynomial used for smoothing, provide in future versions
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
-  y_SG=convol(y,sg_filter) ;apply SG-filter
+  y_SG=convol(y,sg_filter,/EDGE_WRAP) ;apply SG-filter
 
   ; Define retention time window (RT_WIN)
   ;+++++++++++++++++++++++
