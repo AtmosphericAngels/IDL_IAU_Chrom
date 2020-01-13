@@ -104,14 +104,14 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
 
-  w_base_ind = [abs(w_min_l -1 + w_minfit_win[0]), abs(w_min_r +1 + w_minfit_win[0])] ;"-1" and "+1" in order to replace only neighbouring values (bug with los sigma)
+  w_base_ind = [abs(w_min_l + w_minfit_win[0]), abs(w_min_r + w_minfit_win[0])] ;"-1" and "+1" in order to replace only neighbouring values (bug with los sigma)
   if w_base_ind[0] eq 0 then BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Index error.', /INFORMATION)
     RETURN, strct
   endif
-  w_base = [indgen(w_base_ind[0]), indgen(n_elements(y)-1 - w_base_ind[1], START=w_base_ind[1])]
+;  w_base = [indgen(w_base_ind[0]), indgen(n_elements(y)-1 - w_base_ind[1], START=w_base_ind[1])] ;relict from prior version
   y_SGbase = y
 
 
@@ -141,10 +141,16 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 ;  t=x[w_fit_win]
 
   CASE nterms_base OF
-    1: y_SGbase[w_base] = Peak_min
+    1: y_SGbase -= Peak_min ;subtract baseline from data
     2: BEGIN $
       base_int=A_base[0]+A_base[1]*x
-      y_SGbase[w_base] = base_int[w_base]
+      y_SGbase -= base_int ;subtract baseline from data
+      END
+    3: BEGIN $
+      strct.flag=0;
+      strct.comment='not integrated'
+      IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('only use constant or linear baseline', /INFORMATION)
+      RETURN, strct
       END
   ENDCASE
 
@@ -152,7 +158,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 ; actual peak fit... w_int_win: time axis position within +/- n_sigma_int of peak fit
 ;+++++++++++++++++++++++
 
-  fit=gaussfit(x[w_fit_win],y_SGbase[w_fit_win], A, NTERMS=nterms, ESTIMATES=A, YERROR=v_err)
+  fit=gaussfit(x[w_fit_win],y_SGbase[w_fit_win], A, NTERMS=3, ESTIMATES=A[0:2], YERROR=v_err) ;baseline has been substracted
   w_int_win=WHERE((x GE (A[1]-nsigma_int[0]*A[2])) AND (x LE(A[1]+nsigma_int[1]*A[2])), nw_int_win)
 
 ;+++++++++++++++++++++++
@@ -203,9 +209,8 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   z=(x[w_fit_win]-A[1])/A[2]
   peak_fit=A[0]*exp(-z^2/2)
   CASE nterms_base OF
-    1: base_fit=A[3]+replicate(0,nw_fit_win)
-    2: base_fit=A[3]+A[4]*t
-    3: base_fit=A[3]+A[4]*t+A[5]*t^2
+    1: base_fit=Peak_min+replicate(0,nw_fit_win) ;was A[3] before
+    2: base_fit=A_base[0]+A_base[1]*t ;was A[3] and a[4] before
   ENDCASE
 
   ;+++++++++++++++++++++++
@@ -216,9 +221,8 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   z=(x[w_int_win]-A[1])/A[2]
   peak_int=A[0]*exp(-z^2/2)
   CASE nterms_base OF
-    1: base_int=A[3]+replicate(0,nw_int_win)
-    2: base_int=A[3]+A[4]*t
-    3: base_int=A[3]+A[4]*t+A[5]*t^2
+    1: base_int=Peak_min+replicate(0,nw_int_win)
+    2: base_int=A_base[0]+A_base[1]*t
   ENDCASE
 
   ;+++++++++++++++++++++++
@@ -229,9 +233,8 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   z=(x[w_rt_win]-A[1])/A[2]
   peak_ret=A[0]*exp(-z^2/2)
   CASE nterms_base OF
-    1: base_ret=A[3]+replicate(0,nw_rt_win)
-    2: base_ret=A[3]+A[4]*t
-    3: base_ret=A[3]+A[4]*t+A[5]*t^2
+    1: base_ret=Peak_min+replicate(0,nw_rt_win)
+    2: base_ret=A_base[0]+A_base[1]*t
   ENDCASE
 
   area=int_tabulated(x[w_int_win],peak_int,/double)
