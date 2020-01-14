@@ -73,10 +73,13 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   ENDIF ELSE BEGIN
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
 
-
+; this small feature could be integrated in the SavGol baseline part of the widget:
     nsigma_minfit=[4.,4.] ; only get local SGbase minimum in case of high nsigma_fit window!
     if nsigma_fit[0] lt 4 then nsigma_minfit[0] = nsigma_fit[0]
     if nsigma_fit[1] lt 4 then nsigma_minfit[1] = nsigma_fit[1]
+;
+; otherwise throw out nsigma_minfit
+    
     w_minfit_win=WHERE((x GE (A[1]-nsigma_minfit[0]*A[2])) AND (x LE(A[1]+nsigma_minfit[1]*A[2])), nw_minfit_win)
   ENDELSE
 
@@ -95,7 +98,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 
   sg_filter=savgol(nleft,nright,0,sg_degree,/double) ;get SG-parameters
   y_SG=convol(y,sg_filter,/EDGE_WRAP) ;apply SG-filter
-  v_SG=y_SG[w_minfit_win] ;replace rt window with fit window
+  v_SG=y_SG[w_minfit_win] ;get values in fit window from full data
 
   ;get min and max value for Peak height
   Peak_top = max(y[w_minfit_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
@@ -104,30 +107,22 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
 
-  w_base_ind = [abs(w_min_l + w_minfit_win[0]), abs(w_min_r + w_minfit_win[0])] ;"-1" and "+1" in order to replace only neighbouring values (bug with los sigma)
+  w_base_ind = [abs(w_min_l + w_minfit_win[0]), abs(w_min_r + w_minfit_win[0])] ;confusing nomenclature: w_min_l and w_min_r are from w_minfit_win
   if w_base_ind[0] eq 0 then BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Index error.', /INFORMATION)
     RETURN, strct
   endif
-;  w_base = [indgen(w_base_ind[0]), indgen(n_elements(y)-1 - w_base_ind[1], START=w_base_ind[1])] ;relict from prior version
+
   y_SGbase = y
 
-
-  ;************ mean baseline option************ needs to be updated
-   ; nidx=6 ; use n data points left and right of signal to fit baseline
-   ; ts=x[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
-   ; te=x[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
-   ; vs=y[w_int_win[w_min_l]+(indgen(nidx)-nidx/2)]
-   ; ve=y[w_int_win[w_min_r]+(indgen(nidx)-nidx/2)]
 
   ;*********** min baseline ************
     ts=x[w_base_ind[0]]
     te=x[w_base_ind[1]]
     vs=Peak_min_l
     ve=Peak_min_r
-
 
 
     IF (nterms_base GT 1) THEN A_base=poly_fit([ts,te],[vs,ve],nterms_base-1, /DOUBLE) ;works with both: mean baseline and with min baseline
@@ -140,6 +135,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 
 ;  t=x[w_fit_win]
 
+;substract baseline from raw data (yields y_SGbase)
   CASE nterms_base OF
     1: y_SGbase -= Peak_min ;subtract baseline from data
     2: BEGIN $
@@ -158,7 +154,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 ; actual peak fit... w_int_win: time axis position within +/- n_sigma_int of peak fit
 ;+++++++++++++++++++++++
 
-  fit=gaussfit(x[w_fit_win],y_SGbase[w_fit_win], A, NTERMS=3, ESTIMATES=A[0:2], YERROR=v_err) ;baseline has been substracted
+  fit=gaussfit(x[w_fit_win],y_SGbase[w_fit_win], A, NTERMS=3, ESTIMATES=A[0:2], YERROR=v_err) ;baseline has been substracted (see above) -> NTERMS=3
   w_int_win=WHERE((x GE (A[1]-nsigma_int[0]*A[2])) AND (x LE(A[1]+nsigma_int[1]*A[2])), nw_int_win)
 
 ;+++++++++++++++++++++++
@@ -194,7 +190,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Low standard deviation: too few datapoints', /INFORMATION)
     RETURN, strct
   ENDIF
-
+stop
   taxis=x[w_int_win]
   int_win=[x[w_int_win[0]],x[w_int_win[-1]]]
   fit_win=[x[w_fit_win[0]],x[w_fit_win[-1]]]
