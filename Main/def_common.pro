@@ -17,10 +17,10 @@ PRO def_common, v
   fragdata = 0
   exp_info = 0
   intm = { $
-            dlnames : ['Baseline_dynamicRT', 'GaussFit', 'GumbleFit','Dbl_Gumble_1stPeak','Dbl_Gumble_2ndPeak', $
-                       'Dbl_Gumble_PeakSum', 'Fix_2point_BL', 'SavGol_BL'] ,$ ;'Gauss_FIX'
-          prgmnames : ['bl','gau','gbl','dblgbl_1st','dblgbl_2nd', $
-                       'dblgbl_sum', 'bl_fix', 'SavGol_bl']} ; 'gau_fix'
+  dlnames : ['Baseline_dynamicRT', 'GaussFit', 'Gauss_SGbase', 'GumbleFit','Dbl_Gumble_1stPeak','Dbl_Gumble_2ndPeak', $
+             'Dbl_Gumble_PeakSum', 'Fix_2point_BL', 'SavGol_BL'] ,$ ;'Gauss_FIX'
+prgmnames : ['bl','gau','gau_SGbase','gbl','dblgbl_1st','dblgbl_2nd', $
+             'dblgbl_sum', 'bl_fix', 'SavGol_bl']} ; 'gau_fix'
 
   path = ''
   uniq_mass = 0 ; array with unique masses of a specific chromatogram
@@ -30,7 +30,7 @@ PRO def_common, v
 
   chrom  = create_refd()
   subst  = create_refs()
-;  rtlock = create_refrt()
+ ;  rtlock = create_refrt()
 
 ;+++++++++++++++++++++++
   COMMON COM_PLOT, $

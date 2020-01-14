@@ -26,12 +26,12 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
 
 ;/*******************************TW 2019.08.08. 
   Est4 = [$
-    max(v),$
-    (rt_win[1] + rt_win[0]) / 2.  ,$
+    max(v,max_ind),$
+    t[max_ind],$
     0,$
     min(v)$
     ]
-    
+
   CASE nterms_peakdet of
     4: Est = Est4
     5: Est = [Est4,0]

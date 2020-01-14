@@ -105,6 +105,39 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
             ENDIF
           END
   ; ****************************************************************************************************************************************************
+
+    'gau_SGbase': $
+        BEGIN
+          strct=int_gau_SGbase(x,v, NSIGMA_FIT=sigma, NSIGMA_INT=nsigma_int, NTERMS_BASE=nterms_base, RT_WIN=rt_win, $
+                             INT_WIN=int_win, FIT_WIN=fit_win,  PEAK_RET=peak_ret, BASE_RET=base_ret,  PEAK_FIT=peak_fit, $
+                             BASE_FIT=base_fit, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, $
+                             CHK_NOISE=chk_noise, TIMESCALE=timescale)
+
+          rt=strct.rt
+          area=strct.area
+          height=strct.hght
+          ts=strct.ts
+          te=strct.te
+          width=strct.wdth
+          flag=strct.flag
+          comment=strct.comment
+
+          IF plot THEN BEGIN
+            IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
+              fit_pwin=WHERE(x GE fit_win[0] AND x LE fit_win[1])
+              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              prange = [rt_win, fit_win, int_win]
+              xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
+              yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
+                        MAX(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)+offset]
+              plot_routine_pobj1, x, v, X_1A=x[fit_pwin], V_1A=peak_fit+base_fit, X_1B=x[fit_pwin], V_1B=base_fit, $
+                                        X_1E=x[int_pwin], V_1E=peak_int+base_int, X_1F=x[int_pwin], V_1F=base_int, $
+                                        OVER=12367, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+            ENDIF ELSE plot_routine_pobj1, x, v, OVER=1, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
+          ENDIF
+        END
+    ; ****************************************************************************************************************************************************
+
       'bl': $
         BEGIN
           strct=int_baseline_gau(x,v, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
