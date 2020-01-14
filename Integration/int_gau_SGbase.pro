@@ -190,7 +190,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Low standard deviation: too few datapoints', /INFORMATION)
     RETURN, strct
   ENDIF
-stop
+
   taxis=x[w_int_win]
   int_win=[x[w_int_win[0]],x[w_int_win[-1]]]
   fit_win=[x[w_fit_win[0]],x[w_fit_win[-1]]]
@@ -205,8 +205,8 @@ stop
   z=(x[w_fit_win]-A[1])/A[2]
   peak_fit=A[0]*exp(-z^2/2)
   CASE nterms_base OF
-    1: base_fit=Peak_min+replicate(0,nw_fit_win) ;was A[3] before
-    2: base_fit=A_base[0]+A_base[1]*t ;was A[3] and a[4] before
+    1: base_fit=Peak_min+replicate(0,nw_fit_win) ;was A[3] in prior versions
+    2: base_fit=A_base[0]+A_base[1]*t ;was A[3] and a[4] in prior versions
   ENDCASE
 
   ;+++++++++++++++++++++++
