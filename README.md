@@ -360,7 +360,7 @@ To configure the sigma left / sigma right values in the example Fig. 14, a large
 
 -   Based on \'GaussFit\'.
 -   Peak detection and determination of *int\_win* according to '\'Baseline\_dynamicRT'.
--   In order to find a baseline, the data is smoothed with a Savitzky-Golay filter (nleft = nright = 3, sg_degree = 3). Finds the minima on the left and on the right side of the peak found with peak detection within the sigma left and sigma right interval using the smoothed data. Maximum sigma left / sigma right value, which is considered for baseline detection: 4.
+-   In order to find a baseline, the data is smoothed with a Savitzky-Golay filter (nleft = nright = 3, sg_degree = 3). Finds the minima on the left and on the right side of the peak found with peak detection within the sigma left and sigma right interval using the smoothed data.
 -   The so found baseline is applied to a gaussian fit by substracting it from the raw data and using NTERMS=3 for gaussfit.
 -   Enforces a minimum number of datapoints per peak: 5 points within +- 2.5 sigma.
 -   Integration of the fitted signal within ±15 sigma (you can't change this value).

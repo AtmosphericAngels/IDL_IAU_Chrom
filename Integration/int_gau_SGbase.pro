@@ -74,7 +74,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     w_fit_win=WHERE((x GE (A[1]-nsigma_fit[0]*A[2])) AND (x LE(A[1]+nsigma_fit[1]*A[2])), nw_fit_win)
 
 ; this small feature could be integrated in the SavGol baseline part of the widget:
-    nsigma_minfit=[5.,5.] ; only get local SGbase minimum in case of high nsigma_fit window!
+    nsigma_minfit=nsigma_fit ;[5.,5.] ; only get local SGbase minimum in case of high nsigma_fit window!
     if nsigma_fit[0] lt nsigma_minfit[0] then nsigma_minfit[0] = nsigma_fit[0]
     if nsigma_fit[1] lt nsigma_minfit[1] then nsigma_minfit[1] = nsigma_fit[1]
 ;
