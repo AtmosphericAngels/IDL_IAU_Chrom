@@ -33,11 +33,11 @@
 @wid_tpshskviewer
 @wid_plotctrls
 ;------------------------------------------------------------------------------------------------------------------------
-PRO IAU_Chrom
+PRO IAU_Chrom_v520
 
   !Except = 0
 
-  def_common, '5.19' ; string == version
+  def_common, '5.20' ; string == version
 
   COMMON DATA
   COMMON COM_PLOT
