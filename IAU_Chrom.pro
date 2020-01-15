@@ -77,6 +77,13 @@ END
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
 ;
+; 2020-01-15: v.520
+; - Thomas Wagenhäuser: 
+;   --FUNCTION added int_gau_SGbase.pro: added new integration method Gauss_SGbase
+;   --FUNCTION added int_SavGol_bl.pro: added new integration method SavGol_BL
+;   --FUNCTION peak_detection: new estimates
+;   --updated manual with new integration methods
+;
 ; 2018-11-12: v5.18
 ; - Fides Lefrancois: FUNCTION h5_get_massaxis: added function for MassCalibMode = 0
 ;
