@@ -102,7 +102,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
 
   ;get min and max value for Peak height
   Peak_top = max(y[w_minfit_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
-  Peak_min_l = min(v_SG[0 : w_rt_raw_t], w_min_l) ;left min from Savitzky-Gulay
+  Peak_min_l = min(v_SG[0 : (w_rt_raw_t-1)], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!!
   Peak_min = min([Peak_min_l, Peak_min_r], min_sel) ;choose lower value
