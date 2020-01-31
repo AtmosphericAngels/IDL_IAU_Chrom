@@ -40,6 +40,13 @@ FUNCTION int_bl_fixpoints , xval, yval $
   x=xval[vd]
   y=yval[vd]
 
+  IF N_ELEMENTS(x) LE nterms_base THEN BEGIN ;if there is (almost) no data passed, e.g. mass not found in chromatogram
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak detection.', /INFORMATION)
+    RETURN, strct
+  ENDIF
+
   w_rt_win=WHERE((x GE rt_win[0]) AND (x LE rt_win[1]),nw_rt_win)
 
   taxis=x[w_rt_win]

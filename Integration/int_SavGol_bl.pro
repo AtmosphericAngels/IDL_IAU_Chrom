@@ -44,6 +44,13 @@ FUNCTION int_SavGol_bl, xval, yval $
   x=xval[vd]
   y=yval[vd]
 
+  IF N_ELEMENTS(x) LE nterms_base THEN BEGIN ;if there is (almost) no data passed, e.g. mass not found in chromatogram
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak detection.', /INFORMATION)
+    RETURN, strct
+  ENDIF
+
   ; apply Savitzky-Gulay-filter to y
   nleft = 3 ;provide these in GUI in future versions
   nright = nleft ;keep both variables in case of future needs
@@ -83,6 +90,12 @@ FUNCTION int_SavGol_bl, xval, yval $
 
   ;get min and max value for Peak height
   Peak_top = max(y[w_int_win], w_rt_raw_t) ;max from raw data; save index: w_rt_raw_t
+  IF w_rt_raw_t EQ 0 THEN BEGIN ;in case 'Peak_top' is the very first datapoint
+    strct.flag=-1;
+    strct.comment='No Peak Found'
+    IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak detection.', /INFORMATION)
+    RETURN, strct
+  ENDIF
   Peak_min_l = min(v_SG[0 : (w_rt_raw_t-1)], w_min_l) ;left min from Savitzky-Gulay
   Peak_min_r = min(v_SG[w_rt_raw_t : -1], w_min_r) ;right min from Savitzky-Gulay
   w_min_r = w_min_r + w_rt_raw_t ;to get the right index!
