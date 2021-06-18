@@ -48,9 +48,9 @@ PRO IAU_Chrom
 
   wid_main_ini
 
-;  Outdir='D:\PROGRAMMING\debugging\iau_chrom\rt'
-;  sfile='D:\PROGRAMMING\IDL_WD\IAU_Chrom_v5X\IAU_Chrom_v518.sav'
-;  MAKE_RT, 'IAU_Chrom_v518', Outdir, SAVEFILE=sfile, /OVERWRITE
+;  Outdir='D:\PROGRAMMING\IDL\VM\tmp'
+;  sfile='D:\PROGRAMMING\IDL\VM\tmp\IAU_Chrom_v5X\IAU_Chrom.sav'
+;  MAKE_RT, 'IAU_Chrom', Outdir, SAVEFILE=sfile, /OVERWRITE
 
 END
 ;########################################################################################################################
