@@ -50,8 +50,8 @@ FUNCTION read_agilent_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE
     hh      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),8,2)
     mm      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),10,2)
     ss      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),12,2)
-    sign    = STRMID(STRING(ncdfstr.experiment_date_time_stamp),14,1)
-    refd.jdate = julday(mn,dd,yy,hh,mm,ss)
+    ; sign    = STRMID(STRING(ncdfstr.experiment_date_time_stamp),14,1) ; UTC offset hours ignored!
+    refd.jdate = julday(mn, dd, yy, hh, mm, ss)
 
 ;    print, mn,dd,yy,'   ', hh,mm,ss
 
