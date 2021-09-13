@@ -84,6 +84,10 @@ PRO wid_main_handle, event
         refr_status, message='files loaded.'
       END
 ; **********************************************************************************************************************************************
+    'amafid_cdf' : $
+      BEGIN
+      END
+; **********************************************************************************************************************************************
     'almsco_cdf' : $
       BEGIN
         IF SIZE(chrom, /TYPE) NE 8 THEN chrom=create_refd()
@@ -463,6 +467,7 @@ PRO wid_main_ini
   file_ID = WIDGET_BUTTON(menubaseID, VALUE='File', /MENU)
     load_ID = WIDGET_BUTTON(file_ID, VALUE='Import file(s)...', /MENU)
       ID = WIDGET_BUTTON(load_ID, VALUE='AED *.nc', UNAME = 'aes_cdf')
+      ID = WIDGET_BUTTON(load_ID, VALUE='AMA GC/FID *.cdf', UNAME = 'amafid_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Agilent QPMS *.cdf', UNAME = 'agilent_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Almsco TOFMS *.cdf', UNAME = 'almsco_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='AutoSpec SFMS *.cdf', UNAME = 'agilent_cdf')
