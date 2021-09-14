@@ -279,7 +279,7 @@ PRO wid_main_handle, event
           subst = create_refs()                                          ; no subst file found, create empty.
         ENDELSE        
        
-        vcheck = version_check(chrom,VCHECK_VERSION=5.14)                ; check chrom, returns 1 if up-to-date
+        vcheck = version_check(chrom, VCHECK_VERSION=5.14)                ; check chrom, returns 1 if up-to-date
         IF vcheck EQ 0 THEN BEGIN                                        ; converstion to current version of IAU_Chrom necessary
           refr_status, message='updating old chrom version...'            
           IF FILE_TEST(substfile) NE 0 THEN $                            ; msinfo / subst file selected, convert to current version
@@ -456,13 +456,15 @@ PRO wid_main_ini
   COMMON DATA
   COMMON WIDID
 
-  title = 'IAU_Chrom_v'+version
+  title = 'IAU_Chrom_v' + version
+  cred = '(c) 2021 Univ. Frankfurt / IAU / Group A. Engel'
       
   mainbase = WIDGET_BASE(TITLE=title, UNAME='mainwid', MBAR=menubaseID, COLUMN=1)
     
   file_ID = WIDGET_BUTTON(menubaseID, VALUE='File', /MENU)
     load_ID = WIDGET_BUTTON(file_ID, VALUE='Import file(s)...', /MENU)
-      ID = WIDGET_BUTTON(load_ID, VALUE='AED / AMA-FID *.nc', UNAME = 'aed_cdf')
+      ID = WIDGET_BUTTON(load_ID, VALUE='AED *.nc', UNAME = 'aed_cdf')
+      ID = WIDGET_BUTTON(load_ID, VALUE='AMA GC/FID *.cdf', UNAME = 'aed_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Agilent QPMS *.cdf', UNAME = 'agilent_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Almsco TOFMS *.cdf', UNAME = 'almsco_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='AutoSpec SFMS *.cdf', UNAME = 'agilent_cdf')
@@ -486,7 +488,7 @@ PRO wid_main_ini
     ID = WIDGET_BUTTON(VI_ID, VALUE='Tofwerk TPS HSK', UNAME='v_tpshsk', /SEPARATOR)
     ID = WIDGET_BUTTON(VI_ID, VALUE='Show Plot Controls', UNAME='plot_ctrls', /SEPARATOR)
     
-  ADV_ID=WIDGET_BUTTON(menubaseID, VALUE='Advanced', /MENU)
+  ADV_ID = WIDGET_BUTTON(menubaseID, VALUE='Advanced', /MENU)
     ID = WIDGET_BUTTON(ADV_ID, VALUE='Run Database Script', UNAME='run_db_script')
 
  widbase1 = WIDGET_BASE(mainbase, COLUMN=1)
@@ -499,13 +501,13 @@ widbase11 = WIDGET_BASE(widbase1, UNAME='widbase11', column=1)
      M_DL = WIDGET_DROPLIST(widbase11, VALUE='', Title='Selected m/Q ', UNAME='sel_mass', /DYNAMIC_RESIZE, /ALIGN_LEFT)
       SEP = WIDGET_LABEL(widbase11, VALUE=' ')
       SEP = WIDGET_LABEL(widbase11, VALUE='Status ', /ALIGN_LEFT, /DYNAMIC_RESIZE)
-      STAT = WIDGET_TEXT(widbase11, VALUE='idle', UNAME='status', /ALIGN_LEFT, XSIZE=50)
+     STAT = WIDGET_TEXT(widbase11, VALUE='idle', UNAME='status', /ALIGN_LEFT, XSIZE=50)
       
-    credits = WIDGET_BASE(mainbase, UNAME='credits', column=1)
-     SEP = WIDGET_LABEL(credits, VALUE='--', /ALIGN_LEFT)
-     TXT = WIDGET_LABEL(credits, VALUE='(c) 2021 Univ. Frankfurt / IAU / Group A. Engel', /ALIGN_LEFT)
+  credits = WIDGET_BASE(mainbase, UNAME='credits', column=1)
+      SEP = WIDGET_LABEL(credits, VALUE='--', /ALIGN_LEFT)
+      TXT = WIDGET_LABEL(credits, VALUE=cred, /ALIGN_LEFT)
 
-  
+
   widid.mainwid = mainbase 
   WIDGET_CONTROL, mainbase, /REALIZE
   XMANAGER, 'wid_main_handle', mainbase, /NO_BLOCK, event_handler='wid_main_handle' 

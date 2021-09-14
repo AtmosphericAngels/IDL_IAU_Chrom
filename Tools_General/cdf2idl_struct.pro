@@ -15,7 +15,7 @@
 ;  31 Jan 12  H. Boenisch     Modified (removed bug for netcdf files without global attributes and/or variables)
 ;  18 Mar 14  H. Boenisch     Change illegale tagname (i.e. 'case' to '_case') in ValidateName
 ;  08 Aug 17  H. Boenisch     Close the open NetCdf at the end (added NETCDF_CLOSE,ncid)
-;  14 Sep 21  F. Obersteiner  Do not remove whitespaces from filename in call to NCDF_OPEN
+;  14 Sep 21  F. Obersteiner  Do not remove whitespaces from filename in call to NCDF_OPEN - space in fname works fine.
 ;-
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;
