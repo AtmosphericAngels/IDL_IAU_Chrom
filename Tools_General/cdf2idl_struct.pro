@@ -9,12 +9,13 @@
 ;               into IDL structure.
 ;
 ;  History:
-;  Date       Name          Action
-;  ---------  ------------  ----------------------------------------------
-;  14 Dec 09  H. Boenisch   Created
-;  31 Jan 12  H. Boenisch   Modified (removed bug for netcdf files without global attributes and/or variables)
-;  18 Mar 14  H. Boenisch   Change illegale tagname (i.e. 'case' to '_case') in ValidateName
-;  08 Aug 17  H. Boenisch   Close the open NetCdf at the end (added NETCDF_CLOSE,ncid)
+;  Date       Name            Action
+;  ---------  ------------    ----------------------------------------------
+;  14 Dec 09  H. Boenisch     Created
+;  31 Jan 12  H. Boenisch     Modified (removed bug for netcdf files without global attributes and/or variables)
+;  18 Mar 14  H. Boenisch     Change illegale tagname (i.e. 'case' to '_case') in ValidateName
+;  08 Aug 17  H. Boenisch     Close the open NetCdf at the end (added NETCDF_CLOSE,ncid)
+;  14 Sep 21  F. Obersteiner  Do not remove whitespaces from filename in call to NCDF_OPEN
 ;-
 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;
@@ -105,7 +106,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 
 	io=FILE_TEST(fname_cdf,/READ,/REGULAR)
 	IF (io EQ 0) THEN BEGIN
-		msg=DIALOG_MESSAGE(['ERROR occurred in GET_NetCDF_5975:','The file '+fname_cdf+' does not exist !!!'])
+		msg=DIALOG_MESSAGE(['ERROR occurred in GET_NetCDF_5975:','The file '+fname_cdf+' does not exist'])
 		RETALL
 	ENDIF
 
@@ -119,7 +120,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 	ENDIF
 
 	; Open the netcdf file for reading.
-	ncid=NCDF_OPEN(strcompress(fname_cdf,/remove_all))
+	ncid=NCDF_OPEN(fname_cdf) ; strcompress(fname_cdf,/remove_all))
 	IF (ncid EQ -1) then begin
 	   msg=DIALOG_MESSAGE("The NCDF file "+fname_cdf+" could not be opened, please check the path.")
 	   RETALL
