@@ -77,8 +77,11 @@ END
 ;########################################################################################################################
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
+; 
+; 2021-09-14: v5.21
+; - wid main File -> import now explicit field for AMA GC/FID. Uses Agilent AED import routine.
 ;
-; 2020-01-15: v.520
+; 2020-01-15: v5.20
 ; - Thomas Wagenhäuser:
 ;   --FUNCTION added int_gau_SGbase.pro: added new integration method Gauss_SGbase
 ;   --FUNCTION added int_SavGol_bl.pro: added new integration method SavGol_BL
