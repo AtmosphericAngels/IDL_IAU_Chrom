@@ -43,6 +43,7 @@ PRO IAU_Chrom
   COMMON COM_PLOT
 
   path = 'D:\'
+  path = 'D:\PROGRAMMING\IDL\dev_debugging\IAU_Chrom\AMA_GCFID\testing_data'
 
   error_handler_IO = 0
 

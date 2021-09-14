@@ -58,7 +58,7 @@ PRO wid_main_handle, event
         refr_status, message='files loaded.'
       END
 ; **********************************************************************************************************************************************
-    'aes_cdf' : $
+    'aed_cdf' : $
       BEGIN
         IF SIZE(chrom, /TYPE) NE 8 THEN chrom=create_refd()
         IF STRLEN(chrom[0].fname) NE 0 THEN BEGIN
@@ -71,7 +71,7 @@ PRO wid_main_handle, event
         destroy_wids
         
         refr_status, message='loading files...'
-        chrom = read_AES_cdf(PATH=path, T_SCALE=t_scale, VERSION=version, /LOUD)
+        chrom = read_AED_cdf(PATH=path, T_SCALE=t_scale, VERSION=version, /LOUD)
         IF (STRLEN(chrom[0].fname) EQ 0) THEN BEGIN
           refr_status, message='idle'
           RETURN 
@@ -82,10 +82,6 @@ PRO wid_main_handle, event
         tot_uniqm = get_uniq_mass(chrom)
         chrom.instr_type = 5 ; 0:not defined, 1:QPMS or SFMS, 2:ALMSCO_TOFMS, 3:TW_TOFMS, 4:GhostECD, 5:AED, 6:GHGGC_FID or _ECD
         refr_status, message='files loaded.'
-      END
-; **********************************************************************************************************************************************
-    'amafid_cdf' : $
-      BEGIN
       END
 ; **********************************************************************************************************************************************
     'almsco_cdf' : $
@@ -466,8 +462,7 @@ PRO wid_main_ini
     
   file_ID = WIDGET_BUTTON(menubaseID, VALUE='File', /MENU)
     load_ID = WIDGET_BUTTON(file_ID, VALUE='Import file(s)...', /MENU)
-      ID = WIDGET_BUTTON(load_ID, VALUE='AED *.nc', UNAME = 'aes_cdf')
-      ID = WIDGET_BUTTON(load_ID, VALUE='AMA GC/FID *.cdf', UNAME = 'amafid_cdf')
+      ID = WIDGET_BUTTON(load_ID, VALUE='AED / AMA-FID *.nc', UNAME = 'aed_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Agilent QPMS *.cdf', UNAME = 'agilent_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='Almsco TOFMS *.cdf', UNAME = 'almsco_cdf')
       ID = WIDGET_BUTTON(load_ID, VALUE='AutoSpec SFMS *.cdf', UNAME = 'agilent_cdf')
@@ -508,7 +503,7 @@ widbase11 = WIDGET_BASE(widbase1, UNAME='widbase11', column=1)
       
     credits = WIDGET_BASE(mainbase, UNAME='credits', column=1)
      SEP = WIDGET_LABEL(credits, VALUE='--', /ALIGN_LEFT)
-     TXT = WIDGET_LABEL(credits, VALUE='(c) 2020 Univ. Frankfurt / IAU / Group A. Engel', /ALIGN_LEFT)
+     TXT = WIDGET_LABEL(credits, VALUE='(c) 2021 Univ. Frankfurt / IAU / Group A. Engel', /ALIGN_LEFT)
 
   
   widid.mainwid = mainbase 

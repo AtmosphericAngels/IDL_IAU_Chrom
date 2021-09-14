@@ -13,7 +13,7 @@
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
-FUNCTION read_AES_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
+FUNCTION read_AED_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
                        LOUD=loud
 
   IF NOT KEYWORD_SET(version) THEN version = '(not specified)'
@@ -24,9 +24,9 @@ FUNCTION read_AES_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
                                                                ; time conversion factor = 1 for default time scale (seconds)
   IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes
 
-
+  filters = ['*.cdf', '*.nc']
   IF NOT KEYWORD_SET(def_file) THEN $
-    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.nc', TITLE='Please select *.nc file(s) to import.') $
+    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter=filters, TITLE='Please select netCDF file(s) to import.') $
       ELSE fname=def_file
 
 
