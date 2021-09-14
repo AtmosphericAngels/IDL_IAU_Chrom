@@ -13,37 +13,27 @@
 FUNCTION read_agilent_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
                            LOUD=loud
 
-  IF NOT KEYWORD_SET(version) THEN version = '(not specified)'
+  IF NOT KEYWORD_SET(version) THEN version = 'not specified'
   IF NOT KEYWORD_SET(sort_by_jdate) THEN sort_by_jdate = 0
   IF NOT KEYWORD_SET(loud) THEN loud = 0
 
   IF NOT KEYWORD_SET(t_scale) THEN t_scale = 'Seconds'         ; time scale default: seconds
-  t_conv = 1.                                                  ; time conversion factor = 1 for default time scale (seconds)
-  IF t_scale EQ 'Minutes' THEN t_conv = 60.                    ; time conversion factor = 60 if time scale is minutes
+  IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes else 1 for seconds
 
 
+  filters = ['*.cdf', '*.nc']
   IF NOT KEYWORD_SET(def_file) THEN $
-    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.cdf', TITLE='Please select *.cdf file(s) to import.') $
+    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter=filters, TITLE='Please select netCDF file(s) to import.') $
       ELSE fname=def_file
 
-
-  IF STRLEN(fname[0]) EQ 0 THEN BEGIN
-     refd=create_refd()
-   RETURN, refd
-  ENDIF
-
-  IF STRPOS(fname[0],' ') NE -1 THEN BEGIN
-     msg=DIALOG_MESSAGE(fname[0]+STRING(13b)+' is not a valid filepath.'+STRING(13b)+'Whitespaces are not allowed in filepath.', /ERROR)
-     refd=create_refd()
-   RETURN, refd
-  ENDIF
+  IF STRLEN(fname[0]) EQ 0 THEN RETURN, create_refd()
 
   chrom = []; initialize chrom as empty array
   FOR i=0, N_ELEMENTS(fname)-1 DO BEGIN
     refd = create_refd()
     ncdfstr = cdf2idl_struct(fname[i])
     refd.fname = fname[i]
-;      print, ncdfstr.experiment_date_time_stamp
+
     yy      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),0,4)
     mn      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),4,2)
     dd      = STRMID(STRING(ncdfstr.experiment_date_time_stamp),6,2)

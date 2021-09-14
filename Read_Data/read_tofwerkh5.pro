@@ -141,37 +141,21 @@ FUNCTION read_tofwerkh5, PATH=path, T_SCALE=t_scale, VERSION=version, PEAKDATA_R
                          USE_PT_LIMITS=use_pt_limits, VERBOSE=verbose, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
                          LOUD=loud
 
-
-  IF NOT KEYWORD_SET(version) THEN version = '(not specified)'
+  IF NOT KEYWORD_SET(version) THEN version = 'not specified'
   IF NOT KEYWORD_SET(sort_by_jdate) THEN sort_by_jdate = 0
   IF NOT KEYWORD_SET(loud) THEN loud = 0
 
-
   IF NOT KEYWORD_SET(t_scale) THEN t_scale = 'Seconds'         ; time scale default: seconds
-  t_conv = 1.                                                  ; time conversion factor = 1 for default time scale (seconds)
-  IF t_scale EQ 'Minutes' THEN t_conv = 60.                    ; time conversion factor = 60 if time scale is minutes
-
+  IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes else 1 for seconds
 
   IF NOT KEYWORD_SET(def_file) THEN $
     fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.h5', TITLE='Please select *.h5 file(s) to import.') $
       ELSE fname=def_file
 
-
-  IF STRLEN(fname[0]) EQ 0 THEN BEGIN
-   refd=create_refd()
-   RETURN, refd                                                                ; abort if no files available
-  ENDIF
-
-  IF STRPOS(fname[0],' ') NE -1 THEN BEGIN
-   msg=DIALOG_MESSAGE(fname[0]+' is not a valid filepath! Whitespaces are not allowed in filepath. File import aborted.', /ERROR)
-   refd=create_refd()
-   RETURN, refd
-  ENDIF
-
-
+  IF STRLEN(fname[0]) EQ 0 THEN RETURN, create_refd()
 
   n_files = N_ELEMENTS(fname)
-  chrom = []; initialize chrom as empty array
+  chrom = []
 
   IF KEYWORD_SET(verbose) THEN PRINT, 'Running file check...'
   files_ok = tw_h5_filecheck(fname)
@@ -186,93 +170,93 @@ FUNCTION read_tofwerkh5, PATH=path, T_SCALE=t_scale, VERSION=version, PEAKDATA_R
   pt_ref = h5r_peaktable(fname[0], pt_ref_file_id)
 
   IF KEYWORD_SET(verbose) THEN PRINT, 'Beginning file import...'
+  
   FOR i=0, n_files-1 DO BEGIN
-
-  IF KEYWORD_SET(verbose) THEN PRINT, 'Step ', STRCOMPRESS(STRING(i+1), /REMOVE_ALL), ' of ', $
-                                      STRCOMPRESS(STRING(n_files), /REMOVE_ALL), ', ', $
-                                      SYSTIME(0), ', importing peakdata from ', FILE_BASENAME(fname[i])
-
-  file_id = H5F_OPEN(fname[i])                                                ; get hdf5 file id
-
-; peaktable check
-                                           ; set peaktable of first file as reference (all must be equal)
-  pt_comp = h5r_peaktable(fname[i], file_id)
-  pt_test = h5_ptablecheck(fname[i], pt_ref, PT_COMP=pt_comp)                         ; check if peaktables. test result will be 1 if peaktables ok
-
-  IF pt_test EQ 0 THEN RETURN, chrom $
-    ELSE BEGIN ; peaktable test passed, import chromatographic data
-
-      refd = create_refd()                                                      ; generate data structure
-      refd.fname = fname[i]                                                     ; WRITE FILENAME
-      timestamp = H5A_READ(H5A_OPEN_NAME(file_id, 'HDF5 File Creation Time'))
-      yy      = STRMID(STRING(timestamp),6,4)
-      mn      = STRMID(STRING(timestamp),3,2)
-      dd      = STRMID(STRING(timestamp),0,2)
-      hh      = STRMID(STRING(timestamp),11,2)
-      mm      = STRMID(STRING(timestamp),14,2)
-      ss      = STRMID(STRING(timestamp),17,2)
-      refd.jdate = JULDAY(mn,dd,yy,hh,mm,ss)                                    ; WRITE TIMESTAMP
-
-      ; *** process peakdata
-      pd_group_id = H5G_OPEN(file_id, 'PeakData')
-        peakdata_id = H5D_OPEN(pd_group_id, 'PeakData')
-          peakdata = H5D_READ(peakdata_id)  ; read peak data
-
-      *refd.intensity = REFORM(peakdata, N_ELEMENTS(peakdata))                  ; WRITE INTENSITY
-
-      ; *** get time data
-      NbrBufs   = H5A_READ(H5A_OPEN_NAME(file_id, 'NbrBufs'))
-      NbrWrites = H5A_READ(H5A_OPEN_NAME(file_id, 'NbrWrites'))
-      t_group_id = H5G_OPEN(file_id, 'TimingData')
-        timing_id = H5D_OPEN(t_group_id, 'BufTimes')
-          t_axis = H5D_READ(timing_id)
-
-      t_axis = REFORM(t_axis, N_ELEMENTS(t_axis))
-      t_axis = t_axis[0:((NbrWrites*NbrBufs)-1)]                                ; coerce time axis length to write profil (writes times bufs)
-      n_t = N_ELEMENTS(t_axis)
-      n_mass = N_ELEMENTS(peakdata[*, 0, 0, 0])                                 ; get number of masses scanned
-      time = FLTARR(n_mass*n_t)                                                 ; generate array for timing data, length n_mass * n_t
-      mass = FLTARR(n_mass*n_t)
-        FOR j=0, n_t-1 DO BEGIN
-          time[n_mass*j:n_mass*(j+1)-1] = t_axis[j]
-          mass[n_mass*j:n_mass*(j+1)-1] = pt_comp.mass
-        ENDFOR
-      *refd.time = time/t_conv                                                  ; WRITE TIME
-
-      refd.t_scale = t_scale                                                    ; write time scale
-
-      *refd.mass = mass                                                         ; WRITE MASS
-
-      *refd.peaktable = pt_comp                                                 ; WRITE PEAKTABLE
-
-      tps_group_id = H5G_OPEN(file_id, 'TPS2')                                  ; introduced 150921: TPS hsk data
-        tpsinfo_id = H5D_OPEN(tps_group_id, 'TwInfo')
-          tps_twinfo = H5D_READ(tpsinfo_id)
-        tpsdata_id = H5D_OPEN(tps_group_id, 'TwData')
-          tps_twdata = H5D_READ(tpsdata_id)
-
-      *refd.twtps_hsk = {info:tps_twinfo, data:tps_twdata}
-
-      IF KEYWORD_SET(peakdata_recalc) THEN $
-        *refd.intensity = recalc_peakdata(fname[i], pt_comp, mass, peakdata, /INTEGRATE, $
-                                          USE_PT_LIMITS=use_pt_limits)
-
-    ENDELSE
-
-    refd.iauchrom_vers = version
-    chrom = [chrom, refd]                                                       ; append data
-
-    H5D_CLOSE, peakdata_id ; close peakdata datasets and group
-    H5G_CLOSE, pd_group_id
-
-    H5D_CLOSE, timing_id ; close timing dataset and group
-    H5G_CLOSE, t_group_id
-
-    H5D_CLOSE, tpsinfo_id ; close tps datasets and group
-    H5D_CLOSE, tpsdata_id
-    H5G_CLOSE, tps_group_id
-
-    H5F_CLOSE, file_id                                                          ; close hdf5 file
+    IF KEYWORD_SET(verbose) THEN PRINT, 'Step ', STRCOMPRESS(STRING(i+1), /REMOVE_ALL), ' of ', $
+                                        STRCOMPRESS(STRING(n_files), /REMOVE_ALL), ', ', $
+                                        SYSTIME(0), ', importing peakdata from ', FILE_BASENAME(fname[i])
+  
+    file_id = H5F_OPEN(fname[i])                                                ; get hdf5 file id
+  
+  ; peaktable check
+                                             ; set peaktable of first file as reference (all must be equal)
+    pt_comp = h5r_peaktable(fname[i], file_id)
+    pt_test = h5_ptablecheck(fname[i], pt_ref, PT_COMP=pt_comp)                         ; check if peaktables. test result will be 1 if peaktables ok
+  
+    IF pt_test EQ 0 THEN RETURN, chrom $
+      ELSE BEGIN ; peaktable test passed, import chromatographic data
+  
+        refd = create_refd()                                                      ; generate data structure
+        refd.fname = fname[i]                                                     ; WRITE FILENAME
+        timestamp = H5A_READ(H5A_OPEN_NAME(file_id, 'HDF5 File Creation Time'))
+        yy      = STRMID(STRING(timestamp),6,4)
+        mn      = STRMID(STRING(timestamp),3,2)
+        dd      = STRMID(STRING(timestamp),0,2)
+        hh      = STRMID(STRING(timestamp),11,2)
+        mm      = STRMID(STRING(timestamp),14,2)
+        ss      = STRMID(STRING(timestamp),17,2)
+        refd.jdate = JULDAY(mn,dd,yy,hh,mm,ss)                                    ; WRITE TIMESTAMP
+  
+        ; *** process peakdata
+        pd_group_id = H5G_OPEN(file_id, 'PeakData')
+          peakdata_id = H5D_OPEN(pd_group_id, 'PeakData')
+            peakdata = H5D_READ(peakdata_id)  ; read peak data
+  
+        *refd.intensity = REFORM(peakdata, N_ELEMENTS(peakdata))                  ; WRITE INTENSITY
+  
+        ; *** get time data
+        NbrBufs   = H5A_READ(H5A_OPEN_NAME(file_id, 'NbrBufs'))
+        NbrWrites = H5A_READ(H5A_OPEN_NAME(file_id, 'NbrWrites'))
+        t_group_id = H5G_OPEN(file_id, 'TimingData')
+          timing_id = H5D_OPEN(t_group_id, 'BufTimes')
+            t_axis = H5D_READ(timing_id)
+  
+        t_axis = REFORM(t_axis, N_ELEMENTS(t_axis))
+        t_axis = t_axis[0:((NbrWrites*NbrBufs)-1)]                                ; coerce time axis length to write profil (writes times bufs)
+        n_t = N_ELEMENTS(t_axis)
+        n_mass = N_ELEMENTS(peakdata[*, 0, 0, 0])                                 ; get number of masses scanned
+        time = FLTARR(n_mass*n_t)                                                 ; generate array for timing data, length n_mass * n_t
+        mass = FLTARR(n_mass*n_t)
+          FOR j=0, n_t-1 DO BEGIN
+            time[n_mass*j:n_mass*(j+1)-1] = t_axis[j]
+            mass[n_mass*j:n_mass*(j+1)-1] = pt_comp.mass
+          ENDFOR
+        *refd.time = time/t_conv                                                  ; WRITE TIME
+  
+        refd.t_scale = t_scale                                                    ; write time scale
+  
+        *refd.mass = mass                                                         ; WRITE MASS
+  
+        *refd.peaktable = pt_comp                                                 ; WRITE PEAKTABLE
+  
+        tps_group_id = H5G_OPEN(file_id, 'TPS2')                                  ; introduced 150921: TPS hsk data
+          tpsinfo_id = H5D_OPEN(tps_group_id, 'TwInfo')
+            tps_twinfo = H5D_READ(tpsinfo_id)
+          tpsdata_id = H5D_OPEN(tps_group_id, 'TwData')
+            tps_twdata = H5D_READ(tpsdata_id)
+  
+        *refd.twtps_hsk = {info:tps_twinfo, data:tps_twdata}
+  
+        IF KEYWORD_SET(peakdata_recalc) THEN $
+          *refd.intensity = recalc_peakdata(fname[i], pt_comp, mass, peakdata, /INTEGRATE, $
+                                            USE_PT_LIMITS=use_pt_limits)
+  
+      ENDELSE
+  
+      refd.iauchrom_vers = version
+      chrom = [chrom, refd]                                                       ; append data
+  
+      H5D_CLOSE, peakdata_id ; close peakdata datasets and group
+      H5G_CLOSE, pd_group_id
+  
+      H5D_CLOSE, timing_id ; close timing dataset and group
+      H5G_CLOSE, t_group_id
+  
+      H5D_CLOSE, tpsinfo_id ; close tps datasets and group
+      H5D_CLOSE, tpsdata_id
+      H5G_CLOSE, tps_group_id
+  
+      H5F_CLOSE, file_id                                                          ; close hdf5 file
   ENDFOR
 
   ; sort chrom structure by jdate vector...

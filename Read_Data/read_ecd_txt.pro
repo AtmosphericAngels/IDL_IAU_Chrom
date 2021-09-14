@@ -15,35 +15,22 @@
 FUNCTION read_ecd_txt, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
                        LOUD=loud
 
-  IF NOT KEYWORD_SET(version) THEN version = '(not specified)'
+  IF NOT KEYWORD_SET(version) THEN version = 'not specified'
   IF NOT KEYWORD_SET(sort_by_jdate) THEN sort_by_jdate = 0
   IF NOT KEYWORD_SET(loud) THEN loud = 0
 
   IF NOT KEYWORD_SET(t_scale) THEN t_scale = 'Seconds'         ; time scale default: seconds
-
-  t_conv = 1.                                                  ; time conversion factor = 1 for default time scale (seconds)
-  IF t_scale EQ 'Minutes' THEN t_conv = 60.                    ; time conversion factor = 60 if time scale is minutes
+  IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes else 1 for seconds
 
 
   IF NOT KEYWORD_SET(def_file) THEN $
     fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.txt', TITLE='Please select *.txt file(s) to import.') $
       ELSE fname=def_file
 
+  IF STRLEN(fname[0]) EQ 0 THEN RETURN create_refd()
 
-   IF strlen(fname[0]) EQ 0 THEN BEGIN
-      refd=create_refd()
-      return, refd
-   ENDIF
-
-   IF strpos(fname[0],' ') NE -1 THEN BEGIN
-      msg=dialog_message(fname[0]+string(13b)+' is not a valid filepath !'+string(13b)+'Whitespaces are not allowed in filepath !',/information)
-      refd=create_refd()
-      return, refd
-   ENDIF
-
-  chrom = []; initialize chrom as empty array
-   FOR n=0, N_ELEMENTS(fname)-1 DO BEGIN
-
+  chrom = []
+  FOR n=0, N_ELEMENTS(fname)-1 DO BEGIN
       nl = FILE_LINES(fname[n])
       nlhead = 11
       file_content_str = STRARR(nl)
