@@ -4,10 +4,10 @@
 ; IAU_CHROM_MAIN
 ;
 ; Idea and Conception:
-; H.Boenisch , A.Engel
+; H.Boenisch, A.Engel
 ;
 ; Programming and Developement:
-; H.Boenisch , A.Engel (up to v3), S.Sala (up to v4.1), F.Obersteiner (v4.1 to v5.x)
+; H.Boenisch, A.Engel (up to v3), S.Sala (up to v4.1), F.Obersteiner (v4.1 to v5.x), T.Wagenhäuser (v5.x)
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 @def_ref_structs
