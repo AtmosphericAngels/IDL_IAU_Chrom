@@ -79,7 +79,7 @@ END
 ; ***
 ;
 ; 2020-01-15: v.520
-; - Thomas Wagenhäuser: 
+; - Thomas Wagenhäuser:
 ;   --FUNCTION added int_gau_SGbase.pro: added new integration method Gauss_SGbase
 ;   --FUNCTION added int_SavGol_bl.pro: added new integration method SavGol_BL
 ;   --FUNCTION peak_detection: new estimates

@@ -79,7 +79,7 @@ FUNCTION int_gau_SGbase, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_in
     if nsigma_fit[1] lt nsigma_minfit[1] then nsigma_minfit[1] = nsigma_fit[1]
 ;
 ; otherwise throw out nsigma_minfit
-    
+
     w_minfit_win=WHERE((x GE (A[1]-nsigma_minfit[0]*A[2])) AND (x LE(A[1]+nsigma_minfit[1]*A[2])), nw_minfit_win)
   ENDELSE
 
