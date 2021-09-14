@@ -37,7 +37,7 @@ PRO IAU_Chrom
 
   !Except = 0
 
-  def_common, '5.20' ; string == version
+  def_common, '5.21' ; string == version
 
   COMMON DATA
   COMMON COM_PLOT
