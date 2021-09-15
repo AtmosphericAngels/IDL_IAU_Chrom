@@ -174,7 +174,7 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     2: base_int=A[3]+A[4]*t
     3: base_int=A[3]+A[4]*t+A[5]*t^2
   ENDCASE
-  
+
   peak_area = int_tabulated(t,peak_int,/double) ;/*******************************TW 2019.09.04.
 
 ;+++++++++++++++++++++++
@@ -197,7 +197,7 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
     RETURN, strct
   ENDIF
-  
+
   IF (peak_area LE 0) THEN BEGIN
     strct.flag=-1;
     strct.comment='No Peak Found'
@@ -212,8 +212,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     RETURN, strct
   ENDIF
   ;TW 2019.09.04. *******************************/
- 
- 
+
+
 ;+++++++++++++++++++++++
 ; Calculate chromatographic parameters (peak area, height and retention time)
 ;+++++++++++++++++++++++
@@ -227,7 +227,7 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
   strct.te=max(t,/nan)
   strct.flag=1
   strct.comment='Integrated'
-  
+
 
 
   IF (verbose and (strct.flag ne -1)) THEN BEGIN ;TW 2019.09.04. *******************************/

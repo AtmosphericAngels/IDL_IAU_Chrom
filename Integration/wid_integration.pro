@@ -20,17 +20,15 @@ PRO wid_integration_ini
 ;+++++++++++++++++++++++
 ; Main / select chrom, substance, mass / Report Droplist
   intbase = WIDGET_BASE(TITLE='IAU_Chrom: Peak Integration / Noise', MBAR=intwid_men, COLUMN=1, $
-                        YOFF=260, /BASE_ALIGN_CENTER); , /SCROLL, X_SCROLL_SIZE=100, Y_SCROLL_SIZE=100)
-                         ;xoff=0.0*screenSize[0], yoff=0.2*screensize[1],
+                        YOFF=260, /BASE_ALIGN_CENTER)
 
   fil_ID = WIDGET_BUTTON(intwid_men, Value='File', /MENU)
       ID = WIDGET_BUTTON(fil_ID, value='Exit', uname='exit_pi')
 
   con_ID = WIDGET_BUTTON(intwid_men, Value='Config', /MENU)
       ID = WIDGET_BUTTON(con_ID, value='Reload Settings', uname='reload_msinfo')
-      ID = WIDGET_BUTTON(con_ID, value='Reload Settings NOM', uname='re_msinfo_nom')
-      ID = WIDGET_BUTTON(con_ID, value='Update Species (beta)', uname='update_msinfo', /SEPARATOR)
-;      ID = WIDGET_BUTTON(con_ID, value='Export defaults', uname='exp_msinfo_def', /SEPARATOR)
+      ID = WIDGET_BUTTON(con_ID, value='Reload Settings (nominal m/Q)', uname='re_msinfo_nom')
+      ID = WIDGET_BUTTON(con_ID, value='Update Species', uname='update_msinfo', /SEPARATOR)
       ID = WIDGET_BUTTON(con_ID, value='Export Settings', uname='exp_msinfo_pres', /SEPARATOR)
 
   bat_ID = WIDGET_BUTTON(intwid_men, Value='BatchProcess', /MENU)
@@ -46,21 +44,18 @@ PRO wid_integration_ini
       ID = WIDGET_BUTTON(plo_ID, VALUE='Recreate Textfields (Plot1)', uname='recr_txt')
       ID = WIDGET_BUTTON(plo_ID, value='Plot sel. Substance', uname='plot_rep')
 
-  ID = WIDGET_DROPLIST(intbase, Value='',Title = 'Chromatogram ', uname='chrom', /dynamic_resize)
+  ID = WIDGET_DROPLIST(intbase, Value='',Title = 'Chromatogram ', uname='chrom', /DYNAMIC_RESIZE)
   WIDGET_CONTROL, ID, set_value=FILE_BASENAME(chrom.fname)
-  sel_chrom=WIDGET_INFO(ID, /droplist_select)
-  ID=WIDGET_DROPLIST(intbase, Value='', Title = 'Substance ', uname='name', /dynamic_resize)
+  sel_chrom = WIDGET_INFO(ID, /DROPLIST_SELECT)
+  ID = WIDGET_DROPLIST(intbase, Value='', Title = 'Substance ', uname='name', /DYNAMIC_RESIZE)
   WIDGET_CONTROL, ID, set_value=chrom[sel_chrom].subst.name
-  sel_name=WIDGET_INFO(ID, /droplist_select)
-  ID_quant=WIDGET_DROPLIST(intbase, Value='', Title = 'Fragment m/Q ', uname='mass', /dynamic_resize)
-
-;  WIDGET_CONTROL, ID_quant, set_value=STRING(get_finval(subst[0].mass), FORMAT='(D14.4)')
-;  WIDGET_CONTROL, ID_quant, set_droplist_select=subst[0].quant
+  sel_name = WIDGET_INFO(ID, /DROPLIST_SELECT)
+  ID_quant = WIDGET_DROPLIST(intbase, Value='', Title = 'Fragment m/Q ', uname='mass', /DYNAMIC_RESIZE)
 
   WIDGET_CONTROL, ID_quant, set_value=STRING(get_finval(chrom[0].subst[0].mass), FORMAT='(D14.4)')
   WIDGET_CONTROL, ID_quant, set_droplist_select=chrom[0].subst[0].quant
 
-  SEP=WIDGET_LABEL(intbase, Value=' ')
+  SEP = WIDGET_LABEL(intbase, Value=' ')
 
 ;+++++++++++++++++++++++
 ; Flagging
@@ -177,14 +172,14 @@ PRO wid_integration_handle, event
     ENDIF
   END
 
-  check_pobjects, p_obj = ['p_obj0', 'p_obj1']
+  check_pobjects, p_obj=['p_obj0', 'p_obj1']
 
 ;+++++++++++++++++++++++ALWAYS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ; define general settings
   int_triggers = ['int_manual','rt_min','rt_max','intsel','bl_fitfunc','sigma_left','sigma_right']
   no_int_triggers = ['Bad Peak','No Peak Found','Not Integrated', 'ovwr_man']
   flags_str = ['Bad Peak ','No Peak Found','Not Integrated','Integrated','Integrated (man.)'] ; call by flag+2
-  use_nom = 0
+  use_nom = 0 ; use integer m/Q
   int_called = 0
 
 ;+++++++++++++++++++++++ALWAYS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

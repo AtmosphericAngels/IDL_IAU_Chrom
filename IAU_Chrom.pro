@@ -3,11 +3,11 @@
 ; NAME:
 ; IAU_CHROM_MAIN
 ;
-; Idea and Conception:
-; H.Boenisch , A.Engel
+; Idea and Concept:
+; H.Boenisch, A.Engel
 ;
-; Programming and Developement:
-; H.Boenisch , A.Engel (up to v3), S.Sala (up to v4.1), F.Obersteiner (v4.1 to v5.x)
+; Developement:
+; H.Boenisch, A.Engel (up to v3), S.Sala (up to v4.1), F.Obersteiner (v4.1 to v5.x), T.Wagenhäuser (v5.x)
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 @def_ref_structs
@@ -37,12 +37,13 @@ PRO IAU_Chrom
 
   !Except = 0
 
-  def_common, '5.20' ; string == version
+  def_common, '5.21' ; string = version
 
   COMMON DATA
   COMMON COM_PLOT
 
   path = 'D:\'
+  path = 'D:\PROGRAMMING\IDL\dev_debugging\IAU_Chrom\AMA_GCFID\testing_data'
 
   error_handler_IO = 0
 
@@ -77,8 +78,11 @@ END
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
 ;
-; 2020-01-15: v.520
-; - Thomas Wagenhäuser: 
+; 2021-09-14: v5.21
+; - wid main File -> import now explicit field for AMA GC/FID. Uses Agilent AED import routine.
+;
+; 2020-01-15: v5.20
+; - Thomas Wagenhäuser:
 ;   --FUNCTION added int_gau_SGbase.pro: added new integration method Gauss_SGbase
 ;   --FUNCTION added int_SavGol_bl.pro: added new integration method SavGol_BL
 ;   --FUNCTION peak_detection: new estimates

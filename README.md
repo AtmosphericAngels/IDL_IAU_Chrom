@@ -102,9 +102,9 @@ Main widget: "File" tab
 
 Fig. 2 - File menu on main widget.
 
-'File' '**Import...':** Import chromatographic (raw) data in different formats like netcdf (.nc/.cdf) or hdf5 (.h5) from different instruments. Choice is based on the instrument that produced the data.
+'File' '**Import...':** Import chromatographic (raw) data in different formats like netcdf (.nc/.cdf) or hdf5 (.h5) from different instruments. Choice is based on the instrument that produced the data. ***Note:*** you cannot load data from an arbitrary source here. Data import functionality is specific for each type of instrument and the manufacturere's software that generates the data.
 
--   To process measurement series, files should be named with an increasing index, like 01\_name, 02\_name or name\_01 and so on. \"name" in this case is a constant string. A useful tool to rename and/or enumerate files is Ant Renamer, http://www.antp.be/software/renamer.
+-   To process measurement series, files should be named with an increasing index, like 01\_name, 02\_name or name\_01 and so on. \"name" in this case is a constant string.
 -   v5.13 and higher: IAU_Chrom also checks for a measurement timestamp in the data file; if loaded files are not sorted by ascending timestamp, it will ask you if you wish to sort by that quantity.
 
 'File' '**Save Experiment**': Saves the current set of loaded data, settings used for analysis and results together in one binary file \*.sav. This file is only readable by IAU_Chrom (IDL proprietary format).

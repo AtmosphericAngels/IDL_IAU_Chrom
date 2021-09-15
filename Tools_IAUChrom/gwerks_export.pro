@@ -1,7 +1,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;+
 ; NAME:
-; 
+;
 ;
 ; AUTHOR:
 ; F.Obersteiner, f.obersteiner@kit.edu, May 2019
@@ -14,7 +14,7 @@
 @get_uniq_mass
 ;------------------------------------------------------------------------------------------------------------------------
 PRO gwerks_export, chrom, PATH=path
-  
+
   exppath = DIALOG_PICKFILE(TITLE='Please select output directory.', PATH=path, /DIRECTORY)
   IF STRLEN(exppath) LT 3 THEN RETURN
 ;  tic
@@ -24,9 +24,9 @@ PRO gwerks_export, chrom, PATH=path
     IF chrom[fno].t_scale EQ 'Minutes' THEN time *= 60D
     mass = *chrom[fno].mass
     intensity = *chrom[fno].intensity
-    
+
     OPENW, lun, exppath+FILE_BASENAME(chrom[fno].fname)+'_gcw.txt', /GET_LUN
-    
+
     FOR mno=0, N_ELEMENTS(unqm)-1 DO BEGIN
       idx = WHERE(mass EQ unqm[mno], nvd) ; select data based on current mass
       IF nvd GT 0 THEN BEGIN
@@ -42,10 +42,10 @@ PRO gwerks_export, chrom, PATH=path
 
       ENDIF
     ENDFOR ; end loop over all masses in current file
-    
+
     CLOSE, lun
     FREE_LUN, lun
-    
+
   ENDFOR ; end loop over all loaded files
 ;  toc
 

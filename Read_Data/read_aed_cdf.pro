@@ -13,41 +13,28 @@
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
-FUNCTION read_AES_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
+FUNCTION read_AED_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def_file, SORT_BY_JDATE=sort_by_jdate, $
                        LOUD=loud
 
-  IF NOT KEYWORD_SET(version) THEN version = '(not specified)'
+  IF NOT KEYWORD_SET(version) THEN version = 'not specified'
   IF NOT KEYWORD_SET(sort_by_jdate) THEN sort_by_jdate = 0
   IF NOT KEYWORD_SET(loud) THEN loud = 0
 
   IF NOT KEYWORD_SET(t_scale) THEN t_scale = 'Seconds'         ; time scale default: seconds
-                                                               ; time conversion factor = 1 for default time scale (seconds)
-  IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes
+  IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes else 1 for seconds
 
-
+  filters = ['*.cdf', '*.nc']
   IF NOT KEYWORD_SET(def_file) THEN $
-    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.nc', TITLE='Please select *.nc file(s) to import.') $
+    fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter=filters, TITLE='Please select netCDF file(s) to import.') $
       ELSE fname=def_file
 
+  IF STRLEN(fname[0]) EQ 0 THEN RETURN, create_refd()
 
-  IF STRLEN(fname[0]) EQ 0 THEN BEGIN
-    refd=create_refd()
-    RETURN, refd
-  ENDIF
-
-  IF STRPOS(fname[0], ' ') NE -1 THEN BEGIN
-    msg=DIALOG_MESSAGE(fname[0]+STRING(13b)+' is not a valid filepath.'+STRING(13b)+'Whitespaces are not allowed in filepath.', /ERROR)
-    refd=create_refd()
-    RETURN, refd
-  ENDIF
-
-  ; file type check
+  ; file type check, specific for AED data
   tmp = cdf2idl_struct(fname[0])
-  tmp = TAG_NAMES(tmp)
-  IF (WHERE(tmp EQ 'N_CHANNELS'))[0] NE -1 THEN is_merge = 1 $
-    ELSE is_merge = 0
+  IF (WHERE(TAG_NAMES(tmp) EQ 'N_CHANNELS'))[0] NE -1 THEN is_merge = 1 ELSE is_merge = 0
 
-  chrom = []; initialize chrom as empty array
+  chrom = []
   FOR i=0, N_ELEMENTS(fname)-1 DO BEGIN
     refd = create_refd()
     ncdfstr = cdf2idl_struct(fname[i])
@@ -76,7 +63,7 @@ FUNCTION read_AES_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
         (am_pm EQ 'PM' AND hh EQ 12): hh=hh
       ENDCASE
 
-      refd.jdate = julday(mn,dd,yy,hh,mm,ss)
+      refd.jdate = julday(mn, dd, yy, hh, mm, ss)
 
       ; assume equal number of elements in each channel...
       n_ch = LONG(ncdfstr.N_CHANNELS)
@@ -166,7 +153,7 @@ FUNCTION read_AES_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
       mm      = STRMID(STRING(ncdfstr.INJECTION_DATE_TIME_STAMP),10,2)
       ss      = STRMID(STRING(ncdfstr.INJECTION_DATE_TIME_STAMP),12,2)
 
-      refd.jdate = julday(mn,dd,yy,hh,mm,ss)
+      refd.jdate = julday(mn, dd, yy, hh, mm, ss)
 
       t_lim = [0., ncdfstr.ACTUAL_RUN_TIME_LENGTH]
       *refd.time = (interpol(t_lim, N_ELEMENTS(ncdfstr.ORDINATE_VALUES)))/t_conv
