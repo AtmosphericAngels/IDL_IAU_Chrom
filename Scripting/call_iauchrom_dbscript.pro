@@ -75,7 +75,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
 
           'aes_cdf': $
             BEGIN
-              chrom = read_AES_cdf(PATH=path, T_SCALE=t_scale, VERSION=version, $
+              chrom = read_AED_cdf(PATH=path, T_SCALE=t_scale, VERSION=version, $
                                    DEF_FILE=fname, SORT_BY_JDATE=sort_by_jdate)
               chrom.instr_type = 5
             END

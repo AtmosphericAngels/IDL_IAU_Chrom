@@ -43,14 +43,14 @@ PRO IAU_Chrom
   COMMON COM_PLOT
 
   path = 'D:\'
-  path = 'D:\PROGRAMMING\IDL\dev_debugging\IAU_Chrom\AMA_GCFID\testing_data'
+;  path = 'D:\PROGRAMMING\IDL\dev_debugging\IAU_Chrom\'
 
-  error_handler_IO = 0
+  error_handler_IO = 1
 
   wid_main_ini
 
-;  Outdir='D:\PROGRAMMING\IDL\VM\tmp'
-;  sfile='D:\PROGRAMMING\IDL\VM\tmp\IAU_Chrom_v5X\IAU_Chrom.sav'
+;  Outdir='D:\PROGRAMMING\IDL\VM\_tmp'
+;  sfile='D:\PROGRAMMING\IDL\VM\_tmp\IAU_Chrom_v5X\IAU_Chrom.sav'
 ;  MAKE_RT, 'IAU_Chrom', Outdir, SAVEFILE=sfile, /OVERWRITE
 
 END

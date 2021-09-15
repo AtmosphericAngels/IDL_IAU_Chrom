@@ -27,7 +27,7 @@ FUNCTION read_ecd_txt, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
     fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter='*.txt', TITLE='Please select *.txt file(s) to import.') $
       ELSE fname=def_file
 
-  IF STRLEN(fname[0]) EQ 0 THEN RETURN create_refd()
+  IF STRLEN(fname[0]) EQ 0 THEN RETURN, create_refd()
 
   chrom = []
   FOR n=0, N_ELEMENTS(fname)-1 DO BEGIN
