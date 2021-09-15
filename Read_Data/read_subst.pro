@@ -8,7 +8,7 @@
 ;
 ; MODIFICATIONS:
 ; - initial version by S.Sala
-; - June 2014: structural changes and introduction of noise_win (FO)
+; - Jun 2014: structural changes and introduction of noise_win (FO)
 ; - Mar 2015: introduction of keyword 'use_nom' (FO)
 ; - May 2017: added keyword DEF_FILE to override the pickfile dialog and supply a full file path
 ;-
@@ -43,6 +43,7 @@ FUNCTION read_subst, PATH=path, FILTER=filter, USE_NOM=use_nom, DEF_FILE=def_fil
   subst = replicate(create_refs(), n_row-1)
 
     FOR row=0L, n_row-2 DO BEGIN
+
       readf, lun, line
       if strlen(strcompress(line, /REMOVE_ALL)) eq 0 then break
 
@@ -73,13 +74,12 @@ FUNCTION read_subst, PATH=path, FILTER=filter, USE_NOM=use_nom, DEF_FILE=def_fil
       subst[row].mass    = fltarr(10)*!VALUES.F_NAN
       subst[row].rel_abd = fltarr(10)*!VALUES.F_NAN
 
-        FOR col=(15+counter), n_elements(tmp)-1 DO BEGIN
-          IF KEYWORD_SET(use_nom) THEN mass = ROUND(FLOAT((strsplit(tmp[col],';',/extract))[0])) $
-            ELSE mass=FLOAT((strsplit(tmp[col],';',/extract))[0])
-          IF mass LT 0 THEN mass=!Values.F_NAN
-          subst[row].mass[col-(15+counter)]=mass
-          subst[row].rel_abd[col-(15+counter)]=FLOAT((strsplit(tmp[col],';',/extract))[1])
-        ENDFOR
+      FOR col=(15+counter), N_ELEMENTS(tmp)-1 DO BEGIN
+        IF KEYWORD_SET(use_nom) THEN mass = ROUND(FLOAT((strsplit(tmp[col],';',/extract))[0])) ELSE mass=FLOAT((strsplit(tmp[col],';',/extract))[0])
+        IF mass LT 0 THEN mass=!Values.F_NAN
+        subst[row].mass[col-(15+counter)]=mass
+        subst[row].rel_abd[col-(15+counter)]=FLOAT((strsplit(tmp[col],';',/extract))[1])
+      ENDFOR
 
     ENDFOR
 

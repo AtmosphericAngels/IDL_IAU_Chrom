@@ -3,10 +3,10 @@
 ; NAME:
 ; IAU_CHROM_MAIN
 ;
-; Idea and Conception:
+; Idea and Concept:
 ; H.Boenisch, A.Engel
 ;
-; Programming and Developement:
+; Developement:
 ; H.Boenisch, A.Engel (up to v3), S.Sala (up to v4.1), F.Obersteiner (v4.1 to v5.x), T.Wagenhäuser (v5.x)
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ END
 ;########################################################################################################################
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
-; 
+;
 ; 2021-09-14: v5.21
 ; - wid main File -> import now explicit field for AMA GC/FID. Uses Agilent AED import routine.
 ;
