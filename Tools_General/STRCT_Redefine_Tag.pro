@@ -56,9 +56,9 @@ FUNCTION STRCT_Redefine_Tag, Struct, Tag_Name=tag_name, Tag_Def=tag_def
 ;   Written by Harald Boenisch, IAU, University Frankfurt, 22. October, 2012.
 ;-
 ;------------------------------------------------------------------
-  IF NOT keyword_set(tag_def) THEN tag_def=!NULL
+  IF NOT keyword_set(tag_def) THEN tag_def = !NULL
 
-  tag_names=tag_names(struct)
+  tag_names = tag_names(struct)
 
   w=where(tag_names EQ strupcase(tag_name[0]),nw)
 
@@ -67,8 +67,8 @@ FUNCTION STRCT_Redefine_Tag, Struct, Tag_Name=tag_name, Tag_Def=tag_def
     RETURN, struct_new
   ENDIF
 
-  n=0
-  struct_new=!NULL
+  n = 0
+  struct_new = !NULL
   IF (w EQ 0) THEN BEGIN
     IF size(tag_def, /type) NE 0 THEN struct_new=create_struct(struct_new,tag_names[0],tag_def)
   ENDIF ELSE struct_new=create_struct(tag_names[0],struct.(n))

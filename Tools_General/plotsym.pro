@@ -30,7 +30,7 @@ PRO plotsym, psym, psize, FILL=fill,thick=thick,Color = color
   ;
   ; OPTIONAL INPUTS:
   ;     PSIZE - Size of the plotting symbol in multiples of the default size
-  ;               (default PSIZE=1).  Does not need to be an integer
+  ;               (default PSIZE = 1).  Does not need to be an integer
   ;
   ; OPTIONAL INPUT KEYWORD:
   ;     FILL -  Parameter indicating whether to fill the symbol (see USERSYM)
@@ -75,7 +75,7 @@ PRO plotsym, psym, psize, FILL=fill,thick=thick,Color = color
   if ( N_elements(psize) LT 1 ) then psize = 1 else psize = psize > 0.1
 
   if ~keyword_set(FILL) then fill = 0
-  if ~keyword_set(thick) then thick=1
+  if ~keyword_set(thick) then thick = 1
 
   case psym of
     0:  begin          ;Circle

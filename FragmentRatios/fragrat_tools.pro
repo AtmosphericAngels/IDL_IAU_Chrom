@@ -33,7 +33,7 @@ PRO fragres2txt_cur, PATH=path
   COMMON FRAGDATA
   IF SIZE(fragres, /TYPE) NE 8 THEN RETURN
 
-  t=SYSTIME(/JULIAN)
+  t = SYSTIME(/JULIAN)
   caldat, t, mm,dd,yy,hh,mn
   dt=STRING(yy,format='(I4)')+STRING(mm,format='(I02)')+STRING(dd,format='(I02)')+STRING(hh,format='(I02)')+STRING(mn,format='(I02)')
   fm='_'+STRCOMPRESS(STRING(fragres.masses[1]), /REMOVE_ALL)+'_vs_'+STRCOMPRESS(STRING(fragres.masses[0]), /REMOVE_ALL)+'_'
@@ -41,7 +41,7 @@ PRO fragres2txt_cur, PATH=path
   IF FILE_DIRNAME(fname) NE '' THEN path=FILE_DIRNAME(fname)
   IF STRLEN(fname) EQ 0 THEN RETURN
 
-  sep=STRING(9B)
+  sep = STRING(9B)
   header=['file', sep, 'm/q_f1', sep, 'm/q_f2', sep, 'ratio', sep, 'rsd', sep, 'n_dp', sep, 'RTp1', sep, 'dRT', sep, $
           'peakint_sl', sep, 'peakint_sr', sep, 'fragrat_sl', sep, 'fragrat_sr', sep, 'a_ratio', sep, 'h_ratio']
 
@@ -78,16 +78,16 @@ PRO fragres2txt_all, PATH=path
   COMMON FRAGDATA
   IF SIZE(allfragres, /TYPE) NE 8 THEN RETURN
 
-  t=SYSTIME(/JULIAN)
+  t = SYSTIME(/JULIAN)
   caldat, t, mm,dd,yy,hh,mn
   dt=STRING(yy,format='(I4)')+STRING(mm,format='(I02)')+STRING(dd,format='(I02)')+STRING(hh,format='(I02)')+STRING(mn,format='(I02)')
-  masses=allfragres[(WHERE(FINITE(allfragres.masses[0]) NE 0))[0]].masses
+  masses = allfragres[(WHERE(FINITE(allfragres.masses[0]) NE 0))[0]].masses
   fm='_'+STRCOMPRESS(STRING(masses[1]), /REMOVE_ALL)+'_vs_'+STRCOMPRESS(STRING(masses[0]), /REMOVE_ALL)+'_'
   fname=DIALOG_PICKFILE(file=dt+fm+'f-rat.txt', /OVERWRITE_PROMPT, /WRITE, PATH=path)
   IF FILE_DIRNAME(fname) NE '' THEN path=FILE_DIRNAME(fname)
   IF STRLEN(fname) EQ 0 THEN RETURN
 
-  sep=STRING(9B)
+  sep = STRING(9B)
   header=['file', sep, 'm/q_f1', sep, 'm/q_f2', sep, 'ratio', sep, 'rsd', sep, 'n_dp', sep, 'RTp1', sep, 'dRT', sep, $
           'peakint_sl', sep, 'peakint_sr', sep, 'fragrat_sl', sep, 'fragrat_sr', sep, 'a_ratio', sep, 'h_ratio']
 

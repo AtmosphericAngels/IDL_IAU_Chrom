@@ -61,14 +61,14 @@ PRO intres_qcklook, chrom, PATH=path
     !Y.MARGIN=[4,2]
     !X.OMARGIN=[3,3]
     !Y.OMARGIN=[3,3]
-    symsize=1.2
+    symsize = 1.2
 
     title = names[sel_subst]
     ytitle = 'rel. RT'
     v = rel_rt[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
-    xval=finite_xv.x
-    vval=finite_xv.v
+    xval = finite_xv.x
+    vval = finite_xv.v
     IF xval[1] NE 0 THEN BEGIN
       vrange=[MIN(vval, /NAN)-((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1), MAX(vval, /NAN)+((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1)]
       plotsym, 0, symsize, FILL=1
@@ -81,8 +81,8 @@ PRO intres_qcklook, chrom, PATH=path
     ytitle = 'rel. A/H'
     v = rel_area[sel_subst, *] / rel_hght[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
-    xval=finite_xv.x
-    vval=finite_xv.v
+    xval = finite_xv.x
+    vval = finite_xv.v
     IF xval[1] NE 0 THEN BEGIN
       vrange=[MIN(vval, /NAN)-((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1), MAX(vval, /NAN)+((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1)]
       plotsym, 4, symsize, FILL=1
@@ -96,14 +96,14 @@ PRO intres_qcklook, chrom, PATH=path
     !Y.MARGIN=[6,4]
     !X.OMARGIN=[3,3]
     !Y.OMARGIN=[3,3]
-    symsize=1.2
+    symsize = 1.2
 
     title = names[sel_subst]
     ytitle = 'rel. Area'
     v = rel_area[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
-    xval=finite_xv.x
-    vval=finite_xv.v
+    xval = finite_xv.x
+    vval = finite_xv.v
     IF xval[1] NE 0 THEN BEGIN
       vrange=[MIN(vval, /NAN)-((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1), MAX(vval, /NAN)+((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1)]
       plotsym, 0, symsize, FILL=1
@@ -115,8 +115,8 @@ PRO intres_qcklook, chrom, PATH=path
     ytitle = 'rel. Height'
     v = rel_hght[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
-    xval=finite_xv.x
-    vval=finite_xv.v
+    xval = finite_xv.x
+    vval = finite_xv.v
     IF xval[1] NE 0 THEN BEGIN
       vrange=[MIN(vval, /NAN)-((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1), MAX(vval, /NAN)+((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1)]
       plotsym, 4, symsize, FILL=1
@@ -129,8 +129,8 @@ PRO intres_qcklook, chrom, PATH=path
     ytitle = 'rel. Noise'
     v = rel_noise[sel_subst, *]
     finite_xv = get_finite_xv(x,v)
-    xval=finite_xv.x
-    vval=finite_xv.v
+    xval = finite_xv.x
+    vval = finite_xv.v
     IF xval[1] NE 0 THEN BEGIN
       vrange=[MIN(vval, /NAN)-((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1), MAX(vval, /NAN)+((MAX(vval, /NAN)-MIN(vval, /NAN))*0.1)]
       plotsym, 8, symsize, FILL=1

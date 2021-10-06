@@ -9,22 +9,22 @@
 ;------------------------------------------------------------------------------------------------------------------------
 FUNCTION Hist_QP_TIC, v, x, xbmin, xbmax, xbsize, nxintm
 
-  hist=lonarr(nxintm)
-  vmean=fltarr(nxintm)*!VALUES.F_NAN
+  hist = lonarr(nxintm)
+  vmean = fltarr(nxintm)*!VALUES.F_NAN
 
   vd=where(finite(x+v),nvd); ; finite-> NaN Abfrage
   IF (nvd GT 0) THEN BEGIN
-    xx=x[vd]
-    vv=v[vd]
+    xx = x[vd]
+    vv = v[vd]
   ENDIF ELSE $
     RETURN,Bin
 
   xhist=histogram(xx,MIN=xbmin,MAX=xbmax,BINSIZE=xbsize,REVERSE_INDICES=rx,/NAN)
   FOR i=0L, nxintm-1 DO BEGIN
     IF (rx[i] NE rx[i+1]) THEN BEGIN
-      wx=rx(rx[i]:rx[i+1]-1)
-      hist[i]=xhist[i]
-      vmean[i]=mean(vv[wx])
+      wx = rx(rx[i]:rx[i+1]-1)
+      hist[i] = xhist[i]
+      vmean[i] = mean(vv[wx])
     ENDIF
   ENDFOR
 
@@ -42,11 +42,11 @@ FUNCTION calc_TIC_BenchTOF, chrom, sel_chrom
   x_tic = vd_time[UNIQ(vd_time, SORT(vd_time))]
   v_tic = x_tic*!Values.F_NAN
 
-  ix=WHERE(time[0:-2] NE time[1:*])
+  ix = WHERE(time[0:-2] NE time[1:*])
   ix=[0,ix,N_ELEMENTS(time)]
 
   FOR j=0L, N_ELEMENTS(x_tic)-1 DO BEGIN
-    IF ix[j+1] GT ix[j] THEN v_tic[j]=TOTAL((*chrom[sel_chrom].intensity)[ix[j]:ix[j+1]-1]) $
+    IF ix[j+1] GT ix[j] THEN v_tic[j] = TOTAL((*chrom[sel_chrom].intensity)[ix[j]:ix[j+1]-1]) $
       ELSE v_tic[j]=(*chrom[sel_chrom].intensity)[ix[j]]
   ENDFOR
 
@@ -97,11 +97,11 @@ FUNCTION calc_TIC_QP, chrom, sel_chrom
   xbmin = 0.                                  ; minimum of time axis
   xbmax = MAX(*chrom[sel_chrom].time, /nan)   ; maximum of time axis
   xbsize = 0.5 ; force 2 Hz                   ; time unit divided by xbsize equals nbr of points per second
-  IF chrom[sel_chrom].t_scale EQ 'Minutes' THEN xbsize=xbsize/60. ; adjust to minute-timescale
-  nxint=FLOOR((xbmax-xbmin)/xbsize)+1
-  xint=xbmin+FINDGEN(nxint)*xbsize
-  nxintm=nxint-1
-  xintm=(xint(1:nxint-1)+xint(0:nxint-2))*0.5
+  IF chrom[sel_chrom].t_scale EQ 'Minutes' THEN xbsize = xbsize/60. ; adjust to minute-timescale
+  nxint = FLOOR((xbmax-xbmin)/xbsize)+1
+  xint = xbmin+FINDGEN(nxint)*xbsize
+  nxintm = nxint-1
+  xintm = (xint(1:nxint-1)+xint(0:nxint-2))*0.5
 
 ;+++++++++++++++++++++++
 ; Intensity: fist mass trace / Time-Axis

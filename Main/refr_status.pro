@@ -9,8 +9,8 @@
 ;------------------------------------------------------------------------------------------------------------------------
 PRO refr_status, MESSAGE=message, CLEAR=clear
 ;+++ check if keywords set, return if neither is set
-  key1_set=KEYWORD_SET(message)
-  key2_set=KEYWORD_SET(clear)
+  key1_set = KEYWORD_SET(message)
+  key2_set = KEYWORD_SET(clear)
   IF key1_set+key2_set EQ 0 THEN RETURN
 
   COMMON WIDID

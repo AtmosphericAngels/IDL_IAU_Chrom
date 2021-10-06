@@ -32,9 +32,9 @@ END
 
 FUNCTION export_intres, chrom
 
-  n_chrom=n_elements(chrom)
-  n_subst=n_elements(chrom[0].subst)
-  refi=create_refi()
+  n_chrom = n_elements(chrom)
+  n_subst = n_elements(chrom[0].subst)
+  refi = create_refi()
   subst_strct = { name:    '',$
                   formula: '',$
                   ires: refi }

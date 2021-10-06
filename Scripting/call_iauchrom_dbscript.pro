@@ -45,7 +45,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
         current_exp = ' ('+STRCOMPRESS(STRING(n+1), /REMOVE_ALL)+' of '+STRCOMPRESS(STRING(n_exp), /REMOVE_ALL)+')'
 
         ; check number of paths per experiment (case of data in multiple folders)
-        folder=db_info.data[vd_exp[n]].exp_data_dir
+        folder = db_info.data[vd_exp[n]].exp_data_dir
         IF folder.contains(',') THEN folder=strsplit(folder, ',', /EXTRACT)
 
         ; generate the fname vector that contains paths of all files
@@ -58,7 +58,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
           'tofwerk_h5': filter = '*.h5'
         ENDCASE
 
-        fname=[]
+        fname = []
         FOR i=0, N_ELEMENTS(folder)-1 DO BEGIN
           tmp=FILE_SEARCH(folder[i], filter, COUNT=count)
           fname=[fname,tmp]
@@ -114,7 +114,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
         ENDCASE
 
         ; load ms info & add to chrom
-        refs = read_subst(DEF_FILE=db_info.data[vd_exp[n]].exp_msinfo_path)
+        refs = read_subst(DEF_FILE = db_info.data[vd_exp[n]].exp_msinfo_path)
         refi = create_refi()
         subst = add_ires2subst(refs, refi)
         chrom = add_subst2chrom(chrom, subst)
@@ -128,11 +128,11 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
 
         FOR sel_name=0, n_subst-1 DO BEGIN ; integration loop: substances
           FOR sel_chrom=0, n_chrom-1 DO BEGIN ; integration loop: chromatograms
-            chrom[sel_chrom].subst[sel_name].rt_win=subst[sel_name].rt_win
-            chrom[sel_chrom].subst[sel_name].bl_type=subst[sel_name].bl_type
-            chrom[sel_chrom].subst[sel_name].sigma=subst[sel_name].sigma
-            chrom[sel_chrom].subst[sel_name].quant=subst[sel_name].quant
-            chrom[sel_chrom].subst[sel_name].method=subst[sel_name].method
+            chrom[sel_chrom].subst[sel_name].rt_win = subst[sel_name].rt_win
+            chrom[sel_chrom].subst[sel_name].bl_type = subst[sel_name].bl_type
+            chrom[sel_chrom].subst[sel_name].sigma = subst[sel_name].sigma
+            chrom[sel_chrom].subst[sel_name].quant = subst[sel_name].quant
+            chrom[sel_chrom].subst[sel_name].method = subst[sel_name].method
             IF calcnoise THEN call_noisecalc, sel_chrom, sel_name, 0, /NO_WARN, $
                                               NOISE_UNAME='noise_def_pres'
             call_integration, sel_chrom, sel_name
@@ -144,12 +144,12 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
         ; save chrom file and desired other stuff
         refr_status, message='db script: save results...'+current_exp
         cdate = conc_date(chrom[0].jdate, SYSTIME(/JULIAN), cdate1=cdate1)
-        spec_filename=0
+        spec_filename = 0
         IF KEYWORD_SET(db_info.data[vd_exp[n]].savefile_path) THEN BEGIN
           savepath = db_info.data[vd_exp[n]].savefile_path
           IF STRMATCH(savepath, '*chrom.dat') EQ 1 THEN BEGIN
-              chrom_fname=savepath
-              spec_filename=1
+              chrom_fname = savepath
+              spec_filename = 1
           ENDIF ELSE BEGIN
             chrom_fname = savepath+'\'+cdate+'_chrom.dat'
           ENDELSE
@@ -165,7 +165,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
         subst_fname = chrom_fname.replace('chrom', 'subst')
         save, subst, FILENAME=subst_fname
 
-        IF spec_filename THEN savepath=FILE_DIRNAME(savepath)
+        IF spec_filename THEN savepath = FILE_DIRNAME(savepath)
         IF KEYWORD_SET(db_info.data[vd_exp[n]].save_txtreport) THEN BEGIN
           txt_path = savepath+'\txt_report\'
           FILE_MKDIR, txt_path
@@ -179,7 +179,7 @@ PRO call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECA
         ENDIF
 
         w_fin=WHERE(FINITE(chrom.subst.ires.area) EQ 1, n_fin)
-        hit_index=FLOAT(n_fin)/FLOAT(n_chrom*n_subst)
+        hit_index = FLOAT(n_fin)/FLOAT(n_chrom*n_subst)
         db_info.data[vd_exp[n]].hit_index = STRCOMPRESS(STRING(hit_index, FORMAT='(F5.3)'))
 
         db_info.data[vd_exp[n]].active = 0

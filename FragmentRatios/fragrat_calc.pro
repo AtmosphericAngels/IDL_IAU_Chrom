@@ -32,36 +32,36 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
   ID = WIDGET_INFO(event.top, find_by_uname='subs_preset')
   sel_subst = WIDGET_INFO(ID, /droplist_select)
 
-  sel_masses=FLTARR(2)
+  sel_masses = FLTARR(2)
   ID = WIDGET_INFO(event.top, find_by_uname='frag1_xtm')
-  ixval=cb_ixval(ID)
+  ixval = cb_ixval(ID)
   match=find_match(ixval.val, tot_uniqm)
-  sel_masses[0]=match.val
+  sel_masses[0] = match.val
   ID = WIDGET_INFO(event.top, find_by_uname='frag2_xtm')
-  ixval=cb_ixval(ID)
+  ixval = cb_ixval(ID)
   match=find_match(ixval.val, tot_uniqm)
-  sel_masses[1]=match.val
+  sel_masses[1] = match.val
   IF KEYWORD_SET(use_nom) THEN sel_masses = ROUND(sel_masses) ; use nominal masses (nom)
 
-  psigma=FLTARR(2)
+  psigma = FLTARR(2)
   ID = WIDGET_INFO(event.top, find_by_uname='psigma_left')
-  ixval=cb_ixval(ID)
-  psigma[0]=ixval.val
+  ixval = cb_ixval(ID)
+  psigma[0] = ixval.val
   chrom[sel_chrom].subst[sel_subst].sigma[0]=FIX(ixval.val,type=4)
   ID = WIDGET_INFO(event.top, find_by_uname='psigma_right')
-  ixval=cb_ixval(ID)
-  psigma[1]=ixval.val
+  ixval = cb_ixval(ID)
+  psigma[1] = ixval.val
   chrom[sel_chrom].subst[sel_subst].sigma[1]=FIX(ixval.val,type=4)
 
-  fsigma=FLTARR(2)
+  fsigma = FLTARR(2)
   ID = WIDGET_INFO(event.top, find_by_uname='fsigma_left')
-  ixval=cb_ixval(ID)
-  fsigma[0]=ixval.val
+  ixval = cb_ixval(ID)
+  fsigma[0] = ixval.val
   ID = WIDGET_INFO(event.top, find_by_uname='fsigma_right')
-  ixval=cb_ixval(ID)
-  fsigma[1]=ixval.val
+  ixval = cb_ixval(ID)
+  fsigma[1] = ixval.val
 
-  rt_win=DBLARR(2)
+  rt_win = DBLARR(2)
   ID = WIDGET_INFO(event.top, find_by_uname='rt_min')
   WIDGET_CONTROL, ID, get_value=rtmin
   ID = WIDGET_INFO(event.top, find_by_uname='rt_max')
@@ -77,10 +77,10 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
    v2 = (*chrom[sel_chrom].intensity)[vd2]
 
   IF verbose THEN BEGIN
-    dt0=x2[0]-x1[0]
-    dt=x2-x1
-    dt_mean=mean(dt)
-    dt_sd=stddev(dt)
+    dt0 = x2[0]-x1[0]
+    dt = x2-x1
+    dt_mean = mean(dt)
+    dt_sd = stddev(dt)
     print, "mean timeshift, t_f2-t_f1: ", dt_mean
     print, "timeshift rsd: ", 100D*dt_sd/dt_mean, " %"
   ENDIF
@@ -124,8 +124,8 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
   ENDIF
 
   IF KEYWORD_SET(plot) THEN BEGIN
-    bl1_pwin=WHERE(x1 GT int_win1[0] AND x1 LT int_win1[1])
-    bl2_pwin=WHERE(x2 GT int_win2[0] AND x2 LT int_win2[1])
+    bl1_pwin = WHERE(x1 GT int_win1[0] AND x1 LT int_win1[1])
+    bl2_pwin = WHERE(x2 GT int_win2[0] AND x2 LT int_win2[1])
     pxrange = [int_win1, int_win2]
     xrange = [pxrange[(WHERE(pxrange EQ MIN(pxrange)))[0]], pxrange[(WHERE(pxrange EQ MAX(pxrange)))[0]]]
     pyrange = [MIN(v1[bl1_pwin])-(MAX(v1[bl1_pwin])-MIN(v1[bl1_pwin]))*0.05, $
@@ -148,10 +148,10 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
           ; x2[bl2_pwin], base_fit2[bl2_pwin] ; baseline for peak 2
           ; x1[bl1_pwin], (peak_fit1+base_fit1)[gau1_pwin] ; gaussfit for peak 1
           ; x2[bl2_pwin], (peak_fit2+base_fit2)[gau2_pwin] ; gaussfit for peak 2
-           gau1_xwin=WHERE(x1 GE fit_win1[0] AND x1 LE fit_win1[1])
-           gau2_xwin=WHERE(x2 GE fit_win2[0] AND x2 LE fit_win2[1])
-           gau1_ywin=INDGEN(N_ELEMENTS(gau1_xwin))
-           gau2_ywin=INDGEN(N_ELEMENTS(gau2_xwin))
+           gau1_xwin = WHERE(x1 GE fit_win1[0] AND x1 LE fit_win1[1])
+           gau2_xwin = WHERE(x2 GE fit_win2[0] AND x2 LE fit_win2[1])
+           gau1_ywin = INDGEN(N_ELEMENTS(gau1_xwin))
+           gau2_ywin = INDGEN(N_ELEMENTS(gau2_xwin))
            plot_routine_pobj1, x1[bl1_pwin], v1[bl1_pwin], X_1A=x1[gau1_xwin], V_1A=(peak_fit1+base_fit1)[gau1_ywin], $
                                X_1B=x1[gau1_xwin], V_1B=base_fit1[gau1_ywin], X_1C=x2[bl2_pwin], V_1C=v2[bl2_pwin], $
                                X_1E=x2[gau2_xwin], V_1E=(peak_fit2+base_fit2)[gau2_ywin], X_1F=x2[gau2_xwin], V_1F=base_fit2[gau2_ywin], $
@@ -163,7 +163,7 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
 ; +++++++++++++++++++++++
 ; find time of peak maximum (first fragment), adjust time window and calculate ratio
   t_pmax = f1_strct.rt
-  onesigma=(int_win1[1]-int_win1[0])/TOTAL(psigma)
+  onesigma = (int_win1[1]-int_win1[0])/TOTAL(psigma)
   t_win = [t_pmax-fsigma[0]*onesigma, t_pmax+fsigma[1]*onesigma]
   t_axis= (x1)[WHERE(x1 GE t_win[0] AND x1 LE t_win[1])]
   frag1 = (peak_int1)[WHERE(t1 GE t_win[0] AND t1 LE t_win[1])]
@@ -172,8 +172,8 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
   f2_by_f1 = frag2/frag1
 
   IF dt_correct THEN BEGIN
-    dt_mean=mean(x2-x1)
-    f2_by_f1=SQRT(f2_by_f1^2-dt_mean^2)
+    dt_mean = mean(x2-x1)
+    f2_by_f1 = SQRT(f2_by_f1^2-dt_mean^2)
   ENDIF
 
   ratio = {arr: f2_by_f1, $
@@ -188,7 +188,7 @@ FUNCTION fragrat_calc, event, chrom, fragdata, tot_uniqm, USE_NOM=use_nom, INT_T
 
 ;+++++++++++++++++++++++
 ; generate infotext & plot
-  textcontent=STRARR(8)
+  textcontent = STRARR(8)
   textcontent[0]=                STRING(FILE_BASENAME(chrom[sel_chrom].fname))
   textcontent[1]='F1 m/Q: '    +STRING(STRCOMPRESS(sel_masses[0], /REMOVE_ALL), FORMAT='(F12.4)')
   textcontent[2]='F2 m/Q: '    +STRING(STRCOMPRESS(sel_masses[1], /REMOVE_ALL), FORMAT='(F12.4)')

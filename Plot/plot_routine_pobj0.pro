@@ -13,16 +13,16 @@
 PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x_0c, V_0C=v_0c, X_0D=x_0d, V_0D=v_0d, X_0E=x_0e, V_0E=v_0e, $
                         X_0F=x_0f, V_0F=v_0f, OVER=over, SET_COLORS=set_colors, SET_ZERO=set_zero, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange, $
                         SET_TITLE=set_title, XYTITLE=xytitle, GEN_LEGEND=gen_legend
-;t=systime(1)
+;t = systime(1)
   COMMON COM_PLOT
 
   IF KEYWORD_SET(gen_legend) THEN BEGIN
-    plotnames=STRARR(N_ELEMENTS(gen_legend))+ $
+    plotnames = STRARR(N_ELEMENTS(gen_legend))+ $
                      STRCOMPRESS(STRING(gen_legend, FORMAT='(D14.3)'), /REMOVE_ALL)+' Th'
-    wn0=WHERE(gen_legend NE 0.)
+    wn0 = WHERE(gen_legend NE 0.)
     IF wn0[0] NE -1 THEN BEGIN
-      names=STRARR(N_ELEMENTS(p_obj0))
-      names[wn0]=plotnames[wn0]
+      names = STRARR(N_ELEMENTS(p_obj0))
+      names[wn0] = plotnames[wn0]
       FOR i=0, N_ELEMENTS(p_obj0)-1 DO (p_obj0[i]).name=names[i]
       l=legend(TARGET=p_obj0, SAMPLE_WIDTH=0.15)
     ENDIF
@@ -46,7 +46,7 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
 ;+++++++++++++++++++++++++++++
 ; keyword set_colors: set to color array or keep default
   colors=['k','r','g','b','deep_sky_blue','m','gold']
-  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)]=set_colors[0:(N_ELEMENTS(set_colors)-1)]
+  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)] = set_colors[0:(N_ELEMENTS(set_colors)-1)]
 
 ;+++++++++++++++++++++++++++++
 ; check keywords x- and yrange
@@ -65,14 +65,14 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
 
 ;+++++++++++++++++++++++++++++
 ; check keyword set_title
-  IF NOT KEYWORD_SET(SET_TITLE) THEN title='' ELSE set_title=title
+  IF NOT KEYWORD_SET(SET_TITLE) THEN title = '' ELSE set_title=title
 
 ;+++++++++++++++++++++++++++++
 ; check keyword set_title
   IF KEYWORD_SET(XYTITLE) THEN BEGIN
     (p_obj0[0]).Refresh, /DISABLE
-    (p_obj0[0]).Xtitle=xytitle[0]
-    (p_obj0[0]).Ytitle=xytitle[1]
+    (p_obj0[0]).Xtitle = xytitle[0]
+    (p_obj0[0]).Ytitle = xytitle[1]
     (p_obj0[0]).Refresh
   ENDIF
 
@@ -120,8 +120,8 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
         (p_obj0[4]).Refresh, /DISABLE
         (p_obj0[5]).Refresh, /DISABLE
         (p_obj0[6]).Refresh, /DISABLE
-        (p_obj0[0]).xrange=xrange
-        (p_obj0[0]).yrange=yrange
+        (p_obj0[0]).xrange = xrange
+        (p_obj0[0]).yrange = yrange
         (p_obj0[0]).Color = colors[0]
         (p_obj0[1]).Color = colors[1]
         (p_obj0[2]).Color = colors[2]
@@ -162,8 +162,8 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
         (p_obj0[4]).Refresh, /DISABLE
         (p_obj0[5]).Refresh, /DISABLE
         (p_obj0[6]).Refresh, /DISABLE
-        (p_obj0[0]).xrange=xrange
-        (p_obj0[0]).yrange=yrange
+        (p_obj0[0]).xrange = xrange
+        (p_obj0[0]).yrange = yrange
         (p_obj0[0]).Color = colors[0]
         (p_obj0[1]).Color = colors[1]
         (p_obj0[2]).Color = colors[2]
@@ -196,8 +196,8 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
         (p_obj0[4]).Refresh, /DISABLE
         (p_obj0[5]).Refresh, /DISABLE
         (p_obj0[6]).Refresh, /DISABLE
-        (p_obj0[0]).xrange=xrange
-        (p_obj0[0]).yrange=yrange
+        (p_obj0[0]).xrange = xrange
+        (p_obj0[0]).yrange = yrange
         (p_obj0[0]).Color = colors[0]
         (p_obj0[1]).Color = colors[1]
         (p_obj0[2]).Color = colors[2]
@@ -230,8 +230,8 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
         (p_obj0[4]).Refresh, /DISABLE
         (p_obj0[5]).Refresh, /DISABLE
         (p_obj0[6]).Refresh, /DISABLE
-        (p_obj0[0]).xrange=xrange
-        (p_obj0[0]).yrange=yrange
+        (p_obj0[0]).xrange = xrange
+        (p_obj0[0]).yrange = yrange
         (p_obj0[0]).Color = colors[0]
         (p_obj0[1]).Color = colors[1]
         (p_obj0[2]).Color = colors[2]

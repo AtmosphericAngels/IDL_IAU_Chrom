@@ -14,11 +14,11 @@ PRO intres2txt_allsubst, chrom, PATH=path
 
   IF STRLEN(fname) EQ 0 THEN RETURN
 
-  TAB=STRING(9B)
+  TAB = STRING(9B)
   header=['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
   IF chrom[0].t_scale EQ 'Seconds' THEN header[14]='RT[s]' ELSE header[14]='RT[min]'; timescale given, set header
 
-  ;IF chrom[0].iauchrom_vers EQ '(not specified)' THEN iauchrom_vers='IAU_CHROM' ELSE iauchrom_vers='IAU_CHROM_v'+chrom[0].iauchrom_vers
+  ;IF chrom[0].iauchrom_vers EQ '(not specified)' THEN iauchrom_vers = 'IAU_CHROM' ELSE iauchrom_vers='IAU_CHROM_v'+chrom[0].iauchrom_vers
 
   OPENW, lun, fname, /GET_LUN
   ;PRINTF, lun, '***'

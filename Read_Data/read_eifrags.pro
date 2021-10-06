@@ -106,9 +106,9 @@ END
 
 FUNCTION read_eifrags, PATH=path, FNAME=fname
 
-  IF NOT KEYWORD_SET(path) THEN path='C:\'
+  IF NOT KEYWORD_SET(path) THEN path = 'C:\'
 
-;  fname='C:\Users\oberstei\Documents\Promotion\Allgemeines\Fragmentierung\txtexport&ptables\20150203_Fragments_DB.txt'
+;  fname = 'C:\Users\oberstei\Documents\Promotion\Allgemeines\Fragmentierung\txtexport&ptables\20150203_Fragments_DB.txt'
   IF NOT KEYWORD_SET(fname) THEN info_file = DIALOG_PICKFILE(TITLE = "Please choose fragments.txt with fragment data", $
                                                              PATH=path) ELSE info_file=fname
 
@@ -116,9 +116,9 @@ FUNCTION read_eifrags, PATH=path, FNAME=fname
 
   OPENR, unit, info_file, /GET_LUN
 
-  line=''
+  line = ''
   READF, unit, line
-  separator=STRING(9B)
+  separator = STRING(9B)
   temp0 = ''
   n_row = 0L
 

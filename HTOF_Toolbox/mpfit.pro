@@ -20,7 +20,7 @@
 ;                 FTOL=ftol, XTOL=xtol, GTOL=gtol, NITER=niter,
 ;                 STATUS=status, ITERPROC=iterproc, ITERARGS=iterargs,
 ;                 COVAR=covar, PERROR=perror, BESTNORM=bestnorm,
-;                 PARINFO=parinfo)
+;                 PARINFO = parinfo)
 ;
 ; DESCRIPTION:
 ;
@@ -154,15 +154,15 @@
 ;  derivatives for every free parameter.
 ;
 ;  Second, the user may request explicit derivatives for specifically
-;  selected parameters using the PARINFO.MPSIDE=3 (see "CONSTRAINING
+;  selected parameters using the PARINFO.MPSIDE = 3 (see "CONSTRAINING
 ;  PARAMETER VALUES WITH THE PARINFO KEYWORD" below).  In this
 ;  strategy, the user picks and chooses which parameter derivatives
 ;  are computed explicitly versus numerically.  When PARINFO[i].MPSIDE
 ;  EQ 3, then the ith parameter derivative is computed explicitly.
 ;
-;  The keyword setting AUTODERIVATIVE=0 always globally overrides the
-;  individual values of PARINFO.MPSIDE.  Setting AUTODERIVATIVE=0 is
-;  equivalent to resetting PARINFO.MPSIDE=3 for all parameters.
+;  The keyword setting AUTODERIVATIVE = 0 always globally overrides the
+;  individual values of PARINFO.MPSIDE.  Setting AUTODERIVATIVE = 0 is
+;  equivalent to resetting PARINFO.MPSIDE = 3 for all parameters.
 ;
 ;  Even if the user requests explicit derivatives for some or all
 ;  parameters, MPFIT will not always request explicit derivatives on
@@ -355,7 +355,7 @@
 ;
 ;     .STEP - the step size to be used in calculating the numerical
 ;             derivatives.  If set to zero, then the step size is
-;             computed automatically.  Ignored when AUTODERIVATIVE=0.
+;             computed automatically.  Ignored when AUTODERIVATIVE = 0.
 ;             This value is superceded by the RELSTEP value.
 ;
 ;     .RELSTEP - the *relative* step size to be used in calculating
@@ -381,11 +381,11 @@
 ;              function to compute the derivative explicitly (see
 ;              section on "EXPLICIT DERIVATIVES").  AUTODERIVATIVE=0
 ;              overrides this setting for all parameters, and is
-;              equivalent to MPSIDE=3 for all parameters.  For
+;              equivalent to MPSIDE = 3 for all parameters.  For
 ;              MPSIDE=0, the "automatic" one-sided derivative method
 ;              will chose a direction for the finite difference which
 ;              does not violate any constraints.  The other methods
-;              (MPSIDE=-1 or MPSIDE=1) do not perform this check.  The
+;              (MPSIDE = -1 or MPSIDE=1) do not perform this check.  The
 ;              two-sided method is in principle more precise, but
 ;              requires twice as many function evaluations.  Default:
 ;              0.
@@ -611,7 +611,7 @@
 ;                    must provide the explicit derivatives.
 ;                    Default: set (=1)
 ;                    NOTE: to supply your own explicit derivatives,
-;                      explicitly pass AUTODERIVATIVE=0
+;                      explicitly pass AUTODERIVATIVE = 0
 ;
 ;   BESTNORM - upon return, the value of the summed squared weighted
 ;              residuals for the returned parameter values,
@@ -902,7 +902,7 @@
 ;             curviex.htm).  A value of 0 indicates no damping.
 ;             Default: 0
 ;
-;             Note: RESDAMP doesn't work with AUTODERIV=0
+;             Note: RESDAMP doesn't work with AUTODERIV = 0
 ;
 ;   STATUS - an integer status code is returned.  All values greater
 ;            than zero can represent success (however STATUS EQ 5 may
@@ -1303,7 +1303,7 @@
 ;          PFREE_INDEX; add a fencepost to prevent recursion
 ;          CM, 2010-10-27
 ;   1.79 - Documentation corrections.  CM, 2011-08-26
-;   1.81 - Fix bug in interaction of AUTODERIVATIVE=0 and .MPSIDE=3;
+;   1.81 - Fix bug in interaction of AUTODERIVATIVE = 0 and .MPSIDE=3;
 ;          Document FJAC_MASK. CM, 2012-05-08
 ;
 ;  $Id: mpfit.pro,v 1.82 2012/09/27 23:59:44 cmarkwar Exp $
@@ -1356,7 +1356,7 @@ pro mpfit_setmachar, double=isdouble
   if (!version.release) LT 5 then dummy = check_math(1, 1)
 
   mch = 0.
-  mch = machar(double=keyword_set(isdouble))
+  mch = machar(double = keyword_set(isdouble))
   dmachep = mch.eps
   dmaxnum = mch.xmax
   dminnum = mch.xmin
@@ -1490,7 +1490,7 @@ function mpfit_fdjac2, fcn, x, fvec, step, ulimited, ulimit, dside, $
 
   ;; Compute analytical derivative if requested
   ;; Two ways to enable computation of explicit derivatives:
-  ;;   1. AUTODERIVATIVE=0
+  ;;   1. AUTODERIVATIVE = 0
   ;;   2. AUTODERIVATIVE=1, but P[i].MPSIDE EQ 3
 
   if keyword_set(autoderiv) EQ 0 OR max(dside[ifree] EQ 3) EQ 1 then begin
@@ -3330,7 +3330,7 @@ function mpfit, fcn, xall, FUNCTARGS=fcnargs, SCALE_FCN=scalfcn, $
   ;; Save a copy of the Jacobian if the user requests it...
   if keyword_set(calc_fjac) then output_fjac = fjac
 
-  ;; =====================
+  ;; = = ===================
   ;; Compute the QR factorization of the jacobian
   catch_msg = 'calling MPFIT_QRFAC'
   ;;  IN:      Jacobian
@@ -3342,7 +3342,7 @@ function mpfit, fcn, xall, FUNCTARGS=fcnargs, SCALE_FCN=scalfcn, $
   ;; RDIAG - diagonal elements of R matrix
   ;; ACNORM - norms of input Jacobian matrix before factoring
 
-  ;; =====================
+  ;; = = ===================
   ;; On the first iteration if "diag" is unspecified, scale
   ;; according to the norms of the columns of the initial jacobian
   catch_msg = 'rescaling diagonal elements'

@@ -44,7 +44,7 @@
 FUNCTION strreplace, Strings, Find1, Replacement1
 
   NP        = N_PARAMS()  ;   Check integrity of input parameter
-  if (NP ne 3) then msg=DIALOG_MESSAGE('Must be called with 3 parameters: '+$
+  if (NP ne 3) then msg = DIALOG_MESSAGE('Must be called with 3 parameters: '+$
     'Strings, Find, Replacement.', /ERROR)
 
   sz        = SIZE(Strings)
@@ -57,7 +57,7 @@ FUNCTION strreplace, Strings, Find1, Replacement1
 
   if (nreplace eq 0) then return, Strings
 
-  Replacement=STRING(Replacement1)
+  Replacement = STRING(Replacement1)
   Flen      = STRLEN(Find)
 
   for i=0, nreplace-1 do begin

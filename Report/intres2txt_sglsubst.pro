@@ -9,19 +9,19 @@
 ;------------------------------------------------------------------------------------------------------------------------
 PRO intres2txt_sglsubst, chrom, sel_chrom, sel_name, PATH=path, ALL=all, NO_PICKFILE=no_pickfile
 
-  fname=''
-  fpath=''
+  fname = ''
+  fpath = ''
 
-  IF KEYWORD_SET(no_pickfile) THEN fpath=path ELSE $
+  IF KEYWORD_SET(no_pickfile) THEN fpath = path ELSE $
     IF KEYWORD_SET(all) THEN $
       fpath = DIALOG_PICKFILE(PATH=path, /WRITE, /OVERWRITE_PROMPT, /DIRECTORY) ELSE $
         fname = DIALOG_PICKFILE(PATH=path, /WRITE, FILE=STRTRIM(STRCOMPRESS(chrom[0].subst[sel_name].name, /REMOVE_ALL))+'.txt')
 
   IF STRLEN(fname) EQ 0 AND STRLEN(fpath) EQ 0 THEN RETURN ; export aborted
 
-  TAB=STRING(9B)
+  TAB = STRING(9B)
   header=['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
-  IF chrom[0].t_scale EQ 'Seconds' THEN header[14]='RT[s]' ELSE header[14]='RT[min]'
+  IF chrom[0].t_scale EQ 'Seconds' THEN header[14] = 'RT[s]' ELSE header[14]='RT[min]'
 
 ; ***
 ; ***
@@ -29,10 +29,10 @@ PRO intres2txt_sglsubst, chrom, sel_chrom, sel_name, PATH=path, ALL=all, NO_PICK
   IF KEYWORD_SET(all) THEN BEGIN ; *** all substances to individual txt files
     n_chrom = N_ELEMENTS(chrom.fname)
   ;  IF n_chrom GE 4 THEN ix = n_chrom*(1./3.) ELSE ix = 0
-    ix=sel_chrom
+    ix = sel_chrom
       FOR sel_name=0, N_ELEMENTS(chrom[ix].subst.name)-1 DO BEGIN
 
-          prefix='nd_'
+          prefix = 'nd_'
           IF FINITE(chrom[ix].subst[sel_name].ires.rt) THEN $
             prefix=STRCOMPRESS(STRING(chrom[ix].subst[sel_name].ires.rt, FORMAT='(F12.2)'), /REMOVE_ALL)+'_'    ; determine txt file prefix: rt from ires.
             IF prefix EQ 'nd_' AND FINITE(chrom[ix].subst[sel_name].rt) THEN $

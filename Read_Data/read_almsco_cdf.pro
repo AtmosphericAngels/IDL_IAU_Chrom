@@ -68,8 +68,8 @@ FUNCTION read_almsco_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=
 
  ; diagnose if mass doubles exist
  ; ***
-;      rm=(*refd.mass)
-;      ivd=0L
+;      rm = (*refd.mass)
+;      ivd = 0L
 ;      print, fname[i]
 ;      for m=1L, n_elements(rm)-1 do begin
 ;        if rm[m-1] eq rm[m] and rm[m] lt 200. then begin ;

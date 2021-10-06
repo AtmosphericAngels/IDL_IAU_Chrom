@@ -34,7 +34,7 @@ function validateName, varname
 	; dash is replaced with an underscore.
 
 	; Initialize the name.
-	name=varname
+	name = varname
 
 	; If the name starts with a number, prepend it with an underscore.
 	if (strpos(varname, '0') EQ 0) then name = strcompress("_"+varname)
@@ -91,17 +91,17 @@ end
 FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattname, varname=varname, lattname=lattname
 
 	IF KEYWORD_SET(SUFFIX) THEN BEGIN
-		suffix_cdf='.'+suffix
+		suffix_cdf = '.'+suffix
 	ENDIF ELSE BEGIN
-		suffix_cdf='.nc'
+		suffix_cdf = '.nc'
 	ENDELSE
 
 	IF (N_PARAMS() EQ 0) OR (N_ELEMENTS(fname) EQ 0) THEN BEGIN
-		title='Select NetCDF file to load (*'+suffix_cdf+') to load'
-		filter='*'+suffix_cdf
+		title = 'Select NetCDF file to load (*'+suffix_cdf+') to load'
+		filter = '*'+suffix_cdf
 		fname_cdf=DIALOG_PICKFILE(/READ,TITLE=title,FILTER=filter)
 	ENDIF ELSE BEGIN
-		fname_cdf=fname
+		fname_cdf = fname
 	ENDELSE
 
 	io=FILE_TEST(fname_cdf,/READ,/REGULAR)
@@ -115,7 +115,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 
 	; Ensure that the netCDF format is supported on the current platform.
 	IF NOT(NCDF_EXISTS()) THEN BEGIN
-	   msg=DIALOG_MESSAGE("The Network Common Data Format is not supported on this platform.")
+	   msg = DIALOG_MESSAGE("The Network Common Data Format is not supported on this platform.")
 	   RETALL
 	ENDIF
 
@@ -127,16 +127,16 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 	ENDIF
 
 	; Retrieve general information about this netCDF file.
-	ncinfo=NCDF_INQUIRE(ncid)
+	ncinfo = NCDF_INQUIRE(ncid)
 
-	IF (ncinfo.Ngatts GT 0) THEN gattname=STRARR(ncinfo.Ngatts) ELSE gattname=''
+	IF (ncinfo.Ngatts GT 0) THEN gattname = STRARR(ncinfo.Ngatts) ELSE gattname=''
 
 	; Place the NCDF global attributes in idl structure.
 	FOR i=0, ncinfo.Ngatts-1 DO BEGIN
 		name=NCDF_ATTNAME(ncid,/GLOBAL,i)
 		NCDF_ATTGET,ncid,/GLOBAL,name,vals
 		info=NCDF_ATTINQ(ncid,name,/GLOBAL)
-     	IF (info.datatype EQ 'CHAR') THEN vals=STRING(vals)
+     	IF (info.datatype EQ 'CHAR') THEN vals = STRING(vals)
 		IF (i EQ 0) THEN BEGIN
 		  ; replace illegal characters!
 		  name = name.replace('.', '_')
@@ -146,10 +146,10 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 		  name = name.replace('.', '_')
 			ncdf=CREATE_STRUCT(ncdf,validateName(name),vals)
 		ENDELSE
-		gattname[i]=name
+		gattname[i] = name
 	ENDFOR
 
-	IF (ncinfo.Nvars GT 0) THEN varname=STRARR(ncinfo.Nvars) ELSE varname=''
+	IF (ncinfo.Nvars GT 0) THEN varname = STRARR(ncinfo.Nvars) ELSE varname=''
 
 	; Place the NCDF variables and local attributes in the same idl structure.
 	FOR i=0, ncinfo.Nvars-1 DO BEGIN
@@ -160,15 +160,15 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
       ENDIF ELSE BEGIN
          ncdf=CREATE_STRUCT(ncdf,validateName(varinfo.Name),vals)
       ENDELSE
-		varname[i]=varinfo.Name
+		varname[i] = varinfo.Name
 		FOR j=0, varinfo.Natts-1 DO BEGIN
          name=NCDF_ATTNAME(ncid,i,j)
 			NCDF_ATTGET,ncid,i,name,vals
 			info=NCDF_ATTINQ(ncid,i,name)
-			IF (info.datatype EQ 'CHAR') THEN vals=STRING(vals)
+			IF (info.datatype EQ 'CHAR') THEN vals = STRING(vals)
 			ncdf=CREATE_STRUCT(ncdf,validateName(varinfo.Name)+"_"+strcompress(name,/REMOVE_ALL),vals)
 			IF (n_elements(lattname) EQ 0) THEN BEGIN
-				lattname=varname[i]+"_"+name
+				lattname = varname[i]+"_"+name
 			ENDIF ELSE BEGIN
 				lattname=[lattname,varname[i]+"_"+name]
 			ENDELSE

@@ -14,7 +14,7 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
                               X_1D=x_1d, V_1D=v_1d, X_1E=x_1e, V_1E=v_1e, X_1F=x_1f, V_1F=v_1f, $
                               OVER=over, SET_ZERO=set_zero, TITLE=title, SET_COLORS=set_colors, $
                               XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange, XYTITLE=xytitle
-;t=systime(1)
+;t = systime(1)
   COMMON COM_PLOT
 
 ;+++++++++++++++++++++++++++++
@@ -62,13 +62,13 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
 ;+++++++++++++++++++++++++++++
 ; keyword set_colors: set to color array or keep default
   colors=['k','r','k','g','orange','r','b']
-  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)]=set_colors[0:(N_ELEMENTS(set_colors)-1)]
+  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)] = set_colors[0:(N_ELEMENTS(set_colors)-1)]
 
 ;+++++++++++++++++++++++++++++
 ; check if x- and y-title defined
   IF KEYWORD_SET(XYTITLE) THEN BEGIN
-    (p_obj1[0]).Xtitle=xytitle[0]
-    (p_obj1[0]).Ytitle=xytitle[1]
+    (p_obj1[0]).Xtitle = xytitle[0]
+    (p_obj1[0]).Ytitle = xytitle[1]
   ENDIF
 
 
@@ -113,8 +113,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
 ;        (p_obj1[0]).title = title
 ;        (p_obj1[0]).color = 'black'
 ;        (p_obj1[0]).thick = 1
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -143,9 +143,9 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[1]).refresh, /DISABLE
 ;        (p_obj1[1]).color = 'red'
 ;        (p_obj1[1]).thick = 2
-        (p_obj1[1]).xrange=xrange
-        (p_obj1[1]).yrange=yrange
-        (p_obj1[1]).title=title
+        (p_obj1[1]).xrange = xrange
+        (p_obj1[1]).yrange = yrange
+        (p_obj1[1]).title = title
         (p_obj1[1]).SetData, x,v
         (p_obj1[1]).refresh
       END
@@ -155,8 +155,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[2]).refresh, /DISABLE
 ;        (p_obj1[2]).color = 'blue'
 ;        (p_obj1[2]).thick = 2
-        (p_obj1[2]).xrange=xrange
-        (p_obj1[2]).yrange=yrange
+        (p_obj1[2]).xrange = xrange
+        (p_obj1[2]).yrange = yrange
         (p_obj1[2]).SetData, x,v
         (p_obj1[2]).refresh
       END
@@ -166,8 +166,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[3]).refresh, /DISABLE
 ;        (p_obj1[3]).color = 'green'
 ;        (p_obj1[3]).thick = 2
-        (p_obj1[3]).xrange=xrange
-        (p_obj1[3]).yrange=yrange
+        (p_obj1[3]).xrange = xrange
+        (p_obj1[3]).yrange = yrange
         (p_obj1[3]).SetData, x,v
         (p_obj1[3]).refresh
       END
@@ -177,8 +177,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
 ;        (p_obj1[4]).color = 'orange'
 ;        (p_obj1[4]).thick = 2
-        (p_obj1[4]).xrange=xrange
-        (p_obj1[4]).yrange=yrange
+        (p_obj1[4]).xrange = xrange
+        (p_obj1[4]).yrange = yrange
         (p_obj1[4]).SetData, x,v
         (p_obj1[4]).refresh
       END
@@ -189,8 +189,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
   ;      (p_obj1[5]).color = 'red'
   ;      (p_obj1[5]).linestyle= 2
   ;      (p_obj1[5]).thick = 3
-        (p_obj1[5]).xrange=xrange
-        (p_obj1[5]).yrange=yrange
+        (p_obj1[5]).xrange = xrange
+        (p_obj1[5]).yrange = yrange
         (p_obj1[5]).SetData, x,v
         (p_obj1[5]).refresh
       END
@@ -201,8 +201,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[6]).color = 'blue'
         (p_obj1[6]).linestyle= 2
         (p_obj1[6]).thick = 3
-        (p_obj1[6]).xrange=xrange
-        (p_obj1[6]).yrange=yrange
+        (p_obj1[6]).xrange = xrange
+        (p_obj1[6]).yrange = yrange
         (p_obj1[6]).SetData, x,v
         (p_obj1[6]).refresh
       END
@@ -216,8 +216,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -250,8 +250,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -284,8 +284,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -318,8 +318,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -352,8 +352,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -363,17 +363,17 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[6]).Color = colors[6]
         (p_obj1[0]).SetData,  x, v
         (p_obj1[1]).SetData, x_1a, v_1a
-        (p_obj1[1]).thick=2
+        (p_obj1[1]).thick = 2
         (p_obj1[2]).SetData, x_1b, v_1b
-        (p_obj1[2]).thick=2
+        (p_obj1[2]).thick = 2
         (p_obj1[3]).SetData, 0,0
         (p_obj1[4]).SetData, 0,0
         (p_obj1[5]).SetData, x_1e, v_1e
         (p_obj1[5]).linestyle = 2
-        (p_obj1[5]).thick=3
+        (p_obj1[5]).thick = 3
         (p_obj1[6]).SetData, x_1f, v_1f
         (p_obj1[6]).linestyle = 2
-        (p_obj1[6]).thick=3
+        (p_obj1[6]).thick = 3
         (p_obj1[0]).refresh
         (p_obj1[1]).refresh
         (p_obj1[2]).refresh
@@ -392,8 +392,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]
@@ -426,8 +426,8 @@ PRO plot_routine_pobj1, x, v, X_1A=x_1a, V_1A=v_1a, X_1B=x_1b, V_1B=v_1b, X_1C=x
         (p_obj1[4]).refresh, /DISABLE
         (p_obj1[5]).refresh, /DISABLE
         (p_obj1[6]).refresh, /DISABLE
-        (p_obj1[0]).xrange=xrange
-        (p_obj1[0]).yrange=yrange
+        (p_obj1[0]).xrange = xrange
+        (p_obj1[0]).yrange = yrange
         (p_obj1[0]).Color = colors[0]
         (p_obj1[1]).Color = colors[1]
         (p_obj1[2]).Color = colors[2]

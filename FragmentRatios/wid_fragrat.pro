@@ -108,7 +108,7 @@ PRO wid_fragrat_ini
 
 ;+++++++++++++++++++++++
 ; realize the widget
-  widid.mrwid=mr_base
+  widid.mrwid = mr_base
   WIDGET_CONTROL, mr_base, /REALIZE
   XMANAGER, 'wid_fragrat_ini', mr_base, /NO_BLOCK, event_handler='wid_fragrat_handle'
 
@@ -158,12 +158,12 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) EQ 8 THEN BEGIN ; fragdata exists, ask if overwrite
           msg = DIALOG_MESSAGE('Fragment Data found. Overwrite?', /QUESTION)
-            IF msg EQ 'Yes' THEN fragdata=read_eifrags(path=path)
-        ENDIF ELSE fragdata=read_eifrags(path=path)
+            IF msg EQ 'Yes' THEN fragdata = read_eifrags(path=path)
+        ENDIF ELSE fragdata = read_eifrags(path=path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs=read_subst(path=path)
+          refs = read_subst(path=path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-          refi=create_refi()
+          refi = create_refi()
           subst=add_ires2subst(refs, refi)
           chrom=add_subst2chrom(chrom, subst)
         ENDIF
@@ -174,9 +174,9 @@ PRO wid_fragrat_handle, event
     'read_msinfo' : $
       BEGIN
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs=read_subst(path=path)
+          refs = read_subst(path=path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-          refi=create_refi()
+          refi = create_refi()
           subst=add_ires2subst(refs, refi)
           chrom=add_subst2chrom(chrom, subst)
         ENDIF ELSE BEGIN ; msinfo loaded, ask for overwrite
@@ -184,11 +184,11 @@ PRO wid_fragrat_handle, event
           IF msg EQ 'Yes' THEN BEGIN
             refr_status, message='reloading msinfo...'
             refs=read_subst(PATH=path, USE_NOM=use_nom)
-            refi=create_refi()
+            refi = create_refi()
             subst=add_ires2subst(refs, refi)                          ; reload subst (overwrite)
             empty_chrom = create_empty_chromstrct(chrom, /CHROM_ONLY) ; reload msinfo (overwrite)
             STRUCT_ASSIGN, chrom, empty_chrom
-            chrom=empty_chrom
+            chrom = empty_chrom
             chrom=add_subst2chrom(chrom, subst)
             refr_status, message='msinfo reloaded.'
           ENDIF
@@ -203,9 +203,9 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) NE 8 THEN fragdata=read_eifrags(path=path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs=read_subst(path=path)
+          refs = read_subst(path=path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-          refi=create_refi()
+          refi = create_refi()
           subst=add_ires2subst(refs, refi)
           chrom=add_subst2chrom(chrom, subst)
           set_substlist, event, chrom
@@ -219,9 +219,9 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) NE 8 THEN fragdata=read_eifrags(path=path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs=read_subst(path=path)
+          refs = read_subst(path=path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-          refi=create_refi()
+          refi = create_refi()
           subst=add_ires2subst(refs, refi)
           chrom=add_subst2chrom(chrom, subst)
           set_substlist, event, chrom
@@ -259,8 +259,8 @@ PRO wid_fragrat_handle, event
       BEGIN
         rt_min_ID=WIDGET_INFO(event.top, find_by_uname='rt_min')
         WIDGET_CONTROL, rt_min_ID, get_value=rt_min
-        IF rt_min GT chrom[sel_chrom].subst[sel_subst].rt_win[1] THEN rt_min=MIN(*chrom[sel_chrom].time)
-        chrom[sel_chrom].subst[sel_subst].rt_win[0]=rt_min
+        IF rt_min GT chrom[sel_chrom].subst[sel_subst].rt_win[1] THEN rt_min = MIN(*chrom[sel_chrom].time)
+        chrom[sel_chrom].subst[sel_subst].rt_win[0] = rt_min
         WIDGET_CONTROL, rt_min_ID, set_value=chrom[sel_chrom].subst[sel_subst].rt_win[0]
         set_fragplot0, event, chrom, sel_chrom, sel_subst, tot_uniqm
       END
@@ -269,8 +269,8 @@ PRO wid_fragrat_handle, event
       BEGIN
         rt_max_ID=WIDGET_INFO(event.top, find_by_uname='rt_max')
         WIDGET_CONTROL, rt_max_ID, get_value=rt_max
-        IF rt_max LT chrom[sel_chrom].subst[sel_subst].rt_win[0] THEN rt_max=MAX(*chrom[sel_chrom].time)
-        chrom[sel_chrom].subst[sel_subst].rt_win[1]=rt_max
+        IF rt_max LT chrom[sel_chrom].subst[sel_subst].rt_win[0] THEN rt_max = MAX(*chrom[sel_chrom].time)
+        chrom[sel_chrom].subst[sel_subst].rt_win[1] = rt_max
         WIDGET_CONTROL, rt_max_ID, set_value=chrom[sel_chrom].subst[sel_subst].rt_win[1]
         set_fragplot0, event, chrom, sel_chrom, sel_subst, tot_uniqm
       END
@@ -362,7 +362,7 @@ PRO wid_fragrat_handle, event
         ENDIF
         refr_status, message='calculating fragment ratios...'
         adj_fragments, event
-        allfragres={}
+        allfragres = {}
           ID = WIDGET_INFO(event.top, find_by_uname='sel_chrom')
         FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
           WIDGET_CONTROL, ID, SET_DROPLIST_SELECT=i

@@ -125,8 +125,8 @@ PRO wid_plotctrls_handle, event
 
     'p0_get': $ ; get current x/yrange for plot0
       BEGIN
-        p0_xrange=(p_obj0[0]).xrange
-        p0_yrange=(p_obj0[0]).yrange
+        p0_xrange = (p_obj0[0]).xrange
+        p0_yrange = (p_obj0[0]).yrange
         ID=WIDGET_INFO(event.top, find_by_uname='p0_x0')
         WIDGET_CONTROL, ID, SET_VALUE=STRCOMPRESS(STRING(p0_xrange[0], FORMAT='(F15.2)'))
         ID=WIDGET_INFO(event.top, find_by_uname='p0_x1')
@@ -141,30 +141,30 @@ PRO wid_plotctrls_handle, event
       BEGIN
         ID=WIDGET_INFO(event.top, find_by_uname='p0_x0')
         WIDGET_CONTROL, ID, GET_VALUE=x0
-        x0=FLOAT(x0)
+        x0 = FLOAT(x0)
         ID=WIDGET_INFO(event.top, find_by_uname='p0_x1')
         WIDGET_CONTROL, ID, GET_VALUE=x1
-        x1=FLOAT(x1)
+        x1 = FLOAT(x1)
         IF x0 GE x1 THEN BEGIN
-          x1=x0+1.
+          x1 = x0+1.
           WIDGET_CONTROL, ID, SET_VALUE=STRING(x0+1.)
         ENDIF
 
         ID=WIDGET_INFO(event.top, find_by_uname='p0_y0')
         WIDGET_CONTROL, ID, GET_VALUE=y0
-        y0=FLOAT(y0)
+        y0 = FLOAT(y0)
         ID=WIDGET_INFO(event.top, find_by_uname='p0_y1')
         WIDGET_CONTROL, ID, GET_VALUE=y1
-        y1=FLOAT(y1)
+        y1 = FLOAT(y1)
         IF y0 GE y1 THEN BEGIN
-          y1=y0+1.
+          y1 = y0+1.
           WIDGET_CONTROL, ID, SET_VALUE=STRING(y0+1.)
         ENDIF
 
         p0_XRANGE=[x0,x1]
         p0_YRANGE=[y0,y1]
-        (p_obj0[0]).xrange=p0_xrange
-        (p_obj0[0]).yrange=p0_yrange
+        (p_obj0[0]).xrange = p0_xrange
+        (p_obj0[0]).yrange = p0_yrange
       END
 
 
@@ -234,8 +234,8 @@ PRO wid_plotctrls_handle, event
 
       'p1_get': $ ; get current x/yrange for plot1
         BEGIN
-          p1_xrange=(p_obj1[0]).xrange
-          p1_yrange=(p_obj1[0]).yrange
+          p1_xrange = (p_obj1[0]).xrange
+          p1_yrange = (p_obj1[0]).yrange
           ID=WIDGET_INFO(event.top, find_by_uname='p1_x0')
           WIDGET_CONTROL, ID, SET_VALUE=STRCOMPRESS(STRING(p1_xrange[0], FORMAT='(F15.2)'))
           ID=WIDGET_INFO(event.top, find_by_uname='p1_x1')
@@ -250,30 +250,30 @@ PRO wid_plotctrls_handle, event
         BEGIN
           ID=WIDGET_INFO(event.top, find_by_uname='p1_x0')
           WIDGET_CONTROL, ID, GET_VALUE=x0
-          x0=FLOAT(x0)
+          x0 = FLOAT(x0)
           ID=WIDGET_INFO(event.top, find_by_uname='p1_x1')
           WIDGET_CONTROL, ID, GET_VALUE=x1
-          x1=FLOAT(x1)
+          x1 = FLOAT(x1)
           IF x0 GE x1 THEN BEGIN
-            x1=x0+1.
+            x1 = x0+1.
             WIDGET_CONTROL, ID, SET_VALUE=STRING(x0+1.)
           ENDIF
 
           ID=WIDGET_INFO(event.top, find_by_uname='p1_y0')
           WIDGET_CONTROL, ID, GET_VALUE=y0
-          y0=FLOAT(y0)
+          y0 = FLOAT(y0)
           ID=WIDGET_INFO(event.top, find_by_uname='p1_y1')
           WIDGET_CONTROL, ID, GET_VALUE=y1
-          y1=FLOAT(y1)
+          y1 = FLOAT(y1)
           IF y0 GE y1 THEN BEGIN
-            y1=y0+1.
+            y1 = y0+1.
             WIDGET_CONTROL, ID, SET_VALUE=STRING(y0+1.)
           ENDIF
 
           p1_XRANGE=[x0,x1]
           p1_YRANGE=[y0,y1]
-          (p_obj1[0]).xrange=p1_xrange
-          (p_obj1[0]).yrange=p1_yrange
+          (p_obj1[0]).xrange = p1_xrange
+          (p_obj1[0]).yrange = p1_yrange
 
         END
 

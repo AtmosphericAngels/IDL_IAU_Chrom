@@ -49,7 +49,7 @@ PRO IAU_Chrom
 
   wid_main_ini
 
-;  Outdir='D:\PROGRAMMING\IDL\VM\_tmp'
+;  Outdir = 'D:\PROGRAMMING\IDL\VM\_tmp'
 ;  sfile='D:\PROGRAMMING\IDL\VM\_tmp\IAU_Chrom_v5X\IAU_Chrom.sav'
 ;  MAKE_RT, 'IAU_Chrom', Outdir, SAVEFILE=sfile, /OVERWRITE
 
@@ -644,7 +644,7 @@ END
 ; ***
 ; 2014-11-28: v4.90
 ; - changed display of ionmass on plot1 to actually used masstrace.
-; - wid integration: refresh behavior / no update of ionmass display on plot1 when refresh=1 (e.g. integration
+; - wid integration: refresh behavior / no update of ionmass display on plot1 when refresh = 1 (e.g. integration
 ;   applied).
 ; - gaussfit: width check time axis scaling added. Changed minimum width to 6 sigma (was 12).
 ; - plot x- and yrange: added PRO wid_ctrlplot0 and PRO wid_ctrlplot1 to manually set ranges.

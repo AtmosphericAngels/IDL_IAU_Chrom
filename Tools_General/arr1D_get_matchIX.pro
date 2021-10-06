@@ -27,8 +27,8 @@ FUNCTION arr1D_get_matchIX, ref_arr, comp_arr, CASE_SENSI=case_sensi, NO_MATCH_I
 
   ; check for string type and case sensitive keyword
   IF type_ref EQ 7 AND NOT KEYWORD_SET(case_sensi) THEN BEGIN
-    ref_arr=STRUPCASE(TEMPORARY(ref_arr))
-    comp_arr=STRUPCASE(TEMPORARY(comp_arr))
+    ref_arr = STRUPCASE(TEMPORARY(ref_arr))
+    comp_arr = STRUPCASE(TEMPORARY(comp_arr))
   ENDIF
 
   match_ix=MAKE_ARRAY(N_ELEMENTS(ref_arr), /LONG, VALUE=-1)

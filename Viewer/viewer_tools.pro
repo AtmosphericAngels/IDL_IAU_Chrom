@@ -108,7 +108,7 @@ FUNCTION refresh_cboxes_mass, event, SEL_CHROM=sel_chrom, UNAME_MASS_LIST=uname_
 
   COMMON DATA
 
-  IF NOT KEYWORD_SET(sel_chrom) THEN sel_chrom=0
+  IF NOT KEYWORD_SET(sel_chrom) THEN sel_chrom = 0
 
   vd = tot_uniqm ; define valid data (masses) for cboxes from common variable tot_uniqm
 
@@ -120,7 +120,7 @@ FUNCTION refresh_cboxes_mass, event, SEL_CHROM=sel_chrom, UNAME_MASS_LIST=uname_
              sel_chrom: sel_chrom}
 
     cbox_ID = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[i])
-    val_ind=cbox_get_valind(cbox_ID)
+    val_ind = cbox_get_valind(cbox_ID)
     result=cbox_chk_valind_mass(val_ind, vd)
 
     strct.plotIO = result[0] ; define if mass should be plotted or not
@@ -165,11 +165,11 @@ FUNCTION refresh_cboxes_chrom, event, UNAME_CHROM_LIST=uname_chrom_list, VD_CHRO
              index: 0B}
 
     cbox_ID = WIDGET_INFO(event.top, find_by_uname=uname_chrom_list[i])
-    val_ind=cbox_get_valind(cbox_ID)
+    val_ind = cbox_get_valind(cbox_ID)
     result=cbox_chk_valind_chrom(val_ind, vd_chroms)
     strct.plotIO = result[0] ; define if mass should be plotted or not
 
-      IF strct.plotIO EQ 0 THEN strct.name='none' ELSE $
+      IF strct.plotIO EQ 0 THEN strct.name = 'none' ELSE $
         strct.name = vd_chroms[result[1]] ; specify the selected chromatogram
 
       strct.index = result[1]

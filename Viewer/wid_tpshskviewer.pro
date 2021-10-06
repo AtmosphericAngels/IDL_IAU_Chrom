@@ -17,8 +17,8 @@ PRO wid_tpshskviewer_ini
   COMMON WIDID
 
   DEVICE, Get_Screen_Size = ScreenSize
-          XCenter=FIX(ScreenSize[0])
-          YCenter=FIX(ScreenSize[1])
+          XCenter = FIX(ScreenSize[0])
+          YCenter = FIX(ScreenSize[1])
 
   tpshskv_base = WIDGET_BASE(title='Viewer: TPS HSK', mbar=mcv_menu, column=1, $
                              xoff=0.01*screenSize[0], yoff=0.05*screensize[1], /BASE_ALIGN_CENTER)
@@ -29,7 +29,7 @@ PRO wid_tpshskviewer_ini
       p_res = WIDGET_BUTTON(p_men, VALUE='Reset', uname='reset')
       p_rct = WIDGET_BUTTON(p_men, VALUE='Recreate Textfields', uname='recr_txt', /SEPARATOR)
 
-    tmp=*(chrom[0].twtps_hsk)
+    tmp = *(chrom[0].twtps_hsk)
     cb_info_value = tmp.info
     msel_lbl = WIDGET_LABEL(tpshskv_base, value='parameter: ', /ALIGN_CENTER)
     msel_ID = WIDGET_COMBOBOX(tpshskv_base, value='#', uname='sel_quantity', /DYNAMIC_RESIZE, /ALIGN_CENTER, /EDITABLE, TAB_MODE=1)
@@ -92,13 +92,13 @@ PRO wid_tpshskviewer_handle, event
   uname = WIDGET_INFO(event.id, /uname)
   uname_chrom_list = ['sel_chrom0','sel_chrom1','sel_chrom2','sel_chrom3','sel_chrom4','sel_chrom5','sel_chrom6']
   uname_quantity_list = ['sel_quantity']
-  n_plot=7 ; maximum number of mass traces to plot
+  n_plot = 7 ; maximum number of mass traces to plot
   vd_chroms = STRING(FILE_BASENAME(chrom.fname))
   tpsv_subtitle = 'Viewer: TPS HSK'
   xytitle = ['datapoint no.','value']
   fix_xyrange = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly=1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
       'exit' : $
@@ -107,7 +107,7 @@ PRO wid_tpshskviewer_handle, event
         FreeVar, cb_mass_strct
         plot_routine_pobj0, SET_ZERO=1                                          ; reset plot and textfields
         refresh_text_pobj0, SET_ZERO=1
-        widid.mcviewerwid=-1                                                    ; set viewer widget id to zero
+        widid.mcviewerwid = -1                                                    ; set viewer widget id to zero
         IF event.SELECT THEN WIDGET_CONTROL, event.TOP, /DESTROY                ; close widget window
       END
 
@@ -152,7 +152,7 @@ PRO wid_tpshskviewer_handle, event
             strct = {xdata:PTR_NEW(/allocate_heap), vdata:PTR_NEW(/allocate_heap)}
             pdata_strct = [pdata_strct, strct]
             IF cb_chrom_strct[i].plotIO THEN BEGIN
-              tmp=*(chrom[cb_chrom_strct[i].index].twtps_hsk)
+              tmp = *(chrom[cb_chrom_strct[i].index].twtps_hsk)
               *(pdata_strct[i].vdata) = REFORM((tmp.data)[sel_ix,*])
               *(pdata_strct[i].xdata) = INDGEN(N_ELEMENTS((tmp.data)[sel_ix,*]))+1
             ENDIF ELSE BEGIN                                                                                       ; plot nothing (none or mass not found)

@@ -41,8 +41,8 @@ FUNCTION iauchrom_db_chk, db_info, LOUD=loud, N_TESTED=n_tested
   IF NOT no_exp THEN BEGIN
     ; exp_id unique?
     n_tested = n_tested + 1
-    str=db_info.data.exp_id
-    str[uniq(str)]='-unique-'
+    str = db_info.data.exp_id
+    str[uniq(str)] = '-unique-'
     w_not_uniq=WHERE(str NE '-unique-', nvd)
     IF nvd GT 0 THEN BEGIN
       msg = [msg, '- found double experiment id(s):']
@@ -51,7 +51,7 @@ FUNCTION iauchrom_db_chk, db_info, LOUD=loud, N_TESTED=n_tested
 
     ; data_import_fct is allowed?
     n_tested = n_tested + 1
-    str=db_info.data.data_import_fct
+    str = db_info.data.data_import_fct
     def_fct=['aes_cdf','agilent_cdf','almsco_cdf','ecd_fid_cdf','ecd_txt','tofwerk_h5']
     str_match = LONARR(N_ELEMENTS(str))
     FOR i=0, N_ELEMENTS(str)-1 DO BEGIN

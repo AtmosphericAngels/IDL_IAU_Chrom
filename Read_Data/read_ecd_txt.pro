@@ -60,15 +60,15 @@ FUNCTION read_ecd_txt, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
 
 ;     ; HEADER
 ;     ; FLIGHT DATE: line 1+2
-;     line=file_content_str(1)
+;     line = file_content_str(1)
 ;     date=strmid(STRTRIM(line,2),[0,4],[4,2])
-;     date=float(date[0])+float(date[1])/12.
+;     date = float(date[0])+float(date[1])/12.
 ;     ; GLOBAL TROPOSPHERIC MEAN MIXING RATIO: line 3+4
-;     line=file_content_str(3)
-;     vsurf=float(line)
+;     line = file_content_str(3)
+;     vsurf = float(line)
 ;     ; TOP OF ATMOSPHERE MIXING RATIO: line 5+6
-;     line=file_content_str(5)
-;     vtop=float(line)
+;     line = file_content_str(5)
+;     vtop = float(line)
 
       ; DATA
       vd = WHERE(datastr NE '' AND datastr NE ' ', NVD)
@@ -92,7 +92,7 @@ FUNCTION read_ecd_txt, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
 
       *refd.time=REFORM(data[0,*])/t_conv
 
-      *refd.mass=INTARR(nvd)
+      *refd.mass = INTARR(nvd)
 
       *refd.intensity=REFORM(data[1,*])
 

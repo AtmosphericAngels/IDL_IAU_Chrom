@@ -27,8 +27,8 @@ FUNCTION calc_noise_fct, chrom, sel_chrom, sel_name, tot_uniqm, $
                          NOISE_WIN=noise_win, VERBOSE=verbose, NO_WARN=no_warn
   ;+++++++++++++++++++++++++++++
   ; get quantifier ion & mass trace
-  quant=chrom[sel_chrom].subst[sel_name].quant
-  quantmass=chrom[sel_chrom].subst[sel_name].mass[quant]
+  quant = chrom[sel_chrom].subst[sel_name].quant
+  quantmass = chrom[sel_chrom].subst[sel_name].mass[quant]
   sel_mass=matchmass(tot_uniqm, quantmass)
   ;sel_mass=matchmass(uniq_mass, quantmass)
   IF sel_mass[0] EQ -1 THEN RETURN, 0
@@ -39,7 +39,7 @@ FUNCTION calc_noise_fct, chrom, sel_chrom, sel_name, tot_uniqm, $
 
   ;+++++++++++++++++++++++++++++
   ; define noise_win if not defined
-  IF NOT KEYWORD_SET(noise_win) THEN noise_win=chrom[sel_chrom].subst[sel_name].noise_win
+  IF NOT KEYWORD_SET(noise_win) THEN noise_win = chrom[sel_chrom].subst[sel_name].noise_win
 
   ;+++++++++++++++++++++++++++++
   ; define baseline (bl) section and according x/f_x-values
@@ -68,11 +68,11 @@ FUNCTION calc_noise_fct, chrom, sel_chrom, sel_name, tot_uniqm, $
            noisemass : sel_masstrace}
 
   IF NOT KEYWORD_SET(no_warn) AND strct.ndatapoints LT 20 THEN BEGIN
-    filename=FILE_BASENAME(chrom[sel_chrom].fname)
-    substance=chrom[sel_chrom].subst[sel_name].name
-    pre='Warning: Noise calculated over less than 20 datapoints '
-    suf='('+substance+' in '+filename+').'
-    warn_mess=pre+suf
+    filename = FILE_BASENAME(chrom[sel_chrom].fname)
+    substance = chrom[sel_chrom].subst[sel_name].name
+    pre = 'Warning: Noise calculated over less than 20 datapoints '
+    suf = '('+substance+' in '+filename+').'
+    warn_mess = pre+suf
     msg=DIALOG_MESSAGE(warn_mess, /INFORMATION)
   END
 

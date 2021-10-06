@@ -4,7 +4,7 @@
 ;
 ; AUTHOR: F. Obersteiner
 ;
-; PURPOSE: closes widget(s) if identifier returns active=1 and widget id is defined in common variable. Keyword ALL
+; PURPOSE: closes widget(s) if identifier returns active = 1 and widget id is defined in common variable. Keyword ALL
 ;          also closes the main widget.
 ;-
 ;------------------------------------------------------------------------------------------------------------------------

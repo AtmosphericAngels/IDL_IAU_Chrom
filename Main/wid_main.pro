@@ -125,10 +125,10 @@ PRO wid_main_handle, event
 
         quest=DIALOG_MESSAGE('Recalculate Peakdata? Might take some time...', /QUESTION, $
                              /DEFAULT_NO, DIALOG_PARENT=widid.mainwid)
-          IF quest EQ 'Yes' THEN peakdata_recalc=1 ELSE peakdata_recalc=0
+          IF quest EQ 'Yes' THEN peakdata_recalc = 1 ELSE peakdata_recalc=0
             IF peakdata_recalc THEN quest=DIALOG_MESSAGE('Use integration limits stored in peaktable? +-17.5 mTh are used otherwise.', $
                                                           /QUESTION,  /DEFAULT_NO, DIALOG_PARENT=widid.mainwid)
-              IF quest EQ 'Yes' THEN use_pt_limits=1 ELSE use_pt_limits=0
+              IF quest EQ 'Yes' THEN use_pt_limits = 1 ELSE use_pt_limits=0
 
         refr_status, message='loading files...'
         chrom=read_tofwerkh5(PATH=path, T_SCALE=t_scale, VERSION=version, PEAKDATA_RECALC=peakdata_recalc, $
@@ -228,13 +228,13 @@ PRO wid_main_handle, event
         refr_status, message='saving experiment...'
 
         dir=FILE_DIRNAME(savefname, /MARK_DIR)                                        ; extract directory
-        tmp=FILE_BASENAME(savefname)                                                  ; extract file name
+        tmp = FILE_BASENAME(savefname)                                                  ; extract file name
 
         IF STRMATCH(STRMID(tmp, 0, 6), 'chrom_', /FOLD_CASE) THEN tmp=STRMID(tmp, 6)  ; delete chrom prefix if set by user (default)
         tmp=STRSPLIT(tmp, '.', /EXTRACT, COUNT=count)                                 ; split file name where a '.' is found
         IF count GT 0 THEN BEGIN                                                      ; more than one '.' found
-          extention='.'+tmp[-1]                                                       ; extract extention
-          fname=STRJOIN(tmp[0:-2])                                                    ; recreate file name without extention
+          extention = '.'+tmp[-1]                                                       ; extract extention
+          fname = STRJOIN(tmp[0:-2])                                                    ; recreate file name without extention
         ENDIF
 
         save, chrom, filename=dir+'chrom_'+fname+extention
@@ -372,9 +372,9 @@ PRO wid_main_handle, event
         IF STRLEN(chrom[0].fname) EQ 0 THEN MSG = DIALOG_MESSAGE('Please load Data first.', /INFORMATION) $
           ELSE BEGIN
             IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-              refs=read_subst(PATH=path)
+              refs = read_subst(PATH=path)
               IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-              refi=create_refi()
+              refi = create_refi()
               subst=add_ires2subst(refs, refi)
               chrom=add_subst2chrom(chrom, subst)
             ENDIF
@@ -396,7 +396,7 @@ PRO wid_main_handle, event
 ; **********************************************************************************************************************************************
     'v_tpshsk': $
       BEGIN
-        MSG=0
+        MSG = 0
         IF STRLEN(chrom[0].fname)EQ 0 THEN MSG = DIALOG_MESSAGE('Please load Data first.', /INFORMATION)
         IF chrom[0].instr_type NE 3 THEN MSG = DIALOG_MESSAGE('Tofwerk files only.', /INFORMATION)
         IF SIZE(MSG, /TYPE) EQ 2 THEN wid_tpshskviewer_ini
@@ -413,9 +413,9 @@ PRO wid_main_handle, event
           RETURN
         ENDIF
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-              refs=read_subst(path=path)
+              refs = read_subst(path=path)
               IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-              refi=create_refi()
+              refi = create_refi()
               subst=add_ires2subst(refs, refi)
               chrom=add_subst2chrom(chrom, subst)
         ENDIF
@@ -431,18 +431,18 @@ PRO wid_main_handle, event
         IF STRLEN(chrom[0].fname) NE 0 THEN BEGIN
           quest=DIALOG_MESSAGE('Loaded data found. Replace?', /QUESTION, /DEFAULT_NO)
           IF quest EQ 'Yes' THEN BEGIN
-            tmp=TEMPORARY(chrom)
-            tmp=TEMPORARY(subst)
+            tmp = TEMPORARY(chrom)
+            tmp = TEMPORARY(subst)
             destroy_wids
           ENDIF ELSE RETURN
         ENDIF
 
         quest=DIALOG_MESSAGE('Include noise calculation?', /QUESTION)
-        IF quest EQ 'Yes' THEN calcnoise=1 ELSE calcnoise=0
+        IF quest EQ 'Yes' THEN calcnoise = 1 ELSE calcnoise=0
         quest=DIALOG_MESSAGE('Sort files by measurement timestamp?', /QUESTION, /DEFAULT_NO)
-        IF quest EQ 'Yes' THEN sort_by_jdate=1 ELSE sort_by_jdate=0
+        IF quest EQ 'Yes' THEN sort_by_jdate = 1 ELSE sort_by_jdate=0
         quest=DIALOG_MESSAGE('Tofwerk TOFMS data: recalculate peakdata?', /QUESTION, /DEFAULT_NO)
-        IF quest EQ 'Yes' THEN tw_recalc_mq=1 ELSE tw_recalc_mq=0
+        IF quest EQ 'Yes' THEN tw_recalc_mq = 1 ELSE tw_recalc_mq=0
 
         call_iauchrom_dbscript, event, T_SCALE=t_scale, CALCNOISE=calcnoise, TW_RECALC_MQ=tw_recalc_mq, $
                                 SORT_BY_JDATE=sort_by_jdate

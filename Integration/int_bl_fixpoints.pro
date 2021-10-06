@@ -21,7 +21,7 @@ FUNCTION int_bl_fixpoints , xval, yval $
   IF NOT KEYWORD_SET(chk_noise) THEN chk_noise = 0.
   IF NOT KEYWORD_SET(nterms_base) THEN nterms_base = 2 ; default linear baseline
 
-  int_win=rt_win
+  int_win = rt_win
 
   strct = { $
             rt: !VALUES.D_NAN, $
@@ -37,21 +37,21 @@ FUNCTION int_bl_fixpoints , xval, yval $
   vd=WHERE(FINITE(xval+yval),nvd)
   IF (nvd LE 0) THEN RETURN, strct
 
-  x=xval[vd]
-  y=yval[vd]
+  x = xval[vd]
+  y = yval[vd]
 
   IF N_ELEMENTS(x) LE nterms_base THEN BEGIN ;if there is (almost) no data passed, e.g. mass not found in chromatogram
-    strct.flag=-1;
-    strct.comment='No Peak Found'
+    strct.flag = -1;
+    strct.comment = 'No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Not enough datapoints for peak detection.', /INFORMATION)
     RETURN, strct
   ENDIF
 
   w_rt_win=WHERE((x GE rt_win[0]) AND (x LE rt_win[1]),nw_rt_win)
 
-  taxis=x[w_rt_win]
+  taxis = x[w_rt_win]
 
-  v=y[w_rt_win]
+  v = y[w_rt_win]
   v_s = [v[0]]
   v_e = [v[-1]]
 
@@ -70,7 +70,7 @@ FUNCTION int_bl_fixpoints , xval, yval $
 
 
 
-  peak_int=v
+  peak_int = v
   mx=MAX(v, ix_max)
 
 ;  area = TOTAL(peak_int-base_int)
@@ -78,8 +78,8 @@ FUNCTION int_bl_fixpoints , xval, yval $
   height = peak_int[ix_max]-base_int[ix_max]
 
   IF (height LT 1.5*chk_noise) OR (area LT 0.) THEN BEGIN
-    strct.flag=-1;
-    strct.comment='No Peak Found'
+    strct.flag = -1;
+    strct.comment = 'No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
     RETURN, strct
   ENDIF
@@ -99,14 +99,14 @@ FUNCTION int_bl_fixpoints , xval, yval $
 
   width = t_r-t_l
 
-  strct.hght=height
-  strct.rt=taxis[ix_max]
-  strct.area=area
-  strct.wdth=width
-  strct.ts=taxis[0]
-  strct.te=taxis[-1]
-  strct.flag=1
-  strct.comment='Integrated'
+  strct.hght = height
+  strct.rt = taxis[ix_max]
+  strct.area = area
+  strct.wdth = width
+  strct.ts = taxis[0]
+  strct.te = taxis[-1]
+  strct.flag = 1
+  strct.comment = 'Integrated'
 
   RETURN, strct
 

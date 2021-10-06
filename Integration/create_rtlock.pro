@@ -11,7 +11,7 @@ FUNCTION create_rtlock, event, PATH=path
 
   IF size(rtlock, /type) eq 8 THEN tmp=temporary(rtlock)
 
-  rtlock=create_refrt()
+  rtlock = create_refrt()
 
   id=widget_info(event.id, find_by_uname='lock')
   lock=widget_info(id, /button_set)
@@ -52,8 +52,8 @@ END
 
 FUNCTION calc_rtlockwin, x, v, rtlock, rt_refwin
 
-  rt_ref=rtlock.rt
-  rt_act=fltarr(n_elements(rtlock))
+  rt_ref = rtlock.rt
+  rt_act = fltarr(n_elements(rtlock))
 
   FOR i=0, n_elements(rtlock)-1 DO BEGIN
 

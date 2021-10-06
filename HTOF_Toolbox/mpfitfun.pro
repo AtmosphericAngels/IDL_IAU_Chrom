@@ -80,7 +80,7 @@
 ;  described below.
 ;
 ;  To enable explicit derivatives for all parameters, set
-;  AUTODERIVATIVE=0.
+;  AUTODERIVATIVE = 0.
 ;
 ;  When AUTODERIVATIVE=0, the user function is responsible for
 ;  calculating the derivatives of the user function with respect to
@@ -171,7 +171,7 @@
 ;
 ;     .STEP - the step size to be used in calculating the numerical
 ;             derivatives.  If set to zero, then the step size is
-;             computed automatically.  Ignored when AUTODERIVATIVE=0.
+;             computed automatically.  Ignored when AUTODERIVATIVE = 0.
 ;             This value is superceded by the RELSTEP value.
 ;
 ;     .RELSTEP - the *relative* step size to be used in calculating

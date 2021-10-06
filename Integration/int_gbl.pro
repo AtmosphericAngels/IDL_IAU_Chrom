@@ -24,13 +24,13 @@ PRO GumbelPeak_PROC, X, A, F, PDER
 	; Density Function:
 	;    f(x) = a0*a1*exp{-a1*(x-a2)}*exp{-exp{-a1*(x-a2)}}
 	;-----------------------------------------------
-	GUM=A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2])))
+	GUM = A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2])))
 
 	CASE N_ELEMENTS(A) OF	;FUNCTIONS
 		3: F=GUM
-		4: F=GUM+A[3]
-		5: F=GUM+A[3]+A[4]*X
-		6: F=GUM+A[3]+A[4]*X+A[5]*X^2.
+		4: F = GUM+A[3]
+		5: F = GUM+A[3]+A[4]*X
+		6: F = GUM+A[3]+A[4]*X+A[5]*X^2.
 	ENDCASE
 
 	IF (N_PARAMS() LE 3) THEN RETURN	;NEED PARTIAL?
@@ -44,16 +44,16 @@ PRO GumbelDoublePeak_PROC, X, A, F, PDER
 
 	ON_ERROR, 2	;Return to caller if an error occurs
 
-	IF (A[0] NE 0.) THEN GUM1=A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2]))) ELSE GUM1=0.
-	IF (A[3] NE 0.) THEN GUM2=A[3]*A[4]*EXP(-A[4]*(X-A[5]))*EXP(-EXP(-A[4]*(X-A[5]))) ELSE GUM2=0.
+	IF (A[0] NE 0.) THEN GUM1 = A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2]))) ELSE GUM1=0.
+	IF (A[3] NE 0.) THEN GUM2 = A[3]*A[4]*EXP(-A[4]*(X-A[5]))*EXP(-EXP(-A[4]*(X-A[5]))) ELSE GUM2=0.
 
-	GUM=GUM1+GUM2	;GAUSSIAN DOUBLE PEAK
+	GUM = GUM1+GUM2	;GAUSSIAN DOUBLE PEAK
 
 	CASE N_ELEMENTS(A) OF	;FUNCTIONS
 		6: F=GUM
-		7: F=GUM+A[6]
-		8: F=GUM+A[6]+A[7]*X
-		9: F=GUM+A[6]+A[7]*X+A[8]*X^2.
+		7: F = GUM+A[6]
+		8: F = GUM+A[6]+A[7]*X
+		9: F = GUM+A[6]+A[7]*X+A[8]*X^2.
 	ENDCASE
 
 	IF (N_PARAMS() LE 3) THEN RETURN	;NEED PARTIAL?
@@ -72,16 +72,16 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
                                VERBOSE=verbose,$
                                CHK_NOISE=chk_noise
 
-  IF NOT keyword_set(NTERMS_BASE) THEN  nterms_base=1
+  IF NOT keyword_set(NTERMS_BASE) THEN  nterms_base = 1
   IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
   IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[10,20]
-  IF NOT keyword_set(timescale) THEN timescale='Minutes' ; not set case: restoring old chromatogram
+  IF NOT keyword_set(timescale) THEN timescale = 'Minutes' ; not set case: restoring old chromatogram
   IF NOT keyword_set(cv_tol) THEN cv_tol = 10E-6
 
 ;+++++++++++++++++++++++
 ; Create output structure (strct) for chromatographic parameters
 ;+++++++++++++++++++++++
-   strct=$
+   strct = $
       {$
       ret: !values.d_nan, $
       hght: !values.d_nan, $
@@ -95,8 +95,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 
   vd=where(finite(xval+yval),nvd)
   IF (nvd LE 0) THEN RETURN, strct
-  x=xval[vd]
-  y=yval[vd]
+  x = xval[vd]
+  y = yval[vd]
 
 ;+++++++++++++++++++++++
 ; Define retention time window (rt_win)
@@ -106,8 +106,8 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 ;+++++++++++++++++++++++
 ; Detect Gauss Peak inside retention time window (rt_win)
 ;+++++++++++++++++++++++
-  t=x[w_rt_win]
-  v=y[w_rt_win]
+  t = x[w_rt_win]
+  v = y[w_rt_win]
   A_gau=peak_detection(t, v, RT_WIN=rt_win, NTERMS_BASE=nterms_base)
 
 ;+++++++++++++++++++++++
@@ -125,21 +125,21 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 ;+++++++++++++++++++++++
 ; Define initial parameters for peak fitting
 ;+++++++++++++++++++++++
-  A=FLTARR(3+nterms_base)
-  A[0]=A_gau[0]
+  A = FLTARR(3+nterms_base)
+  A[0] = A_gau[0]
 
   IF timescale EQ 'Minutes' THEN init_parm_A1 = 60 ELSE init_parm_A1 = 1 ; 60: minutes / 1: seconds
-  A[1]=init_parm_A1
+  A[1] = init_parm_A1
 
-  A[2]=A_gau[1]
-  A[3:*]=A_gau[3:*]
-  fita=bytarr(n_elements(A))+1
+  A[2] = A_gau[1]
+  A[3:*] = A_gau[3:*]
+  fita = bytarr(n_elements(A))+1
 
 ;+++++++++++++++++++++++
 ; Fit peak
 ;+++++++++++++++++++++++
-  t=x[w_fit_win]
-  v=y[w_fit_win]
+  t = x[w_fit_win]
+  v = y[w_fit_win]
 
   IF n_elements(A) GE n_elements(v) THEN RETURN, strct
 
@@ -149,30 +149,30 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 ;+++++++++++++++++++++++
 ; Output peak parameters of curvefit (PARAMETER)
 ;+++++++++++++++++++++++
-  parameter=A
+  parameter = A
 
 ;+++++++++++++++++++++++
 ; Calculate fitted peak (PEAK_FIT) and baseline (BASE_FIT)
 ;+++++++++++++++++++++++
-  t=x[w_fit_win]
-  v=y[w_fit_win]
-  peak_fit=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+  t = x[w_fit_win]
+  v = y[w_fit_win]
+  peak_fit = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
   CASE nterms_base OF
     1: base_fit=A[3]+replicate(0,nw_fit_win)
-    2: base_fit=A[3]+A[4]*t
-    3: base_fit=A[3]+A[4]*t+A[5]*t^2
+    2: base_fit = A[3]+A[4]*t
+    3: base_fit = A[3]+A[4]*t+A[5]*t^2
   ENDCASE
 
 ;+++++++++++++++++++++++
 ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
 ;+++++++++++++++++++++++
-  t=x[w_int_win]
-  v=y[w_int_win]
-  peak_int=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+  t = x[w_int_win]
+  v = y[w_int_win]
+  peak_int = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
   CASE nterms_base OF
     1: base_int=A[3]+replicate(0,nw_int_win)
-    2: base_int=A[3]+A[4]*t
-    3: base_int=A[3]+A[4]*t+A[5]*t^2
+    2: base_int = A[3]+A[4]*t
+    3: base_int = A[3]+A[4]*t+A[5]*t^2
   ENDCASE
 
   peak_area = int_tabulated(t,peak_int,/double) ;/*******************************TW 2019.09.04.
@@ -180,34 +180,34 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 ;+++++++++++++++++++++++
 ; Calculate peak inside retention time window (PEAK_RET) and baseline (BASE_RET)
 ;+++++++++++++++++++++++
-  t=x[w_rt_win]
-  v=y[w_rt_win]
-  peak_ret=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+  t = x[w_rt_win]
+  v = y[w_rt_win]
+  peak_ret = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
   CASE nterms_base OF
     1: base_ret=A[3]+replicate(0,nw_rt_win)
-    2: base_ret=A[3]+A[4]*t
-    3: base_ret=A[3]+A[4]*t+A[5]*t^2
+    2: base_ret = A[3]+A[4]*t
+    3: base_ret = A[3]+A[4]*t+A[5]*t^2
   ENDCASE
 
 
   ;/*******************************TW 2019.09.04.
   IF (A[0] LT 1.5*chk_noise) THEN BEGIN
-    strct.flag=-1;
-    strct.comment='No Peak Found'
+    strct.flag = -1;
+    strct.comment = 'No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fit height less than 1.5 x Noiselevel', /INFORMATION)
     RETURN, strct
   ENDIF
 
   IF (peak_area LE 0) THEN BEGIN
-    strct.flag=-1;
-    strct.comment='No Peak Found'
+    strct.flag = -1;
+    strct.comment = 'No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Peak area negative number', /INFORMATION)
     RETURN, strct
   ENDIF
 
   IF A[2] LT rt_win[0] OR A_gau[1] GT rt_win[1] THEN BEGIN
-    strct.flag=-1;
-    strct.comment='No Peak Found'
+    strct.flag = -1;
+    strct.comment = 'No Peak Found'
     IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Fitted peak out of RT window', /INFORMATION)
     RETURN, strct
   ENDIF
@@ -217,16 +217,16 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
 ;+++++++++++++++++++++++
 ; Calculate chromatographic parameters (peak area, height and retention time)
 ;+++++++++++++++++++++++
-  t=x[w_int_win]
-  v=y[w_int_win]
-  strct.ret=A[2]
+  t = x[w_int_win]
+  v = y[w_int_win]
+  strct.ret = A[2]
   strct.hght=max(peak_int,wmax)
   strct.area=int_tabulated(t,peak_int,/double)   ; is equal to parameter A[0]
-  strct.wdth=1/A[1]   ; is not symmetric but represents the left non-tailing side of the peak
+  strct.wdth = 1/A[1]   ; is not symmetric but represents the left non-tailing side of the peak
   strct.ts=min(t,/nan)
   strct.te=max(t,/nan)
-  strct.flag=1
-  strct.comment='Integrated'
+  strct.flag = 1
+  strct.comment = 'Integrated'
 
 
 
@@ -237,16 +237,16 @@ FUNCTION Integrate_GumbelPeak, xval, yval, $
     print,status,iter,chi,yerr
     print,strct.hght
     print,strct.area,1/A[1],t[wmax]
-    t=x[w_rt_win]
-    v=y[w_rt_win]
+    t = x[w_rt_win]
+    v = y[w_rt_win]
     yrange=[min([v,base_ret,base_fit,base_int]),max([v,base_ret,base_fit,base_int])]
     plot,t,v,yrange=yrange,ystyle=3
-    t=x[w_fit_win]
-    v=y[w_fit_win]
+    t = x[w_fit_win]
+    v = y[w_fit_win]
     oplot,t,base_fit,linestyle=0,thick=2
     oplot,t,peak_fit+base_fit,linestyle=0,thick=2
-    t=x[w_int_win]
-    v=y[w_int_win]
+    t = x[w_int_win]
+    v = y[w_int_win]
     oplot,t,base_int,linestyle=2,thick=1
     oplot,t,peak_int+base_int,linestyle=2,thick=1
   ENDIF
@@ -271,23 +271,23 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
                                      INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
                                      PARAMETER=parameter, TIMESCALE=timescale, CV_TOL=cv_tol, VERBOSE=verbose, CHK_NOISE=chk_noise
 
-	 IF NOT keyword_set(NTERMS_BASE) THEN nterms_base=1
+	 IF NOT keyword_set(NTERMS_BASE) THEN nterms_base = 1
    IF NOT keyword_set(NSIGMA_FIT) THEN nsigma_fit=[10,20]
    IF NOT keyword_set(NSIGMA_INT) THEN nsigma_int=[10,20]
    IF NOT keyword_set(rt_win) THEN rt_win =[min(xval,/nan),max(xval,/nan)]
    IF NOT keyword_set(cv_tol) THEN cv_tol = 10E-6
 
-;   xval=xval*60D
-;   RT_WIN=rt_win*60D
+;   xval = xval*60D
+;   RT_WIN = rt_win*60D
 
-   nsigma_fit_gum1=fltarr(2)
-   nsigma_fit_gum2=nsigma_fit
+   nsigma_fit_gum1 = fltarr(2)
+   nsigma_fit_gum2 = nsigma_fit
 
 
    ;+++++++++++++++++++++++
    ; Create output structure (strct) for chromatographic parameters
    ;+++++++++++++++++++++++
-   strct=$
+   strct = $
       {$
       ret1: !values.d_nan, $
       ret2: !values.d_nan, $
@@ -305,8 +305,8 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
 
    vd=where(finite(xval+yval),nvd)
   IF (nvd LE 0) THEN RETURN, strct
-   x=xval[vd]
-   y=yval[vd]
+   x = xval[vd]
+   y = yval[vd]
 
    ;+++++++++++++++++++++++
    ; Define retention time window (rt_win)
@@ -316,8 +316,8 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
    ;+++++++++++++++++++++++
    ; Detect Gauss Peak inside retention time window (rt_win)
    ;+++++++++++++++++++++++
-   t=x[w_rt_win]
-   v=y[w_rt_win]
+   t = x[w_rt_win]
+   v = y[w_rt_win]
    A_gau=peak_detection(t,v,RT_WIN=rt_win,NTERMS_BASE=nterms_base,PEAK=peak_gau,BASE=base_gau)
 
   IF finite(a_gau[0]) EQ 0 THEN return, strct
@@ -337,49 +337,49 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
 	 ;+++++++++++++++++++++++
    ; Calculate smoothed (Savitzky-Goolay-Filter) chromatogram (dvdt0) and its second derivative (dvdt2)
    ;+++++++++++++++++++++++
-   t=x[w_rt_win]
-   v=y[w_rt_win]
-	 dt=float(max(t)-min(t))/n_elements(t)
-   nsigma_svgf=1.
-   width=round(nsigma_svgf*A_gau[2]/dt)
-   degree=4
+   t = x[w_rt_win]
+   v = y[w_rt_win]
+	 dt = float(max(t)-min(t))/n_elements(t)
+   nsigma_svgf = 1.
+   width = round(nsigma_svgf*A_gau[2]/dt)
+   degree = 4
    ;+++++++++++++++++++++++
    ; skip and return strct if width LT degree
    ;+++++++++++++++++++++++
    IF width LT degree THEN RETURN, strct
 
-   order=0
+   order = 0
    svgf=savgol(width,width,order,degree)*(factorial(order)/(dt^order))
    IF N_ELEMENTS(v) LE N_ELEMENTS(svgf) THEN RETURN, strct ; ensure that convol data is compatible with kernel
    dvdt0=convol(v,svgf,/edge_trunc)
 
-   order=2
+   order = 2
    svgf=savgol(width,width,order,degree)*(factorial(order)/(dt^order))
    dvdt2=convol(v,svgf,/edge_trunc)
 
    ;+++++++++++++++++++++++
    ; Find maximum (vmax(tmax)) inside rt_win
    ;+++++++++++++++++++++++
-   t=x[w_rt_win]
-   v=y[w_rt_win]
+   t = x[w_rt_win]
+   v = y[w_rt_win]
    vmax=max(v,wvmax)
 
-   tmax=t[wvmax]
+   tmax = t[wvmax]
 
    ;+++++++++++++++++++++++
    ; Calculate fit range for the first Gumbel peak (nsigma_fit_gum1)
    ; A_gau[1] = tmax_gau > tmax (bigger peak is on the left hand side)
    ;+++++++++++++++++++++++
-   t=x[w_rt_win]
-   v=y[w_rt_win]
+   t = x[w_rt_win]
+   v = y[w_rt_win]
 
   ; IF (A_gau[1] GT tmax) THEN BEGIN
-      w=where(t GE tmax)
+      w = where(t GE tmax)
       vmax_dvdt2=max(dvdt2[w],wvmax)
-      imax_dvdt2=wvmax+min(w)
-      tmax_dvdt2=t[imax_dvdt2]
-      nsigma_fit_gum1[0]=nsigma_fit[0]
-      nsigma_fit_gum1[1]=(tmax_dvdt2-A_gau[1])/A_gau[2]
+      imax_dvdt2 = wvmax+min(w)
+      tmax_dvdt2 = t[imax_dvdt2]
+      nsigma_fit_gum1[0] = nsigma_fit[0]
+      nsigma_fit_gum1[1] = (tmax_dvdt2-A_gau[1])/A_gau[2]
   ; ENDIF ELSE BEGIN
   ;  print, 'A_gau[1] LT tmax'
   ;  return, strct
@@ -387,8 +387,8 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
    ;+++++++++++++++++++++++
    ; Integrate the first detected peak
    ;+++++++++++++++++++++++
-   t=x
-   v=y
+   t = x
+   v = y
 
    ires_gum1=Integrate_GumbelPeak(t,v, $
                                   NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum1,NSIGMA_INT=nsigma_int_gum1, $
@@ -417,9 +417,9 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
    ;+++++++++++++++++++++++
    ; Integrate the second detected peak
    ;+++++++++++++++++++++++
-   t=x
-   v=y
-   v[w_rt_win]=y[w_rt_win]-peak_ret_gum1
+   t = x
+   v = y
+   v[w_rt_win] = y[w_rt_win]-peak_ret_gum1
 
    ires_gum2=Integrate_GumbelPeak(t,v, $
                                   NTERMS_BASE=nterms_base,NSIGMA_FIT=nsigma_fit_gum2,NSIGMA_INT=nsigma_int_gum2, $
@@ -447,85 +447,85 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
    ;+++++++++++++++++++++++
    ; Define initial parameters for peak fitting
    ;+++++++++++++++++++++++
-   A=FLTARR(6+nterms_base)
-   A[0]=A_gum1[0]
-   A[1]=A_gum1[1]
-   A[2]=A_gum1[2]
-   A[3]=A_gum2[0]
-   A[4]=A_gum2[1]
-   A[5]=A_gum2[2]
-   A[6:*]=A_gum1[3:*]
-   fita=bytarr(n_elements(A))+1
+   A = FLTARR(6+nterms_base)
+   A[0] = A_gum1[0]
+   A[1] = A_gum1[1]
+   A[2] = A_gum1[2]
+   A[3] = A_gum2[0]
+   A[4] = A_gum2[1]
+   A[5] = A_gum2[2]
+   A[6:*] = A_gum1[3:*]
+   fita = bytarr(n_elements(A))+1
 
    ;+++++++++++++++++++++++
    ; Fit peak
    ;+++++++++++++++++++++++
-   t=x[w_fit_win]
-   v=y[w_fit_win]
+   t = x[w_fit_win]
+   v = y[w_fit_win]
    fit=curvefit(t,v,weights,A,Sig,CHISQ=chi,FITA=fita,FUNCTION_NAME='GumbelDoublePeak_PROC',$
                 ITER=iter,ITMAX=20,NODERIVATIVE=1,STATUS=status,TOL=cv_tol,YERROR=yerr)
 
    ;+++++++++++++++++++++++
    ; Output fitted peak parameters (PARAMETER)
    ;+++++++++++++++++++++++
-   parameter=A
+   parameter = A
 
    ;+++++++++++++++++++++++
    ; Calculate fitted peak (PEAK_FIT) and baseline (BASE_FIT)
    ;+++++++++++++++++++++++
-   t=x[w_fit_win]
-   v=y[w_fit_win]
-   peak_fit1=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
-   peak_fit2=A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
+   t = x[w_fit_win]
+   v = y[w_fit_win]
+   peak_fit1 = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+   peak_fit2 = A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
    CASE nterms_base OF
       1: base_fit=A[6]+replicate(0,nw_fit_win)
-      2: base_fit=A[6]+A[7]*t
-      3: base_fit=A[6]+A[7]*t+A[8]*t^2
+      2: base_fit = A[6]+A[7]*t
+      3: base_fit = A[6]+A[7]*t+A[8]*t^2
    ENDCASE
 
    ;+++++++++++++++++++++++
    ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
    ;+++++++++++++++++++++++
-   t=x[w_int_win]
-   v=y[w_int_win]
-   peak_int1=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
-   peak_int2=A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
+   t = x[w_int_win]
+   v = y[w_int_win]
+   peak_int1 = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+   peak_int2 = A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
    CASE nterms_base OF
       1: base_int=A[6]+replicate(0,nw_int_win)
-      2: base_int=A[6]+A[7]*t
-      3: base_int=A[6]+A[7]*t+A[8]*t^2
+      2: base_int = A[6]+A[7]*t
+      3: base_int = A[6]+A[7]*t+A[8]*t^2
    ENDCASE
 
    ;+++++++++++++++++++++++
    ; Calculate peak inside retention time window (PEAK_RET) and baseline (BASE_RET)
    ;+++++++++++++++++++++++
-   t=x[w_rt_win]
-   v=y[w_rt_win]
-   peak_ret1=A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
-   peak_ret2=A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
+   t = x[w_rt_win]
+   v = y[w_rt_win]
+   peak_ret1 = A[0]*A[1]*EXP(-A[1]*(t-A[2]))*EXP(-EXP(-A[1]*(t-A[2])))
+   peak_ret2 = A[3]*A[4]*EXP(-A[4]*(t-A[5]))*EXP(-EXP(-A[4]*(t-A[5])))
    CASE nterms_base OF
       1: base_ret=A[6]+replicate(0,nw_int_win)
-      2: base_ret=A[6]+A[7]*t
-      3: base_ret=A[6]+A[7]*t+A[8]*t^2
+      2: base_ret = A[6]+A[7]*t
+      3: base_ret = A[6]+A[7]*t+A[8]*t^2
    ENDCASE
 
    ;+++++++++++++++++++++++
    ; Calculate chromatographic parameters (peak area, height and retention time)
    ;+++++++++++++++++++++++
-   t=x[w_int_win]
-   v=y[w_int_win]
-   strct.ret1=A[2]
-   strct.ret2=A[5]
+   t = x[w_int_win]
+   v = y[w_int_win]
+   strct.ret1 = A[2]
+   strct.ret2 = A[5]
    strct.hght1=max(peak_int1,wmax1)
    strct.hght2=max(peak_int2,wmax2)
    strct.area1=int_tabulated(t,peak_int1,/double)   ; is equal to parameter A[0]
    strct.area2=int_tabulated(t,peak_int2,/double)   ; is equal to parameter A[3]
-   strct.wdth1=1./A[1]   ; is not symmetric but represents the left non-tailing side of the peak
-   strct.wdth2=1./A[4]   ; is not symmetric but represents the left non-tailing side of the peak
+   strct.wdth1 = 1./A[1]   ; is not symmetric but represents the left non-tailing side of the peak
+   strct.wdth2 = 1./A[4]   ; is not symmetric but represents the left non-tailing side of the peak
    strct.ts=min(t,/nan)
    strct.te=max(t,/nan)
-   strct.flag=1
-   strct.comment='Integrated'
+   strct.flag = 1
+   strct.comment = 'Integrated'
 
    ;+++++++++++++++++++++++
    ; Post-Processing: remove NAN and substitute with 0. if values are supplied by first gumble integration
@@ -543,8 +543,8 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
       print,vmax_dvdt2,tmax_dvdt2,nsigma_fit_gum1
       print,''
 
-      t=x[w_rt_win]
-      v=y[w_rt_win]
+      t = x[w_rt_win]
+      v = y[w_rt_win]
       yrange=[min([v,peak_gau,base_gau]),max([v,peak_gau,base_gau])]
       plot,t,v,yrange=yrange,ystyle=3
       oplot,t,base_gau,linestyle=0,thick=2
@@ -553,37 +553,37 @@ FUNCTION Integrate_GumbelDoublePeak, xval, yval, $
       oplot,t,dvdt0,linestyle=0,thick=1
       oplot,t,dvdt2,linestyle=0,thick=1
 
-      t=x[w_fit_win_gum1]
-      v=y[w_fit_win_gum1]
+      t = x[w_fit_win_gum1]
+      v = y[w_fit_win_gum1]
       oplot,t,base_fit_gum1,linestyle=0,thick=2
       oplot,t,peak_fit_gum1+base_fit_gum1,linestyle=0,thick=2
 
-      t=x[w_int_win_gum1]
-      v=y[w_int_win_gum1]
+      t = x[w_int_win_gum1]
+      v = y[w_int_win_gum1]
       oplot,t,base_int_gum1,linestyle=2,thick=1
       oplot,t,peak_int_gum1+base_int_gum1,linestyle=2,thick=1
 
-      t=x[w_rt_win]
-      v=y[w_rt_win]
+      t = x[w_rt_win]
+      v = y[w_rt_win]
       oplot,t,base_ret_gum1,linestyle=2,thick=2
       oplot,t,peak_ret_gum1+base_ret_gum1,linestyle=2,thick=2
 
-      t=x[w_rt_win]
-      v=y[w_rt_win]-peak_ret_gum1
+      t = x[w_rt_win]
+      v = y[w_rt_win]-peak_ret_gum1
       oplot,t,v,linestyle=0,thick=1
 
-      t=x[w_fit_win_gum2]
-      v=y[w_fit_win_gum2]
+      t = x[w_fit_win_gum2]
+      v = y[w_fit_win_gum2]
       oplot,t,base_fit_gum2,linestyle=0,thick=2
       oplot,t,peak_fit_gum2+base_fit_gum2,linestyle=0,thick=2
 
-      t=x[w_int_win_gum2]
-      v=y[w_int_win_gum2]
+      t = x[w_int_win_gum2]
+      v = y[w_int_win_gum2]
       oplot,t,base_int_gum2,linestyle=2,thick=1
       oplot,t,peak_int_gum2+base_int_gum2,linestyle=2,thick=1
 
-      t=x[w_fit_win]
-      v=y[w_fit_win]
+      t = x[w_fit_win]
+      v = y[w_fit_win]
       oplot,t,base_fit,linestyle=2,thick=1
       oplot,t,peak_fit1+base_fit,linestyle=2,thick=1
       oplot,t,peak_fit2+base_fit,linestyle=2,thick=1
@@ -605,17 +605,17 @@ PRO int_gbl
 ;; Test program			;
 ;;+++++++++++++++++++++++;
 ;;fname_cdf=DIALOG_PICKFILE(/READ,TITLE='Select NetCDF file (*.cdf) to load',FILTER='*.cdf',PATH='D:\Uni\Messdaten\Labor_GCMS\NCI_Peaktrennung')
-;fname_cdf='D:\Uni\Messdaten\GhOST_MS\201211\20121126\20121126.AIA\20121126_002.CDF'
+;fname_cdf = 'D:\Uni\Messdaten\GhOST_MS\201211\20121126\20121126.AIA\20121126_002.CDF'
 ;cdf=cdf2idl_struct(fname_cdf,verbose=1)
 ;
-;t_scan=cdf.scan_acquisition_time
-;i_scan=cdf.scan_index
-;n_scan=cdf.point_count
+;t_scan = cdf.scan_acquisition_time
+;i_scan = cdf.scan_index
+;n_scan = cdf.point_count
 ;
-;t=cdf.time_values
+;t = cdf.time_values
 ;FOR i=0,n_elements(t_scan)-1 DO t[i_scan[i]:i_scan[i]+n_scan[i]-1]=t_scan[i]
 ;
-;chr={	$
+;chr = {	$
 ;	t: t, $
 ;	v: cdf.intensity_values, $
 ;	m: cdf.mass_values $
@@ -637,11 +637,11 @@ PRO int_gbl
 ;
 ;;GhOST GC-MS
 ;
-;w=where(chr.m EQ mass[2])
+;w = where(chr.m EQ mass[2])
 ;;w=where(chr.m EQ mass[2] AND chr.t GT rt_win[0] and chr.t LT rt_win[1],nw)
 ;
 ;;iplot,chr.t[w],chr.v[w]
-;nterms_base=1
+;nterms_base = 1
 ;nsigma_fit=[4,10]
 ;
 ;IF 0 THEN BEGIN

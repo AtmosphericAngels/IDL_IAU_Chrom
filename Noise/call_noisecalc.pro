@@ -32,17 +32,17 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
 
   ;+++++++++++++++++++++++++++++
   ; define standard operation if not defined
-  IF NOT KEYWORD_SET(noise_uname) THEN noise_uname='noise_pres'
-  IF NOT KEYWORD_SET(delay) THEN delay=0.
-  IF NOT KEYWORD_SET(plot) THEN plot=0
-  IF NOT KEYWORD_SET(no_warn) THEN no_warn=0 ; warning if insufficient data on by default
+  IF NOT KEYWORD_SET(noise_uname) THEN noise_uname = 'noise_pres'
+  IF NOT KEYWORD_SET(delay) THEN delay = 0.
+  IF NOT KEYWORD_SET(plot) THEN plot = 0
+  IF NOT KEYWORD_SET(no_warn) THEN no_warn = 0 ; warning if insufficient data on by default
 
   ;+++++++++++++++++++++++++++++
   ; call specified operation
     CASE noise_uname OF
       'noise_pres': $ ; apply settings to selected chrom
         BEGIN
-          noise_win=chrom[sel_chrom].subst[sel_name].noise_win
+          noise_win = chrom[sel_chrom].subst[sel_name].noise_win
           strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints LE 3 THEN BEGIN
               IF plot EQ 1 THEN msg=DIALOG_MESSAGE('Not enough datapoints for noise calculation found in specified retention time window.', /INFORMATION)
@@ -53,7 +53,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
           IF plot EQ 1 THEN BEGIN
             plot_routine_pobj0, strct.x, strct.y, X_0A=strct.x, V_0A=strct.yfit, X_0B=strct.x, V_0B=strct.yfit+(strct.noise)/2.0, X_0C=strct.x, V_0C=strct.yfit-(strct.noise)/2.0, $
                                 OVER=1234, SET_COLORS=colors, XRANGE=strct.xrange, YRANGE=strct.yrange
-            textcontent[0]=FILE_BASENAME(chrom[sel_chrom].fname)
+            textcontent[0] = FILE_BASENAME(chrom[sel_chrom].fname)
             textcontent[1]='Noise: '+STRCOMPRESS(STRING(strct.noise), /REMOVE_ALL)
             textcontent[2]='on m/Q: '+STRCOMPRESS(STRING(strct.noisemass, FORMAT='(D14.4)'), /REMOVE_ALL)
             refresh_text_pobj0, SET_COLORS=['k','k','k','k','k'], SET_MANUAL=textcontent, SET_SUBTITLE=subtitle
@@ -63,7 +63,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
       'noise_def_pres': $ ; apply default to selected chrom
         BEGIN
           chrom[sel_chrom].subst[sel_name].noise_win = subst[sel_name].noise_win
-          noise_win=subst[sel_name].noise_win
+          noise_win = subst[sel_name].noise_win
           strct = calc_noise_fct(chrom, sel_chrom, sel_name, tot_uniqm, NOISE_WIN=noise_win, NO_WARN=no_warn)
             IF strct.ndatapoints  LE 3 THEN BEGIN
               IF plot EQ 1 THEN msg=DIALOG_MESSAGE('Not enough datapoints for noise calculation found in specified retention time window.', /INFORMATION)
@@ -74,7 +74,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
           IF plot EQ 1 THEN BEGIN
             plot_routine_pobj0, strct.x, strct.y, X_0A=strct.x, V_0A=strct.yfit, X_0B=strct.x, V_0B=strct.yfit+(strct.noise)/2.0, X_0C=strct.x, V_0C=strct.yfit-(strct.noise)/2.0, $
                                 OVER=1234, SET_COLORS=colors, XRANGE=strct.xrange, YRANGE=strct.yrange
-            textcontent[0]=FILE_BASENAME(chrom[sel_chrom].fname)
+            textcontent[0] = FILE_BASENAME(chrom[sel_chrom].fname)
             textcontent[1]='Noise: '+STRCOMPRESS(STRING(strct.noise), /REMOVE_ALL)
             textcontent[2]='on m/Q: '+STRCOMPRESS(STRING(strct.noisemass, FORMAT='(D14.4)'), /REMOVE_ALL)
             refresh_text_pobj0, SET_MANUAL=textcontent, SET_COLORS=['k','k','k','k','k'], SET_SUBTITLE=subtitle
@@ -83,7 +83,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
 
       'noise_all': $ ; apply settings to all chroms
         BEGIN
-          noise_win=chrom[sel_chrom].subst[sel_name].noise_win
+          noise_win = chrom[sel_chrom].subst[sel_name].noise_win
           FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
             chrom[i].subst[sel_name].quant = sel_quant
             chrom[i].subst[sel_name].noise_win = noise_win
@@ -94,7 +94,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
               IF plot EQ 1 THEN BEGIN
                 plot_routine_pobj0, strct.x, strct.y, X_0A=strct.x, V_0A=strct.yfit, X_0B=strct.x, V_0B=strct.yfit+(strct.noise)/2.0, X_0C=strct.x, V_0C=strct.yfit-(strct.noise)/2.0, $
                                     OVER=1234, SET_COLORS=colors, XRANGE=strct.xrange, YRANGE=strct.yrange
-                textcontent[0]=FILE_BASENAME(chrom[i].fname)
+                textcontent[0] = FILE_BASENAME(chrom[i].fname)
                 textcontent[1]='Noise: '+STRCOMPRESS(STRING(strct.noise), /REMOVE_ALL)
                 textcontent[2]='on m/Q: '+STRCOMPRESS(STRING(strct.noisemass, FORMAT='(D14.4)'), /REMOVE_ALL)
                 refresh_text_pobj0, SET_MANUAL=textcontent, SET_COLORS=['k','k','k','k','k'], SET_SUBTITLE=subtitle
@@ -108,7 +108,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
 
       'noise_def_all' : $ ; apply default to all chroms
         BEGIN
-          noise_win=subst[sel_name].noise_win
+          noise_win = subst[sel_name].noise_win
 ;          plot_routine_pobj0, SET_ZERO=1
           FOR i=0, N_ELEMENTS(chrom.fname)-1 DO BEGIN
             chrom[i].subst[sel_name].quant = subst[sel_name].quant
@@ -120,7 +120,7 @@ PRO call_noisecalc, sel_chrom, sel_name, event, $
               IF plot EQ 1 THEN BEGIN
                 plot_routine_pobj0, strct.x, strct.y, X_0A=strct.x, V_0A=strct.yfit, X_0B=strct.x, V_0B=strct.yfit+(strct.noise)/2.0, X_0C=strct.x, V_0C=strct.yfit-(strct.noise)/2.0, $
                                     OVER=1234, SET_COLORS=colors, XRANGE=strct.xrange, YRANGE=strct.yrange
-                textcontent[0]=FILE_BASENAME(chrom[i].fname)
+                textcontent[0] = FILE_BASENAME(chrom[i].fname)
                 textcontent[1]='Noise: '+STRCOMPRESS(STRING(strct.noise), /REMOVE_ALL)
                 textcontent[2]='on m/Q: '+STRCOMPRESS(STRING(strct.noisemass, FORMAT='(D14.4)'), /REMOVE_ALL)
                 refresh_text_pobj0, SET_MANUAL=textcontent, SET_COLORS=['k','k','k','k','k'], SET_SUBTITLE=subtitle

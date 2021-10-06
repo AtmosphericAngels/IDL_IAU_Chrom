@@ -209,7 +209,7 @@ PRO wid_integration_handle, event
 ; reload msinfo to chromstruct: nominal masses (in case of exact masses in msinfo)
   IF event.id EQ WIDGET_INFO(event.top, find_by_uname='re_msinfo_nom') THEN BEGIN
     event.id = WIDGET_INFO(event.top, find_by_uname='reload_msinfo')
-    USE_NOM=1
+    USE_NOM = 1
   ENDIF
 
 ;+++++++++++++++++++++++IF_EVENT
@@ -219,11 +219,11 @@ PRO wid_integration_handle, event
       IF msg EQ 'Yes' THEN BEGIN
         refr_status, message='reloading msinfo...'
         refs=read_subst(PATH=path, USE_NOM=use_nom)
-        refi=create_refi()
+        refi = create_refi()
         subst=add_ires2subst(refs, refi)                          ; reload subst (overwrite)
         empty_chrom = create_empty_chromstrct(chrom, /CHROM_ONLY) ; reload msinfo (overwrite)
         STRUCT_ASSIGN, chrom, empty_chrom
-        chrom=empty_chrom
+        chrom = empty_chrom
         chrom=add_subst2chrom(chrom, subst)
         upd_intwid, event
         refr_status, message='msinfo reloaded.'
@@ -252,11 +252,11 @@ PRO wid_integration_handle, event
               refr_status, message='running batch method...'
               FOR sel_name=0, n_subst-1 DO BEGIN
                 FOR sel_chrom=0, n_chrom-1 DO BEGIN
-                  chrom[sel_chrom].subst[sel_name].rt_win=subst[sel_name].rt_win
-                  chrom[sel_chrom].subst[sel_name].bl_type=subst[sel_name].bl_type
-                  chrom[sel_chrom].subst[sel_name].sigma=subst[sel_name].sigma
-                  chrom[sel_chrom].subst[sel_name].quant=subst[sel_name].quant
-                  chrom[sel_chrom].subst[sel_name].method=subst[sel_name].method
+                  chrom[sel_chrom].subst[sel_name].rt_win = subst[sel_name].rt_win
+                  chrom[sel_chrom].subst[sel_name].bl_type = subst[sel_name].bl_type
+                  chrom[sel_chrom].subst[sel_name].sigma = subst[sel_name].sigma
+                  chrom[sel_chrom].subst[sel_name].quant = subst[sel_name].quant
+                  chrom[sel_chrom].subst[sel_name].method = subst[sel_name].method
                   IF WIDGET_INFO(event.id, /uname) EQ 'bat_int_noise' THEN $
                     call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_def_pres', /NO_WARN
                   call_integration, sel_chrom, sel_name, PLOT=0
@@ -283,14 +283,14 @@ PRO wid_integration_handle, event
 ;+++++++++++++++++++++++IF_EVENT
 ; change / set quantifier mass
   WIDGET_CONTROL, ID_quant, SET_VALUE = STRING(get_finval(chrom[sel_chrom].subst[sel_name].mass), FORMAT='(D14.4)')
-  IF event.id EQ ID_quant THEN chrom[sel_chrom].subst[sel_name].quant=sel_quant $                    ; change quant in chrom strct
+  IF event.id EQ ID_quant THEN chrom[sel_chrom].subst[sel_name].quant = sel_quant $                    ; change quant in chrom strct
     ELSE sel_quant=chrom[sel_chrom].subst[sel_name].quant                                            ; ...or use quant from chrom strct
   WIDGET_CONTROL, ID_quant, SET_DROPLIST_SELECT=sel_quant
 
 
 ;+++++++++++++++++++++++ALWAYS
 ; generate intensity index reference
-  v=(chrom[sel_chrom].subst[sel_name].mass)[chrom[sel_chrom].subst[sel_name].quant]
+  v = (chrom[sel_chrom].subst[sel_name].mass)[chrom[sel_chrom].subst[sel_name].quant]
   sel_mass=matchmass(tot_uniqm, v, limit_dif=0.3)
   IF sel_mass[0] EQ -1 THEN BEGIN
     msg=DIALOG_MESSAGE(STRING(v)+': Mass not found in chromatogram.', /INFORMATION)
@@ -329,72 +329,72 @@ PRO wid_integration_handle, event
     WIDGET_CONTROL, flag_ID, set_droplist_select=chrom[sel_chrom].subst[sel_name].ires.flag+2
     CASE flag OF
     '-2': BEGIN
-            chrom[sel_chrom].subst[sel_name].ires.comment='Bad Peak'
-            chrom[sel_chrom].subst[sel_name].ires.area=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.rt=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.height=!values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.comment = 'Bad Peak'
+            chrom[sel_chrom].subst[sel_name].ires.area = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.rt = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.height = !values.D_NAN
           END
     '-1': BEGIN
-            chrom[sel_chrom].subst[sel_name].ires.comment='No Peak Found'
-            chrom[sel_chrom].subst[sel_name].ires.area=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.rt=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.height=!values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.comment = 'No Peak Found'
+            chrom[sel_chrom].subst[sel_name].ires.area = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.rt = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.height = !values.D_NAN
           END
     '0':  BEGIN
-            chrom[sel_chrom].subst[sel_name].ires.comment='Not Integrated'
-            chrom[sel_chrom].subst[sel_name].ires.area=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.rt=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.height=!values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.comment = 'Not Integrated'
+            chrom[sel_chrom].subst[sel_name].ires.area = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.rt = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.height = !values.D_NAN
           END
 
     '1':  BEGIN
-            chrom[sel_chrom].subst[sel_name].ires.comment='Integrated'
+            chrom[sel_chrom].subst[sel_name].ires.comment = 'Integrated'
           END
 
     '2':  BEGIN
-            chrom[sel_chrom].subst[sel_name].ires.comment='Integrated (man.)'
-            chrom[sel_chrom].subst[sel_name].ires.area=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.rt=!values.D_NAN
-            chrom[sel_chrom].subst[sel_name].ires.height=!values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.comment = 'Integrated (man.)'
+            chrom[sel_chrom].subst[sel_name].ires.area = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.rt = !values.D_NAN
+            chrom[sel_chrom].subst[sel_name].ires.height = !values.D_NAN
           END
       ENDCASE
     WIDGET_CONTROL, comment_ID, set_value=chrom[sel_chrom].subst[sel_name].ires.comment ; update comment
   ENDIF
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if RT_min value has changed
   ID=WIDGET_INFO(event.top, find_by_uname='rt_min')
   IF refresh THEN BEGIN
     WIDGET_CONTROL, ID, get_value=val
-    IF val GT chrom[sel_chrom].subst[sel_name].rt_win[1] THEN val=min(*chrom[sel_chrom].time)
-    chrom[sel_chrom].subst[sel_name].rt_win[0]=val
+    IF val GT chrom[sel_chrom].subst[sel_name].rt_win[1] THEN val = min(*chrom[sel_chrom].time)
+    chrom[sel_chrom].subst[sel_name].rt_win[0] = val
   ENDIF
   WIDGET_CONTROL, ID, set_value=chrom[sel_chrom].subst[sel_name].rt_win[0]
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if RT_max value has changed
   ID=WIDGET_INFO(event.top, find_by_uname='rt_max')
   IF refresh THEN BEGIN
     WIDGET_CONTROL, ID, get_value=val
-    IF val LT chrom[sel_chrom].subst[sel_name].rt_win[0] THEN val=max(*chrom[sel_chrom].time)
-    chrom[sel_chrom].subst[sel_name].rt_win[1]=val
+    IF val LT chrom[sel_chrom].subst[sel_name].rt_win[0] THEN val = max(*chrom[sel_chrom].time)
+    chrom[sel_chrom].subst[sel_name].rt_win[1] = val
   ENDIF
   WIDGET_CONTROL, ID, set_value=chrom[sel_chrom].subst[sel_name].rt_win[1]
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if baseline fitfunction value has changed
   ID=WIDGET_INFO(event.top, find_by_uname='bl_fitfunc')
   IF refresh THEN BEGIN
     index=WIDGET_INFO(ID, /droplist_select)
-    chrom[sel_chrom].subst[sel_name].bl_type=index
+    chrom[sel_chrom].subst[sel_name].bl_type = index
   ENDIF
   WIDGET_CONTROL, ID, set_droplist_select=chrom[sel_chrom].subst[sel_name].bl_type
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if int-method/sigma_left value has changed
   ID=WIDGET_INFO(event.top, find_by_uname='sigma_left')
   IF refresh THEN BEGIN
@@ -412,12 +412,12 @@ PRO wid_integration_handle, event
     WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=val_ix[1]
   ENDIF ELSE BEGIN
     WIDGET_CONTROL, ID, /COMBOBOX_INDEX, get_value=cbox_content
-    vd=WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_name].sigma[0])
+    vd = WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_name].sigma[0])
     WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=vd[0]
   ENDELSE
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if int-method/sigma_right value has changed
   ID=WIDGET_INFO(event.top, find_by_uname='sigma_right')
   IF refresh THEN BEGIN
@@ -435,36 +435,36 @@ PRO wid_integration_handle, event
     WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=val_ix[1]
   ENDIF ELSE BEGIN
     WIDGET_CONTROL, ID, /COMBOBOX_INDEX, get_value=cbox_content
-    vd=WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_name].sigma[1])
+    vd = WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_name].sigma[1])
     WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=vd[0]
   ENDELSE
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if noise left boundry value has changed
   ID_noise_lb=WIDGET_INFO(event.top, find_by_uname='noise_lb')
   IF refresh THEN BEGIN
     WIDGET_CONTROL, ID_noise_lb, get_value=noise_lb
-    IF noise_lb GT chrom[sel_chrom].subst[sel_name].noise_win[1] THEN noise_lb=MIN(*chrom[sel_chrom].time)
-    chrom[sel_chrom].subst[sel_name].noise_win[0]=noise_lb
+    IF noise_lb GT chrom[sel_chrom].subst[sel_name].noise_win[1] THEN noise_lb = MIN(*chrom[sel_chrom].time)
+    chrom[sel_chrom].subst[sel_name].noise_win[0] = noise_lb
   ENDIF
   WIDGET_CONTROL, ID_noise_lb, set_value=chrom[sel_chrom].subst[sel_name].noise_win[0]
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; check if noise left boundry value has changed
   ID_noise_rb=WIDGET_INFO(event.top, find_by_uname='noise_rb')
   IF refresh THEN BEGIN
     WIDGET_CONTROL, ID_noise_rb, get_value=noise_rb
-    IF noise_rb LT chrom[sel_chrom].subst[sel_name].noise_win[0] THEN noise_rb=MAX(*chrom[sel_chrom].time)
-    chrom[sel_chrom].subst[sel_name].noise_win[1]=noise_rb
+    IF noise_rb LT chrom[sel_chrom].subst[sel_name].noise_win[0] THEN noise_rb = MAX(*chrom[sel_chrom].time)
+    chrom[sel_chrom].subst[sel_name].noise_win[1] = noise_rb
   ENDIF
   WIDGET_CONTROL, ID_noise_rb, set_value=chrom[sel_chrom].subst[sel_name].noise_win[1]
 
 
 
 
-;+++++++++++++++++++++++IF_REFRESH=1
+;+++++++++++++++++++++++IF_REFRESH = 1
 ; reset plot if flag is set to a no-int-trigger or integrate if integration isn't called elsewhere
 ;  IF refresh THEN BEGIN
 ;    IF TOTAL(STRMATCH(no_int_triggers, chrom[sel_chrom].subst[sel_name].ires.comment)) EQ 1 $
@@ -486,7 +486,7 @@ PRO wid_integration_handle, event
     chrom[sel_chrom].subst[sel_name].method = sel_intmthd
     chrom[sel_chrom].subst[sel_name].ires.flag = 2
     call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, MAN_FLAG=2, MAN_COMMENT='Integrated (man.)'
-    int_called=1
+    int_called = 1
   ENDIF
 
 
@@ -503,11 +503,11 @@ PRO wid_integration_handle, event
     FOR n=0, N_ELEMENTS(chrom)-1 DO BEGIN
       IF n EQ sel_chrom THEN chrom[n].subst[sel_name].ires.flag = 0 ; reset flag for current chrom
       IF ABS(chrom[n].subst[sel_name].ires.flag) EQ 2 AND ovwr_man EQ 0 THEN CONTINUE ; skip if flag is -2 or +2 and overwrite is disabled
-      chrom[n].subst[sel_name].rt_win=chrom[sel_chrom].subst[sel_name].rt_win
-      chrom[n].subst[sel_name].bl_type=chrom[sel_chrom].subst[sel_name].bl_type
-      chrom[n].subst[sel_name].sigma=chrom[sel_chrom].subst[sel_name].sigma
-      chrom[n].subst[sel_name].quant=chrom[sel_chrom].subst[sel_name].quant
-      chrom[n].subst[sel_name].method=sel_intmthd
+      chrom[n].subst[sel_name].rt_win = chrom[sel_chrom].subst[sel_name].rt_win
+      chrom[n].subst[sel_name].bl_type = chrom[sel_chrom].subst[sel_name].bl_type
+      chrom[n].subst[sel_name].sigma = chrom[sel_chrom].subst[sel_name].sigma
+      chrom[n].subst[sel_name].quant = chrom[sel_chrom].subst[sel_name].quant
+      chrom[n].subst[sel_name].method = sel_intmthd
       call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
       WAIT, wait
     ENDFOR
@@ -515,7 +515,7 @@ PRO wid_integration_handle, event
 ;      ID=WIDGET_INFO(event.top, find_by_uname='chrom')
 ;         WIDGET_CONTROL, ID, set_droplist_select=sel_chrom
 ;      IF STRUPCASE(chrom[sel_chrom].subst[sel_name].ires.comment) NE 'INTEGRATED' THEN BEGIN            ; show mass trace only
-;        vd=WHERE(*chrom[sel_chrom].mass EQ chrom[sel_chrom].subst[sel_name].mass[quant] AND $
+;        vd = WHERE(*chrom[sel_chrom].mass EQ chrom[sel_chrom].subst[sel_name].mass[quant] AND $
 ;                 *chrom[sel_chrom].time GE rt_win[0] AND *chrom[sel_chrom].time LE rt_win[1], nvd)
 ;        x = (*chrom[sel_chrom].time)[vd]
 ;        v = (*chrom[sel_chrom].intensity)[vd]
@@ -544,16 +544,16 @@ PRO wid_integration_handle, event
     FOR n=0, N_ELEMENTS(chrom)-1 DO BEGIN
       IF n EQ sel_chrom THEN chrom[n].subst[sel_name].ires.flag = 0 ; reset flag for current chrom
       IF ABS(chrom[n].subst[sel_name].ires.flag) EQ 2 AND ovwr_man EQ 0 THEN CONTINUE ; skip if flag is -2 or +2 and overwrite is disabled
-      chrom[n].subst[sel_name].rt_win=subst[sel_name].rt_win
-      chrom[n].subst[sel_name].bl_type=subst[sel_name].bl_type
-      chrom[n].subst[sel_name].sigma=subst[sel_name].sigma
-      chrom[n].subst[sel_name].quant=subst[sel_name].quant
-      chrom[n].subst[sel_name].method=subst[sel_name].method
+      chrom[n].subst[sel_name].rt_win = subst[sel_name].rt_win
+      chrom[n].subst[sel_name].bl_type = subst[sel_name].bl_type
+      chrom[n].subst[sel_name].sigma = subst[sel_name].sigma
+      chrom[n].subst[sel_name].quant = subst[sel_name].quant
+      chrom[n].subst[sel_name].method = subst[sel_name].method
       call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
       WAIT, wait
     ENDFOR
 ;    IF STRUPCASE(chrom[sel_chrom].subst[sel_name].ires.comment) NE 'INTEGRATED' THEN BEGIN
-;      vd=WHERE(*chrom[sel_chrom].mass EQ chrom[sel_chrom].subst[sel_name].mass[quant] AND $
+;      vd = WHERE(*chrom[sel_chrom].mass EQ chrom[sel_chrom].subst[sel_name].mass[quant] AND $
 ;               *chrom[sel_chrom].time GE rt_win[0] AND *chrom[sel_chrom].time LE rt_win[1], nvd)
 ;      x = (*chrom[sel_chrom].time)[vd]
 ;      v = (*chrom[sel_chrom].intensity)[vd]
@@ -580,24 +580,24 @@ PRO wid_integration_handle, event
     IF ABS(chrom[sel_chrom].subst[sel_name].ires.flag) EQ 2 AND ovwr_man EQ 0 THEN RETURN
     ID_quant=WIDGET_INFO(event.top, find_by_uname='mass')
     WIDGET_CONTROL, ID_quant, set_droplist_select=subst[sel_name].quant
-    chrom[sel_chrom].subst[sel_name].rt_win=subst[sel_name].rt_win
-    chrom[sel_chrom].subst[sel_name].bl_type=subst[sel_name].bl_type
-    chrom[sel_chrom].subst[sel_name].sigma=subst[sel_name].sigma
-    chrom[sel_chrom].subst[sel_name].quant=subst[sel_name].quant
-    chrom[sel_chrom].subst[sel_name].method=subst[sel_name].method
+    chrom[sel_chrom].subst[sel_name].rt_win = subst[sel_name].rt_win
+    chrom[sel_chrom].subst[sel_name].bl_type = subst[sel_name].bl_type
+    chrom[sel_chrom].subst[sel_name].sigma = subst[sel_name].sigma
+    chrom[sel_chrom].subst[sel_name].quant = subst[sel_name].quant
+    chrom[sel_chrom].subst[sel_name].method = subst[sel_name].method
     call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
   ENDIF
 
 
-;+++++++++++++++++++++++IF_EVENT OR REFRESH=0
+;+++++++++++++++++++++++IF_EVENT OR REFRESH = 0
 ; reset plot 0
   IF event.id EQ WIDGET_INFO(event.top, find_by_uname='refresh_pobj0') OR REFRESH EQ 0 THEN BEGIN
-      v=(chrom[sel_chrom].subst[sel_name].mass)[chrom[sel_chrom].subst[sel_name].quant]
+      v = (chrom[sel_chrom].subst[sel_name].mass)[chrom[sel_chrom].subst[sel_name].quant]
       sel_mass=matchmass(tot_uniqm, v, limit_dif=0.3)
       msel=WHERE(*chrom[sel_chrom].mass EQ FIX(sel_mass[0], type=4), nvd)
     plot_routine_pobj0, (*chrom[sel_chrom].time)[msel], (*chrom[sel_chrom].intensity)[msel], OVER=1, FIX_XYRANGE=fix_xyrange
-    textcontent=STRARR(8)
-    textcontent[0]=FILE_BASENAME(chrom[sel_chrom].fname)
+    textcontent = STRARR(8)
+    textcontent[0] = FILE_BASENAME(chrom[sel_chrom].fname)
     textcontent[1]='m/Q: '+STRTRIM(STRCOMPRESS(STRING((chrom[sel_chrom].subst[sel_name].mass[chrom[sel_chrom].subst[sel_name].quant]),$
                    FORMAT = "(D14.4)")),2)
     refresh_text_pobj0, SET_MANUAL=textcontent, SET_COLORS=['k','k','k','k','k']
@@ -623,9 +623,9 @@ PRO wid_integration_handle, event
 ; generate / update variables 'quant' and 'rt_win' (x and v data for plot)
 ; generate mass trace data for plot (x, v, xrange, yrange)
 ; apply to plot: integrate if flag is 1 or 2, else plot m/Q trace only
-  quant=chrom[sel_chrom].subst[sel_name].quant
+  quant = chrom[sel_chrom].subst[sel_name].quant
   rt_win=[chrom[sel_chrom].subst[sel_name].rt_win[0], chrom[sel_chrom].subst[sel_name].rt_win[1]]
-  vd=WHERE(*chrom[sel_chrom].mass EQ sel_mass[0] AND $
+  vd = WHERE(*chrom[sel_chrom].mass EQ sel_mass[0] AND $
     *chrom[sel_chrom].time GE rt_win[0] AND *chrom[sel_chrom].time LE rt_win[1], nvd)
   x = (*chrom[sel_chrom].time)[vd]
   v = (*chrom[sel_chrom].intensity)[vd]
@@ -702,7 +702,7 @@ PRO wid_integration_handle, event
     plot_routine_pobj1, SET_ZERO=1                    ; reset plot1 data
     refresh_text_pobj0, SET_ZERO=1                    ; reset plot0 info texts
     refresh_text_pobj1, chrom, 0, 0, SET_ZERO=1       ; reset plot1 info texts
-    widid.intwid=-1
+    widid.intwid = -1
     IF event.SELECT THEN WIDGET_CONTROL, event.top, /DESTROY
   ENDIF
 

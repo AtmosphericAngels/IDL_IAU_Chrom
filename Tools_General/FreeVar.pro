@@ -50,8 +50,8 @@ PRO FreeVar, var
 	IF (sz EQ 10) THEN HEAP_FREE,var,VERBOSE=0
 	IF (sz EQ 11) THEN HEAP_FREE,var,VERBOSE=0
 
-	var=0
-	dummy=temporary(var)
+	var = 0
+	dummy = temporary(var)
 
 END
 ;*************************************************************************************************************************

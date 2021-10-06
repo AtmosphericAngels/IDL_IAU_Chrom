@@ -23,7 +23,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   a_vs_h = DBLARR(nchrom)
   meas_no = INDGEN(nchrom)+1
   xrange = [0,MAX(meas_no)+1]
-  title=chrom[0].subst[sel_subst_ix].name
+  title = chrom[0].subst[sel_subst_ix].name
 
     FOR i=0, nchrom-1 DO BEGIN
       areas[i] = chrom[i].subst[sel_subst_ix].ires.area
@@ -104,7 +104,7 @@ PRO plot_intres, chrom, SEL_SUBST_IX=sel_subst_ix, SAVEPLOT=saveplot, FILE_EXT=f
   ;substratio=areas[1,*]/areas[0,*]
   ;p2=plot(meas_no, substratio, XRANGE=xrange)
 
-  ;cal_areas=fltarr(nsubst)
+  ;cal_areas = fltarr(nsubst)
   ;he_areas=fltarr(nsubst,3)
   ;
   ;FOR j=0, nsubst-1 DO BEGIN
@@ -120,9 +120,9 @@ END
 
 ; double y axis plot
 ;
-;x=indgen(100)
-;y0=indgen(100)
-;y1=(indgen(100)-1000)*(-1)
+;x = indgen(100)
+;y0 = indgen(100)
+;y1 = (indgen(100)-1000)*(-1)
 ;margin=[0.1,0.1,0.1,0.1]
 ;p0=plot(x,y0,'r',margin=margin,axis_style=0)
 ;p1=plot(x,y1,'b',/current, margin=margin, axis_style=0)

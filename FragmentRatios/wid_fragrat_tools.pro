@@ -48,13 +48,13 @@ END
 FUNCTION frags2plot, event, chrom, sel_chrom, tot_uniqm
 
   frag1_xtm = WIDGET_INFO(event.top, find_by_uname='frag1_xtm')
-  ixval=cb_ixval(frag1_xtm)
+  ixval = cb_ixval(frag1_xtm)
   f1_xtm = DOUBLE(ixval.val)
   match = find_match(f1_xtm, tot_uniqm)
   f1_mass = match.val
 
   frag2_xtm = WIDGET_INFO(event.top, find_by_uname='frag2_xtm')
-  ixval=cb_ixval(frag2_xtm)
+  ixval = cb_ixval(frag2_xtm)
   f2_xtm = DOUBLE(ixval.val)
   match = find_match(f2_xtm, tot_uniqm)
   f2_mass = match.val
@@ -104,11 +104,11 @@ PRO adj_plot_set, event, chrom, sel_chrom, sel_subst
 
   psigma_left_ID = WIDGET_INFO(event.top, find_by_uname='psigma_left')
   WIDGET_CONTROL, psigma_left_ID, /COMBOBOX_INDEX, get_value=cbox_content
-  vd=WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_subst].sigma[0])
+  vd = WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_subst].sigma[0])
   WIDGET_CONTROL, psigma_left_ID, SET_COMBOBOX_SELECT=vd[0]
   psigma_right_ID = WIDGET_INFO(event.top, find_by_uname='psigma_right')
   WIDGET_CONTROL, psigma_right_ID, /COMBOBOX_INDEX, get_value=cbox_content
-  vd=WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_subst].sigma[1])
+  vd = WHERE(cbox_content EQ chrom[sel_chrom].subst[sel_subst].sigma[1])
   WIDGET_CONTROL, psigma_right_ID, SET_COMBOBOX_SELECT=vd[0]
 
   rt_min_ID=widget_info(event.top, find_by_uname='rt_min')
@@ -236,8 +236,8 @@ PRO set_fragplot0, event, chrom, sel_chrom, sel_subst, tot_uniqm
   plot_routine_pobj0, pdata.f1_x, pdata.f1_v, OVER=1, XRANGE=pdata.xrange, YRANGE=pdata.yrange
   plot_routine_pobj0, pdata.f2_x, pdata.f2_v, OVER=2
 
-  textcontent=STRARR(8)
-  textcontent[0]=FILE_BASENAME(chrom[sel_chrom].fname)
+  textcontent = STRARR(8)
+  textcontent[0] = FILE_BASENAME(chrom[sel_chrom].fname)
   textcontent[1]='Fragment 1: '+STRTRIM(STRCOMPRESS(STRING(pdata.f1_mass, FORMAT='(F12.4)'), /REMOVE_ALL))
   textcontent[2]='Fragment 2: '+STRTRIM(STRCOMPRESS(STRING(pdata.f2_mass, FORMAT='(F12.4)'), /REMOVE_ALL))
   colors=['k','k','r','b','deep_sky_blue','m','gold']

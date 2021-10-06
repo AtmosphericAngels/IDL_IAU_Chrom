@@ -16,8 +16,8 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
   COMMON DATA
 
   DEVICE, Get_Screen_Size=screenSize
-  XCenter=FIX(ScreenSize[0])
-  YCenter=FIX(ScreenSize[1])
+  XCenter = FIX(ScreenSize[0])
+  YCenter = FIX(ScreenSize[1])
 
   IF p_obj[0] EQ 'p_obj0' THEN BEGIN
     IF OBJ_VALID(p_obj0[0]) EQ 0 THEN BEGIN ; pobj0 was closed, restore
@@ -31,16 +31,16 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       FOR i=1, N_ELEMENTS(p_obj0)-1 DO p_obj0[i]=plot([0.,0.], COLOR=col_p0[i], THICK=thick_p0[i], LINESTYLE=linestyle_p0[i], /OVERPLOT)
 
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
-        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle='$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
+        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
         CASE chrom[0].instr_type OF
-          0: ytitle='Intensity'
-          3: ytitle='Intensity [ions/extr.]'
-          4: ytitle='Intensity [mV]'
+          0: ytitle = 'Intensity'
+          3: ytitle = 'Intensity [ions/extr.]'
+          4: ytitle = 'Intensity [mV]'
 ;          0:not defined, 1:QPMS or SFMS, 2:ALMSCO_TOFMS, 3:TW_TOFMS, 4:GhostECD, 5:AED, 6:GHGGC_FID or _ECD
-          ELSE: ytitle='Intensity [cts]'
+          ELSE: ytitle = 'Intensity [cts]'
         ENDCASE
-        p_obj0[0].xtitle=xtitle
-        p_obj0[0].ytitle=ytitle
+        p_obj0[0].xtitle = xtitle
+        p_obj0[0].ytitle = ytitle
       ENDIF
 
       textfsize_p0 = [12., 12., 12., 12., 12., 12., 12., 12., 12.]
@@ -68,16 +68,16 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       FOR i=1, N_ELEMENTS(p_obj1)-1 DO p_obj1[i]=plot([0.,0.], COLOR=col_p1[i], THICK=thick_p1[i], LINESTYLE=linestyle_p1[i], /OVERPLOT)
 
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
-        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle='$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
+        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
         CASE chrom[0].instr_type OF
-          0: ytitle='Intensity'
-          3: ytitle='Intensity [ions/extr.]'
-          4: ytitle='Intensity [mV]'
-          ELSE: ytitle='Intensity [cts]'
+          0: ytitle = 'Intensity'
+          3: ytitle = 'Intensity [ions/extr.]'
+          4: ytitle = 'Intensity [mV]'
+          ELSE: ytitle = 'Intensity [cts]'
 ;          0:not defined, 1:QPMS or SFMS, 2:ALMSCO_TOFMS, 3:TW_TOFMS, 4:GhostECD, 5:AED, 6:GHGGC_FID or _ECD
         ENDCASE
-        p_obj1[0].xtitle=xtitle
-        p_obj1[0].ytitle=ytitle
+        p_obj1[0].xtitle = xtitle
+        p_obj1[0].ytitle = ytitle
       ENDIF
 
       textfsize_p1 = [12., 12., 12., 12., 12., 12., 12.]

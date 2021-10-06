@@ -42,7 +42,7 @@ FUNCTION change_time, chrom, new_t_scale
   IF new_t_scale EQ 'Seconds' THEN t_set=0 ELSE t_set=1 ; t_set = 0 --> seconds, t_set = 1, minutes
 
   old_t_scale = chrom[0].t_scale
-  IF old_t_scale EQ 'Minutes' THEN t_conv=60D ELSE t_conv=1D/60D; define conversion factor to get the corresponding
+  IF old_t_scale EQ 'Minutes' THEN t_conv = 60D ELSE t_conv=1D/60D; define conversion factor to get the corresponding
                                                             ; other time scale
 
   IF old_t_scale EQ 'Seconds' AND t_set EQ 0 THEN RETURN, chrom ; is state equals set state

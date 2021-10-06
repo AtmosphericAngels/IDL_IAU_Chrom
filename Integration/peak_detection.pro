@@ -9,7 +9,7 @@
 FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEAK=peak, BASE=base, VERBOSE=verbose
 
   IF NOT KEYWORD_SET(rt_win) THEN rt_win=[MIN(xval,/nan),MAX(xval,/nan)]
-  IF NOT KEYWORD_SET(nterms_base) THEN nterms_base_peakdet=1 ELSE nterms_base_peakdet=nterms_base; linear baseline by default
+  IF NOT KEYWORD_SET(nterms_base) THEN nterms_base_peakdet = 1 ELSE nterms_base_peakdet=nterms_base; linear baseline by default
 
   nterms_peakdet = 3+nterms_base_peakdet
 
@@ -49,23 +49,23 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
       width = A0[2]
     ENDIF
     v_fit1 = gaussfit(t,v,A,NTERMS=nterms_peakdet,Estimates=Est)  ;TW 2019.08.08. *******************************/
-    IF width NE -999 THEN A[2]=width
+    IF width NE -999 THEN A[2] = width
   ENDIF
 
 
   IF KEYWORD_SET(verbose) THEN BEGIN
 
     ;A0 is undefined if constant baseline is selected
-    z0=(t-A0[1])/A0[2]
-    peak0=A0[0]*EXP(-z0^2/2)
+    z0 = (t-A0[1])/A0[2]
+    peak0 = A0[0]*EXP(-z0^2/2)
     base0=A0[3]+REPLICATE(0,nw_ret_win)
 
-    z=(t-A[1])/A[2]
-    peak=A[0]*EXP(-z^2/2)
+    z = (t-A[1])/A[2]
+    peak = A[0]*EXP(-z^2/2)
     CASE nterms_base_peakdet OF
       1: base=A[3]+REPLICATE(0,nw_ret_win)
-      2: base=A[3]+A[4]*t
-      3: base=A[3]+A[4]*t+A[5]*t^2
+      2: base = A[3]+A[4]*t
+      3: base = A[3]+A[4]*t+A[5]*t^2
     ENDCASE
 
     PRINT, 'nterms_base, peakdetection: ', nterms_base_peakdet

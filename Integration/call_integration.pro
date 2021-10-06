@@ -68,7 +68,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
   ;+++++++++++++++++++++++
   ; Get noise value if available
   chk_noise = chrom[sel_chrom].subst[sel_name].ires.noise[sel_quant]
-  IF FINITE(chk_noise) NE 1 THEN chk_noise=0. ; set zero if not calculated yet
+  IF FINITE(chk_noise) NE 1 THEN chk_noise = 0. ; set zero if not calculated yet
 
   verbose = 0
 
@@ -81,19 +81,19 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                BASE_FIT=base_fit, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, $
                                CHK_NOISE=chk_noise, TIMESCALE=timescale)
 
-            rt=strct.rt
-            area=strct.area
-            height=strct.hght
-            ts=strct.ts
-            te=strct.te
-            width=strct.wdth
-            flag=strct.flag
-            comment=strct.comment
+            rt = strct.rt
+            area = strct.area
+            height = strct.hght
+            ts = strct.ts
+            te = strct.te
+            width = strct.wdth
+            flag = strct.flag
+            comment = strct.comment
 
             IF plot THEN BEGIN
               IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-                fit_pwin=WHERE(x GE fit_win[0] AND x LE fit_win[1])
-                int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+                fit_pwin = WHERE(x GE fit_win[0] AND x LE fit_win[1])
+                int_pwin = WHERE(x GE int_win[0] AND x LE int_win[1])
                 prange = [rt_win, fit_win, int_win]
                 xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
                 yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
@@ -113,19 +113,19 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                              BASE_FIT=base_fit, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, $
                              CHK_NOISE=chk_noise, TIMESCALE=timescale)
 
-          rt=strct.rt
-          area=strct.area
-          height=strct.hght
-          ts=strct.ts
-          te=strct.te
-          width=strct.wdth
-          flag=strct.flag
-          comment=strct.comment
+          rt = strct.rt
+          area = strct.area
+          height = strct.hght
+          ts = strct.ts
+          te = strct.te
+          width = strct.wdth
+          flag = strct.flag
+          comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              fit_pwin=WHERE(x GE fit_win[0] AND x LE fit_win[1])
-              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              fit_pwin = WHERE(x GE fit_win[0] AND x LE fit_win[1])
+              int_pwin = WHERE(x GE int_win[0] AND x LE int_win[1])
               prange = [rt_win, fit_win, int_win]
               xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
               yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
@@ -143,18 +143,18 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
           strct=int_baseline_gau(x,v, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
                                  INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            rt=strct.rt
-            height=strct.hght
-            area=strct.area
-            width=strct.wdth
-            ts=strct.ts
-            te=strct.te
-            flag=strct.flag
-            comment=strct.comment
+            rt = strct.rt
+            height = strct.hght
+            area = strct.area
+            width = strct.wdth
+            ts = strct.ts
+            te = strct.te
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              int_pwin = WHERE(x GE int_win[0] AND x LE int_win[1])
               prange=[rt_win, int_win]
               xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
               yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
@@ -174,18 +174,18 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                  PARAMETER=parameter, TAXIS=taxis, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
 
-            rt=strct.rt
-            height=strct.hght
-            area=strct.area
-            width=strct.wdth
-            ts=strct.ts
-            te=strct.te
-            flag=strct.flag
-            comment=strct.comment
+            rt = strct.rt
+            height = strct.hght
+            area = strct.area
+            width = strct.wdth
+            ts = strct.ts
+            te = strct.te
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              int_pwin = WHERE(x GE int_win[0] AND x LE int_win[1])
               xrange = [rt_win[0]/1.025,rt_win[1]*1.025]
   ;            prange=[rt_win, int_win]
   ;            xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
@@ -205,14 +205,14 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                           INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int,  $
                                           PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            rt=strct.ret
-            area=strct.area
-            height=strct.hght
-            ts=strct.ts
-            te=strct.te
-            width=strct.wdth
-            flag=strct.flag
-            comment=strct.comment
+            rt = strct.ret
+            area = strct.area
+            height = strct.hght
+            ts = strct.ts
+            te = strct.te
+            width = strct.wdth
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
@@ -235,15 +235,15 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
                                            PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            wpeak=1
-            rt=strct.ret1
-            area=strct.area1
-            height=strct.hght1
-            ts=strct.ts
-            te=strct.te
-            width=strct.wdth1
-            flag=strct.flag
-            comment=strct.comment
+            wpeak = 1
+            rt = strct.ret1
+            area = strct.area1
+            height = strct.hght1
+            ts = strct.ts
+            te = strct.te
+            width = strct.wdth1
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
@@ -266,15 +266,15 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
                                            PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            wpeak=2
-            rt=strct.ret2
-            area=strct.area2
-            height=strct.hght2
-            ts=strct.ts
-            te=strct.te
-            width=strct.wdth2
-            flag=strct.flag
-            comment=strct.comment
+            wpeak = 2
+            rt = strct.ret2
+            area = strct.area2
+            height = strct.hght2
+            ts = strct.ts
+            te = strct.te
+            width = strct.wdth2
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
@@ -297,15 +297,15 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
                                            INT_WIN=int_win, PEAK_INT1=peak_int1, PEAK_INT2=peak_int2, BASE_INT=base_int,  $
                                            PARAMETER=parameter, TIMESCALE=timescale, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            wpeak=3
-            rt=(strct.ret1+strct.ret2)/2D
-            area=strct.area1+strct.area2
-            height=strct.hght1+strct.hght2
-            ts=strct.ts
-            te=strct.te
-            width=strct.wdth1+strct.wdth1
-            flag=strct.flag
-            comment=strct.comment
+            wpeak = 3
+            rt = (strct.ret1+strct.ret2)/2D
+            area = strct.area1+strct.area2
+            height = strct.hght1+strct.hght2
+            ts = strct.ts
+            te = strct.te
+            width = strct.wdth1+strct.wdth1
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
@@ -326,18 +326,18 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
           strct=int_SavGol_bl(x,v, y_SG=y_SG, NSIGMA_INT=sigma, NTERMS_BASE=nterms_base, RT_WIN=rt_win, PEAK_RET=peak_ret, BASE_RET=base_ret, $
                                  INT_WIN=int_win, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, VERBOSE=verbose, CHK_NOISE=chk_noise)
 
-            rt=strct.rt
-            height=strct.hght
-            area=strct.area
-            width=strct.wdth
-            ts=strct.ts
-            te=strct.te
-            flag=strct.flag
-            comment=strct.comment
+            rt = strct.rt
+            height = strct.hght
+            area = strct.area
+            width = strct.wdth
+            ts = strct.ts
+            te = strct.te
+            flag = strct.flag
+            comment = strct.comment
 
           IF plot THEN BEGIN
             IF STRUPCASE(strct.comment) EQ 'INTEGRATED' THEN BEGIN
-              int_pwin=WHERE(x GE int_win[0] AND x LE int_win[1])
+              int_pwin = WHERE(x GE int_win[0] AND x LE int_win[1])
               prange=[rt_win, int_win]
               xrange = [prange[(WHERE(prange EQ MIN(prange)))[0]], prange[(WHERE(prange EQ MAX(prange)))[0]]]
               yrange = [MIN(v[WHERE(x GE rt_win[0] AND x LE rt_win[1], nvd)], /NAN)-offset, $
@@ -353,8 +353,8 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
 
   ;+++++++++++++++++++++++++++++
   ; update ires
-    IF KEYWORD_SET(man_flag) AND flag NE -1 THEN flag=man_flag ; overwrite flag with manual value (keyword) if not 'no peak found'
-    IF KEYWORD_SET(man_comment) AND flag NE -1 THEN comment=man_comment
+    IF KEYWORD_SET(man_flag) AND flag NE -1 THEN flag = man_flag ; overwrite flag with manual value (keyword) if not 'no peak found'
+    IF KEYWORD_SET(man_comment) AND flag NE -1 THEN comment = man_comment
 
     chrom[sel_chrom].subst[sel_name].ires = { rt:rt ,$
                                               height:height ,$
@@ -370,7 +370,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
   ;+++++++++++++++++++++++++++++
   ; update plot object 1 text
     IF plot THEN BEGIN
-      IF int_mass[0] EQ -1 THEN sel_int_mass='NaN' ELSE sel_int_mass=int_mass[0]
+      IF int_mass[0] EQ -1 THEN sel_int_mass = 'NaN' ELSE sel_int_mass=int_mass[0]
       refresh_text_pobj1, chrom, sel_chrom, sel_name, int_mass=sel_int_mass
     ENDIF
 

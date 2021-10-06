@@ -15,7 +15,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 FUNCTION read_subst, PATH=path, FILTER=filter, USE_NOM=use_nom, DEF_FILE=def_file
 
-  IF NOT KEYWORD_SET(filter) THEN filter='*.info'
+  IF NOT KEYWORD_SET(filter) THEN filter = '*.info'
 
   IF SIZE(subst, /TYPE) EQ 8 THEN tmp=TEMPORARY(subst) ; delete if subst already defined
 
@@ -76,8 +76,8 @@ FUNCTION read_subst, PATH=path, FILTER=filter, USE_NOM=use_nom, DEF_FILE=def_fil
 
       FOR col=(15+counter), N_ELEMENTS(tmp)-1 DO BEGIN
         IF KEYWORD_SET(use_nom) THEN mass = ROUND(FLOAT((strsplit(tmp[col],';',/extract))[0])) ELSE mass=FLOAT((strsplit(tmp[col],';',/extract))[0])
-        IF mass LT 0 THEN mass=!Values.F_NAN
-        subst[row].mass[col-(15+counter)]=mass
+        IF mass LT 0 THEN mass = !Values.F_NAN
+        subst[row].mass[col-(15+counter)] = mass
         subst[row].rel_abd[col-(15+counter)]=FLOAT((strsplit(tmp[col],';',/extract))[1])
       ENDFOR
 

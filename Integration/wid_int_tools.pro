@@ -16,9 +16,9 @@ PRO upd_intwid, event, SEL_CHROM=sel_chrom, SEL_NAME=sel_name, EXCL_GENERAL=excl
 
   COMMON DATA
 
-  IF NOT KEYWORD_SET(sel_chrom) THEN sel_chrom=0
-  IF NOT KEYWORD_SET(sel_name) THEN sel_name=0
-  IF NOT KEYWORD_SET(excl_general) THEN excl_general=0
+  IF NOT KEYWORD_SET(sel_chrom) THEN sel_chrom = 0
+  IF NOT KEYWORD_SET(sel_name) THEN sel_name = 0
+  IF NOT KEYWORD_SET(excl_general) THEN excl_general = 0
 
   ;+++++++++++++++++++++++
   ; General, only if keyword exclude general is flase
@@ -69,7 +69,7 @@ PRO upd_intwid, event, SEL_CHROM=sel_chrom, SEL_NAME=sel_name, EXCL_GENERAL=excl
 
   ID=WIDGET_INFO(event.top, find_by_uname='sigma_left')
   WIDGET_CONTROL, ID, GET_VALUE=sigvals
-  sigma_left=chrom[sel_chrom].subst[sel_name].sigma[0]
+  sigma_left = chrom[sel_chrom].subst[sel_name].sigma[0]
   w_sig = WHERE(sigvals EQ sigma_left)
   IF w_sig NE -1 THEN WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=w_sig[0] $
     ELSE BEGIN
@@ -79,7 +79,7 @@ PRO upd_intwid, event, SEL_CHROM=sel_chrom, SEL_NAME=sel_name, EXCL_GENERAL=excl
 
   ID=WIDGET_INFO(event.top, find_by_uname='sigma_right')
   WIDGET_CONTROL, ID, GET_VALUE=sigvals
-  sigma_right=chrom[sel_chrom].subst[sel_name].sigma[1]
+  sigma_right = chrom[sel_chrom].subst[sel_name].sigma[1]
   w_sig = WHERE(sigvals EQ sigma_right)
   IF w_sig NE -1 THEN WIDGET_CONTROL, ID, SET_COMBOBOX_SELECT=w_sig[0] $
     ELSE BEGIN
@@ -108,7 +108,7 @@ FUNCTION matchmass, vd, v, LIMIT_DIF=limit_dif; adapted from viewer_tools / FUNC
   match_valind = [0.,0.,0.]
     IF valid_num(v) EQ 0 THEN RETURN, match_valind
 
-  v=FLOAT(v)
+  v = FLOAT(v)
   match_ind = WHERE(v EQ vd) ; try to find v in vd
   match_dif = 0.
 

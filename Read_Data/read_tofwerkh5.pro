@@ -65,7 +65,7 @@ FUNCTION tw_h5_filecheck, fname
         H5D_CLOSE, timing_id
         H5G_CLOSE, t_group_id
 
-    IF pt_size AND pd_size AND spec_size AND timing_size NE 0 THEN files_ok[i]=1 ;$
+    IF pt_size AND pd_size AND spec_size AND timing_size NE 0 THEN files_ok[i] = 1 ;$
 
   ENDFOR
 
@@ -87,7 +87,7 @@ FUNCTION h5_ptablecheck, FILE, PT_REF, PT_COMP=pt_com
   result = 0. ; result initialized as float, returned as integer
 
   ; check .mass for doubles in reference peaktable
-  w0=WHERE((pt_ref.mass)[0:-1]-(pt_ref.mass)[1:*] EQ 0)
+  w0 = WHERE((pt_ref.mass)[0:-1]-(pt_ref.mass)[1:*] EQ 0)
   ;  print, (pt_ref.mass)[w0]
   IF TOTAL(w0) NE -1 THEN BEGIN
     msg = DIALOG_MESSAGE('Found doubled mass in peaktable. Import Aborted', /ERROR)
@@ -96,27 +96,27 @@ FUNCTION h5_ptablecheck, FILE, PT_REF, PT_COMP=pt_com
     RETURN, result
   ENDIF
   ; pt_comp: check if .mass within .lower_integration_limit <> .upper_integration_limit
-  w1=WHERE(pt_ref.mass LE pt_ref.lower_integration_limit)
+  w1 = WHERE(pt_ref.mass LE pt_ref.lower_integration_limit)
   ;  print, (pt_ref.mass)[w1]
-  w2=WHERE(pt_ref.mass GE pt_ref.upper_integration_limit)
+  w2 = WHERE(pt_ref.mass GE pt_ref.upper_integration_limit)
   ;  print, (pt_ref.mass)[w2]
   IF w1+w2 NE -2 THEN msg = DIALOG_MESSAGE('Warning: Found mass(es) out of specified mass interval(s)!', /ERROR)
 
   IF KEYWORD_SET(pt_comp) THEN BEGIN
-    result=0. ; reset result
+    result = 0. ; reset result
     ; check .mass for doubles in comp. peaktable
     IF TOTAL(WHERE((pt_comp.mass)[0:-1]-(pt_comp.mass)[1:*] EQ 0)) NE -1 THEN BEGIN
       msg = DIALOG_MESSAGE('Found doubled mass in peaktable. Import Aborted', /ERROR)
       RETURN, result
     ENDIF
     ; pt_comp: check if .mass within .lower_integration_limit <> .upper_integration_limit
-    w1=WHERE(pt_comp.mass LT pt_comp.lower_integration_limit)
-    w2=WHERE(pt_comp.mass GT pt_comp.upper_integration_limit)
+    w1 = WHERE(pt_comp.mass LT pt_comp.lower_integration_limit)
+    w2 = WHERE(pt_comp.mass GT pt_comp.upper_integration_limit)
     IF w1+w2 NE -2 THEN msg = DIALOG_MESSAGE('Warning: Found mass(es) out of specified mass interval(s)!', /ERROR)
 
     ; check for equal peaktables (keyword pt_comp set)
     labeltest = STRCMP(pt_ref.label, pt_comp.label)
-    IF PRODUCT(labeltest) LT 0.5 THEN result=result+0 ELSE result=result+0.25                   ; check labels
+    IF PRODUCT(labeltest) LT 0.5 THEN result = result+0 ELSE result=result+0.25                   ; check labels
     IF TOTAL(pt_ref.mass) NE TOTAL(pt_comp.mass) THEN result=result+0 ELSE result=result+0.25   ; check masses
     IF TOTAL(pt_ref.lower_integration_limit) NE TOTAL(pt_comp.lower_integration_limit)  $       ; check lower integration limit
       THEN result=result+0 ELSE result=result+0.25
@@ -162,7 +162,7 @@ FUNCTION read_tofwerkh5, PATH=path, T_SCALE=t_scale, VERSION=version, PEAKDATA_R
   w_nvd = WHERE(files_ok NE 0)
   IF w_nvd NE -1 THEN BEGIN
     msg=DIALOG_MESSAGE('File(s) corrupted: '+FILE_BASENAME(fname[w_nvd]), /ERROR)
-    refd=create_refd()
+    refd = create_refd()
     RETURN, refd
   ENDIF
 

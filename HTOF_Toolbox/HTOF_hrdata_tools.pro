@@ -61,7 +61,7 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
     MassCalib_NPar = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibration nbrParameters'))
 
     IF NOT KEYWORD_SET(CALPARMS) THEN BEGIN
-      calparms=FLTARR(MassCalib_NPar)
+      calparms = FLTARR(MassCalib_NPar)
       FOR i=0, MassCalib_NPar[0]-1 DO BEGIN
         id_string='MassCalibration p'+STRCOMPRESS(STRING(i+1), /REMOVE_ALL)
         calparms[i] = H5A_READ(H5A_OPEN_NAME(fulspec_id, id_string))
@@ -83,7 +83,7 @@ FUNCTION h5_get_massaxis, file, CALPARMS=calparms
            p2 = calparms[1]
            p3 = calparms[2]
            FOR i=0L, n_bins-1 DO massaxis[i]=((i-p2)/p1)^(1./p3)
-;             mass_vs_timebin=((bins_ix-p2)/p1)^(1./p3) ; vectorized loop gives slightly different result....
+;             mass_vs_timebin = ((bins_ix-p2)/p1)^(1./p3) ; vectorized loop gives slightly different result....
          END
       3: BEGIN ; i = p1*sqrt(m) + p2 + p3*(m-p4)^2
            p1 = calparms[0]
@@ -122,7 +122,7 @@ FUNCTION h5_get_masscal, file
 ;+++ get parameters of calibration function
   MassCalibMode  = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibMode'))
   MassCalib_NPar = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibration nbrParameters'))
-  calparms=FLTARR(MassCalib_NPar)
+  calparms = FLTARR(MassCalib_NPar)
   FOR i=0, MassCalib_NPar[0]-1 DO BEGIN
     id_string='MassCalibration p'+STRCOMPRESS(STRING(i+1), /REMOVE_ALL)
     calparms[i] = H5A_READ(H5A_OPEN_NAME(fulspec_id, id_string))
@@ -131,9 +131,9 @@ FUNCTION h5_get_masscal, file
 ;+++
 ;+++ get mass calibration masses and corresponding bins and weights
   MassCalib_NPts = H5A_READ(H5A_OPEN_NAME(fulspec_id, 'MassCalibration nbrPoints'))
-  calmasses=FLTARR(MassCalib_NPts)
-  calbins=FLTARR(MassCalib_NPts)
-  calweights=FLTARR(MassCalib_NPts)
+  calmasses = FLTARR(MassCalib_NPts)
+  calbins = FLTARR(MassCalib_NPts)
+  calweights = FLTARR(MassCalib_NPts)
   FOR i=0, MassCalib_NPts[0]-1 DO BEGIN
     id_string_m='MassCalibration m'+STRCOMPRESS(STRING(i+1), /REMOVE_ALL)
     id_string_t='MassCalibration t'+STRCOMPRESS(STRING(i+1), /REMOVE_ALL)
@@ -159,13 +159,13 @@ FUNCTION extract_spectra, hr_data, rt_win, mass_win, F_HD=f_hd
   ix_write  = (*hr_data.ix_write)[w_rt_win]
   ix_buf    = (*hr_data.ix_buf)[w_rt_win]
 
-  w_m_win=WHERE((*hr_data.massaxis) GT mass_win[0] AND (*hr_data.massaxis) LT mass_win[1])
-  n_bins=N_ELEMENTS(w_m_win)
+  w_m_win = WHERE((*hr_data.massaxis) GT mass_win[0] AND (*hr_data.massaxis) LT mass_win[1])
+  n_bins = N_ELEMENTS(w_m_win)
   x0_mass=(*hr_data.massaxis)[w_m_win] ; mass axis, in units of mass
   x0_bins=(INDGEN(N_ELEMENTS(*hr_data.massaxis), /LONG))[w_m_win] ; mass axis, in units of ADC bins
   x1_chromtime = (*hr_data.chromtime)[w_rt_win]
 
-  IF NOT KEYWORD_SET(f_hd) THEN f_hd=1
+  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 1
   x0_mass_hd=REBIN(DOUBLE(x0_mass), n_bins*f_hd)
   x0_bins_hd=REBIN(DOUBLE(x0_bins), n_bins*f_hd)
 ;  x1_chromtime_hd=REBIN(DOUBLE(x_bins), N_ELEMENTS(x_chromtime_hd)*f_hd)
@@ -177,7 +177,7 @@ FUNCTION extract_spectra, hr_data, rt_win, mass_win, F_HD=f_hd
     v0_inte_hd[*,i]=REBIN(DOUBLE(v0_inte[*,i]), n_bins*f_hd)
   ENDFOR
 
-  extr_spec={ $
+  extr_spec = { $
               n_spec: n_spectra ,$
               n_ppspec: n_bins ,$
               x0_mass: x0_mass ,$
@@ -205,15 +205,15 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
   IF NOT KEYWORD_SET(nterms_base) THEN nterms_base = 1
 
   IF KEYWORD_SET(use_hd) THEN BEGIN
-    x=extr_spec.x0_mass_hd
-    y=extr_spec.v0_inte_hd
+    x = extr_spec.x0_mass_hd
+    y = extr_spec.v0_inte_hd
   ENDIF ELSE BEGIN
-    x=extr_spec.x0_mass
-    y=extr_spec.v0_inte
+    x = extr_spec.x0_mass
+    y = extr_spec.v0_inte
   ENDELSE
 
   IF KEYWORD_SET(verbose) THEN BEGIN
-    plots=OBJARR(3)
+    plots = OBJARR(3)
     plots[0]=plot(x,y[*,0], THICK=2, xtitle='mass [Th]', ytitle='intensity [mV]', DIMENSIONS=[1080,1080])
     plots[1]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT)
     plots[2]=plot(x,REPLICATE(0, extr_spec.n_ppspec), THICK=2, /OVERPLOT)
@@ -226,9 +226,9 @@ FUNCTION spec_to_trace, extr_spec, USE_HD=use_hd, NTERMS_FIT=nterms_fit, NTERMS_
     z = (x-A[1])/A[2]
     peak_int = A[0]*EXP(-z^2/2)
     CASE nterms_base OF
-      1: base_int=A[3]
-      2: base_int=A[3]+A[4]*x
-      3: base_int=A[3]+A[4]*x+A[5]*x^2
+      1: base_int = A[3]
+      2: base_int = A[3]+A[4]*x
+      3: base_int = A[3]+A[4]*x+A[5]*x^2
     ENDCASE
 
     fit_area = int_tabulated(x, peak_int, /DOUBLE)
@@ -268,7 +268,7 @@ END
 FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum_spec, F_HD=f_hd, $
                       FITFCT=fitfct, ID=id, VERBOSE=verbose
 
-  IF NOT KEYWORD_SET(ID) THEN ID='NA'
+  IF NOT KEYWORD_SET(ID) THEN ID = 'NA'
 
   ; +++
   ; +++ Retention Time Settings (chromatographic time axis)
@@ -284,24 +284,24 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
   ; +++ Mass Axis Settings
 ;  mass_win = [96.5,99.5] ; CH3CCl3
 ;  mass_win = [75.,95.] ; wide around 85 CFC 12
-  w_m_win=WHERE((*hr_data.massaxis) GT mass_win[0] AND (*hr_data.massaxis) LT mass_win[1])
-  n_bins=N_ELEMENTS(w_m_win)
+  w_m_win = WHERE((*hr_data.massaxis) GT mass_win[0] AND (*hr_data.massaxis) LT mass_win[1])
+  n_bins = N_ELEMENTS(w_m_win)
   x_mass=(*hr_data.massaxis)[w_m_win] ; mass axis, in units of mass
   x_bins=(INDGEN(N_ELEMENTS(*hr_data.massaxis), /LONG))[w_m_win] ; mass axis, in units of ADC bins
 
   ; +++
   ; +++ Mass Intensity: gather spectra and find highest intensity
   v_inte=FLTARR(n_bins, n_spectra) ; array with all selected spectra intensities
-  max_int=-1.
-  w_max_int=-1
-  spec_w_max=-1
+  max_int = -1.
+  w_max_int = -1
+  spec_w_max = -1
   FOR i=0, n_spectra-1 DO BEGIN
     v_inte[*,i]=((*hr_data.spectra)[w_m_win, 0, ix_buf[i], ix_write[i]])/hr_data.NbrWaveforms
     maxi=MAX(v_inte[*,i], w_max)
     IF maxi GT max_int THEN BEGIN
-      max_int=maxi ; highest intensity value in selected spectra (units of ADC intensity)
-      w_max=w_max_int ; index of the maximum within the spectrum
-      spec_w_max=i ; index of the spectrum containing the maximum
+      max_int = maxi ; highest intensity value in selected spectra (units of ADC intensity)
+      w_max = w_max_int ; index of the maximum within the spectrum
+      spec_w_max = i ; index of the spectrum containing the maximum
     ENDIF
   ENDFOR
 
@@ -310,12 +310,12 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
   IF SIZE(v_inte, /N_DIMENSIONS) EQ 1 THEN v_inte_sum=TOTAL(v_inte) $ ; check possibility that only one spectrum was defined
     ELSE v_inte_sum=TOTAL(v_inte,2)
 
-  IF KEYWORD_SET(SUM_SPEC) THEN v_inte=v_inte_sum
+  IF KEYWORD_SET(SUM_SPEC) THEN v_inte = v_inte_sum
 
   ; +++
   ; +++ increase data density
   ; +++ idl gaussfit to get estimates and lorentzian fit
-  IF NOT KEYWORD_SET(f_hd) THEN f_hd=1
+  IF NOT KEYWORD_SET(f_hd) THEN f_hd = 1
 
   x_mass_hd=REBIN(DOUBLE(x_mass), N_ELEMENTS(x_mass)*f_hd)
   x_bins_hd=REBIN(DOUBLE(x_bins), N_ELEMENTS(x_bins)*f_hd)
@@ -328,7 +328,7 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
   m_estimates = A_gau
   b_estimates = A_gaub
 
-  IF NOT KEYWORD_SET(fit_fct) THEN fit_fct=0
+  IF NOT KEYWORD_SET(fit_fct) THEN fit_fct = 0
 
   CASE fit_fct OF
     0: BEGIN ; gaussfit
@@ -380,32 +380,32 @@ FUNCTION get_mc_data, fname, hr_data, rt_win, mass_win, target_ion, SUM_SPEC=sum
 ; +++
 ; +++ max. intensity of selected spectrum or sum spec
     max_int=MAX(v_hd, ix_max)
-    dx_1sig=ROUND(ix_max-match[1]) ; index difference of the 1 sig (or hwhm in this case) towards index of maximum intensity
+    dx_1sig = ROUND(ix_max-match[1]) ; index difference of the 1 sig (or hwhm in this case) towards index of maximum intensity
     IF (ix_max-dx_1sig*asy_l) LE 0 THEN ix_nsig_l = 0 $ ; ensure correct subscript range
       ELSE ix_nsig_l = ROUND(ix_max-dx_1sig*asy_l)
     IF (ix_max+dx_1sig*asy_r) GE n_bins THEN ix_nsig_r = n_bins-1 $
       ELSE ix_nsig_r = ROUND(ix_max+dx_1sig*asy_r)
 
-    v=(v_hd)[ix_nsig_l:ix_nsig_r]
-    x=x_mass[ix_nsig_l:ix_nsig_r]
+    v = (v_hd)[ix_nsig_l:ix_nsig_r]
+    x = x_mass[ix_nsig_l:ix_nsig_r]
     asyfit=mpfitpeak(x, v, A_asyfit, ESTIMATES=m_estimates, YERROR=yerror, /LORENTZIAN)
 
 ;    p=plot(x,v, title=strcompress(string(asy_l)+':'+string(asy_r), /remove_all))
 ;    p=plot(x,asyfit,'r',/overplot)
-    R_asy=meas_ion/(2.*A_asyfit[2])
+    R_asy = meas_ion/(2.*A_asyfit[2])
     mass_acc_asy = (A_asyfit[1]-target_ion)/(A_asyfit[1]*1E-6)
 ;    print, 'max.int.spec.: ', r_asy
 
   ; +++
   ; +++ summed spectra
 ;  max_int=MAX(v_inte_sum, ix_max)
-;  ix_asy=ix_max-match[1]
-;  v=(v_inte_sum)[ix_max-ix_asy:N_ELEMENTS(v_inte_sum)-1] ; from right
-;  x=x_mass[ix_max-ix_asy:N_ELEMENTS(v_inte_sum)-1]
+;  ix_asy = ix_max-match[1]
+;  v = (v_inte_sum)[ix_max-ix_asy:N_ELEMENTS(v_inte_sum)-1] ; from right
+;  x = x_mass[ix_max-ix_asy:N_ELEMENTS(v_inte_sum)-1]
 ;  asyfit=mpfitpeak(x, v, A_asyfit, ESTIMATES=m_estimates, YERROR=yerror, /LORENTZIAN)
 ;  ;  p=plot(x,v)
 ;  ;  p=plot(x,asyfit,'r',/overplot)
-;  R_asys=meas_ion/(2.*A_asyfit[2])
+;  R_asys = meas_ion/(2.*A_asyfit[2])
 ;  print, 'max.int.spec.: ', r_asy, ' ++> sum.int.spec.: ', r_asys
 
 ; +++
@@ -464,7 +464,7 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
                           LIMITS_ACC=limits_acc, USE_PT_LIMITS=use_pt_limits, $
                           F_HD=f_hd, INTEGRATE=integrate, VERBOSE=verbose
 
-  t0=SYSTIME(1)
+  t0 = SYSTIME(1)
 
   IF NOT KEYWORD_SET(verbose) THEN verbose = 0
   IF NOT KEYWORD_SET(f_hd) THEN f_hd = 100
@@ -487,7 +487,7 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
 
   FOR i=0, N_ELEMENTS(targets)-1 DO BEGIN                         ; loop: file n, over all targeted m/Q
 
-    t1=SYSTIME(1)
+    t1 = SYSTIME(1)
     target_mq = targets[i]
     ix_pt = WHERE(peaktable.mass EQ target_mq)
 
@@ -532,9 +532,9 @@ FUNCTION recalc_peakdata, fname, peaktable, mass, peakdata, LIMITS_NOM=limits_no
       target_mq_trace = target_mq_trace[0:N_ELEMENTS(ix_intensity)-1]
     ENDIF
 
-    intensity[ix_intensity]=target_mq_trace ; apply new intensity values to input array
+    intensity[ix_intensity] = target_mq_trace ; apply new intensity values to input array
 
-    t2=SYSTIME(1)
+    t2 = SYSTIME(1)
     IF VERBOSE THEN print, 'reprocessed in [s]: ', t2-t1
 
     FreeVar, x_nom_hd ; clean memory

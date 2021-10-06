@@ -16,8 +16,8 @@ PRO wid_mchromviewer_ini
   COMMON WIDID
 
   DEVICE, Get_Screen_Size = ScreenSize
-          XCenter=FIX(ScreenSize[0])
-          YCenter=FIX(ScreenSize[1])
+          XCenter = FIX(ScreenSize[0])
+          YCenter = FIX(ScreenSize[1])
 
   mcviewerbase = WIDGET_BASE(title='Viewer: Multiple Chroms', mbar=mcv_menu, column=1, $
                            xoff=0.01*screenSize[0], yoff=0.05*screensize[1], /BASE_ALIGN_CENTER)
@@ -92,14 +92,14 @@ PRO wid_mchromviewer_handle, event
   uname = WIDGET_INFO(event.id, /uname)
   uname_chrom_list = ['sel_chrom0','sel_chrom1','sel_chrom2','sel_chrom3','sel_chrom4','sel_chrom5','sel_chrom6']
   uname_mass_list = ['sel_mass']
-  n_plot=7 ; maximum number of mass traces to plot
+  n_plot = 7 ; maximum number of mass traces to plot
   vd_chroms = STRING(FILE_BASENAME(chrom.fname))
   mcv_subtitle = 'Viewer: Multiple Chroms'
   sc_subtitle = 'Difference (Chrom_1 - Chrom_0)'
   fix_xyrange = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
   substract = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='substract'), /BUTTON_SET)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly=1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
       'exit' : $
@@ -108,7 +108,7 @@ PRO wid_mchromviewer_handle, event
         FreeVar, cb_mass_strct
         plot_routine_pobj0, SET_ZERO=1                                          ; reset plot and textfields
         refresh_text_pobj0, SET_ZERO=1
-        widid.mcviewerwid=-1                                                    ; set viewer widget id to zero
+        widid.mcviewerwid = -1                                                    ; set viewer widget id to zero
         IF event.SELECT THEN WIDGET_CONTROL, event.TOP, /DESTROY                ; close widget window
       END
 
@@ -143,10 +143,10 @@ PRO wid_mchromviewer_handle, event
           current_msel = STRCOMPRESS(WIDGET_INFO(msel_ID, /COMBOBOX_GETTEXT), /REMOVE_ALL)
 
           IF chrom[0].instr_type EQ 3 THEN BEGIN
-            peaktable=(*chrom[0].peaktable)
+            peaktable = (*chrom[0].peaktable)
             ml_ixval=matchmass(peaktable.mass, current_msel)
-            masslabel=' ('+peaktable[ml_ixval[1]].label+')'
-          ENDIF ELSE masslabel=''
+            masslabel = ' ('+peaktable[ml_ixval[1]].label+')'
+          ENDIF ELSE masslabel = ''
 
           IF SIZE(current_msel, /TYPE) EQ 4 then current_msel=STRCOMPRESS(STRING(current_msel, FORMAT='(D14.4)'), /REMOVE_ALL)
 
@@ -177,18 +177,18 @@ PRO wid_mchromviewer_handle, event
           IF substract THEN BEGIN
             chk_select=[0,0,0]                                                                                     ; check selection: mass, chrom0 and chrom1
             csel_ID = WIDGET_INFO(event.top, find_by_uname=uname_mass_list[0])
-            chk_select[0]=(cbox_get_valind(csel_ID))[1]
+            chk_select[0] = (cbox_get_valind(csel_ID))[1]
             csel_ID = WIDGET_INFO(event.top, find_by_uname=uname_chrom_list[0])
-            chk_select[1]=(cbox_get_valind(csel_ID))[1]
+            chk_select[1] = (cbox_get_valind(csel_ID))[1]
             csel_ID = WIDGET_INFO(event.top, find_by_uname=uname_chrom_list[1])
-            chk_select[2]=(cbox_get_valind(csel_ID))[1]
+            chk_select[2] = (cbox_get_valind(csel_ID))[1]
             IF MIN(chk_select) EQ 0 THEN RETURN $                                                                  ; selection of mass, chrom 0 or chrom 1 missing
             ELSE BEGIN                                                                                             ; else: two chroms & mass selected, continue
-              IF N_ELEMENTS(pdata.x) LT N_ELEMENTS(pdata.x_0a) THEN pdata.x[*]=pdata.x_0a[0:N_ELEMENTS(pdata.x)-1] ; else x=x
+              IF N_ELEMENTS(pdata.x) LT N_ELEMENTS(pdata.x_0a) THEN pdata.x[*] = pdata.x_0a[0:N_ELEMENTS(pdata.x)-1] ; else x=x
               v_dif = pdata.v_0a-pdata.v                                                                           ; calc difference
-              IF N_ELEMENTS(v_dif) LT N_ELEMENTS(pdata.v) THEN the_end=N_ELEMENTS(v_dif)-1 $
+              IF N_ELEMENTS(v_dif) LT N_ELEMENTS(pdata.v) THEN the_end = N_ELEMENTS(v_dif)-1 $
                 ELSE the_end=N_ELEMENTS(pdata.v)-1
-              pdata.v[0:the_end]=v_dif[0:the_end]                                                                  ; fill differences array into v
+              pdata.v[0:the_end] = v_dif[0:the_end]                                                                  ; fill differences array into v
               pdata.x_0a = 0                                                                                       ; reset remaining data to zero
               pdata.v_0a = 0
               pdata.x_0b = 0

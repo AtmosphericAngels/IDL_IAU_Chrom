@@ -21,7 +21,7 @@ PRO export_intsettings2msinfo, chrom, sel_chrom, PATH=path
   fname = DIALOG_PICKFILE(PATH=path, /WRITE, /OVERWRITE_PROMPT, file=STRCOMPRESS(cdate, /REMOVE_ALL)+'_ms.info')
   IF STRLEN(fname) EQ 0 THEN RETURN ; export aborted
 
-  sep=STRING(9B) ; STRING(9B) = tabulator
+  sep = STRING(9B) ; STRING(9B) = tabulator
   header=['NAME', sep, 'FORMULA', sep, 'RT', sep, 'RT_WIN_START', sep, 'RT_WIN_END', sep, 'METHOD', sep,  'INT_WIN_START', $
           sep, 'INT_WIN_END', sep, 'NOISE_WIN_START', sep, 'NOISE_WIN_END', sep, 'BL_TYPE', sep, 'GAUSSFIT_SIGMA', sep, $
           'SEL_PEAK', sep, 'DIF_PEAK', sep, 'SAVGOL', sep, 'THRESH', sep, 'QUANTIF', sep, 'ion_0', sep, 'ion_1', sep, 'ion_2', $
@@ -90,9 +90,9 @@ END
 
 PRO export_subst2msinfo, subst, chrom, PATH=path, FNAME=fname
 
-  subst_defined=0
-  IF subst NE !NULL THEN subst_defined=1 ; subst defined?
-  IF subst_defined EQ 1 THEN IF STRLEN((subst.name)[0]) EQ 0 THEN subst_defined=0 ; subst defined but empty?
+  subst_defined = 0
+  IF subst NE !NULL THEN subst_defined = 1 ; subst defined?
+  IF subst_defined EQ 1 THEN IF STRLEN((subst.name)[0]) EQ 0 THEN subst_defined = 0 ; subst defined but empty?
   IF subst_defined EQ 0 THEN BEGIN
     msg=DIALOG_MESSAGE('No defaults found. Reload defaults first.', /ERROR)
     RETURN ; subst not loaded
@@ -104,7 +104,7 @@ PRO export_subst2msinfo, subst, chrom, PATH=path, FNAME=fname
   ENDIF
   IF STRLEN(fname) EQ 0 THEN RETURN ; export aborted
 
-  sep=STRING(9B)
+  sep = STRING(9B)
   header=['NAME', sep, 'FORMULA', sep, 'RT', sep, 'RT_WIN_START', sep, 'RT_WIN_END', sep, 'METHOD', sep,  'INT_WIN_START', $
     sep, 'INT_WIN_END', sep, 'NOISE_WIN_START', sep, 'NOISE_WIN_END', sep, 'BL_TYPE', sep, 'GAUSSFIT_SIGMA', sep, $
     'SEL_PEAK', sep, 'DIF_PEAK', sep, 'SAVGOL', sep, 'THRESH', sep, 'QUANTIF', sep, 'ion_0', sep, 'ion_1', sep, 'ion_2', $
@@ -181,7 +181,7 @@ PRO update_msinfo
   present_substlist = chrom[0].subst.name
 
   ; load the ms.info file with additional species
-  refs = read_subst(PATH=path)
+  refs = read_subst(PATH = path)
   refi = create_refi()
   newdef_subst = add_ires2subst(refs, refi)
   new_substlist = newdef_subst.name

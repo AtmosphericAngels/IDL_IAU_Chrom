@@ -57,10 +57,10 @@ FUNCTION read_AED_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE=def
 
       am_pm   = STRUPCASE(STRMID(STRING(ncdfstr.CHFILE_TIME),ix_ts[6],2))
       CASE 1 OF
-        (am_pm EQ 'AM' AND hh LT 12): hh=hh
-        (am_pm EQ 'AM' AND hh EQ 12): hh=hh-12
-        (am_pm EQ 'PM' AND hh LT 12): hh=hh+12
-        (am_pm EQ 'PM' AND hh EQ 12): hh=hh
+        (am_pm EQ 'AM' AND hh LT 12): hh = hh
+        (am_pm EQ 'AM' AND hh EQ 12): hh = hh-12
+        (am_pm EQ 'PM' AND hh LT 12): hh = hh+12
+        (am_pm EQ 'PM' AND hh EQ 12): hh = hh
       ENDCASE
 
       refd.jdate = julday(mn, dd, yy, hh, mm, ss)

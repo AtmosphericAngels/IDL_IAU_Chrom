@@ -22,20 +22,20 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
   colors = ['k','r','g','b','deep_sky_blue','m','gold','k','k']
   IF KEYWORD_SET(tot_uniqm) THEN BEGIN
     peaktable=REPLICATE({mass:0., label:'nominal'}, N_ELEMENTS(tot_uniqm))
-    peaktable[*].mass=tot_uniqm[*]
-  ENDIF ELSE peaktable=0
+    peaktable[*].mass = tot_uniqm[*]
+  ENDIF ELSE peaktable = 0
   masslabel = ''
 
 
   IF KEYWORD_SET(cb_data_strct)  THEN BEGIN
-    IF (KEYWORD_SET(chrom) AND chrom[0].instr_type EQ 3) THEN peaktable=(*chrom[0].peaktable)
+    IF (KEYWORD_SET(chrom) AND chrom[0].instr_type EQ 3) THEN peaktable = (*chrom[0].peaktable)
       FOR i=0, N_ELEMENTS(cb_data_strct)-1 DO BEGIN
-        IF cb_data_strct[i].plotIO EQ 0 THEN textcontent[i]=''  $
+        IF cb_data_strct[i].plotIO EQ 0 THEN textcontent[i] = ''  $
           ELSE BEGIN
-            IF cb_data_strct[i].mass EQ -1 THEN textcontent[i]='TIC' ELSE BEGIN
-              limit_dif=0.5
+            IF cb_data_strct[i].mass EQ -1 THEN textcontent[i] = 'TIC' ELSE BEGIN
+              limit_dif = 0.5
               ml_ixval=matchmass(peaktable.mass, cb_data_strct[i].mass, LIMIT_DIF=limit_dif)
-              masslabel=' / '+peaktable[ml_ixval[1]].label
+              masslabel = ' / '+peaktable[ml_ixval[1]].label
               textcontent[i]='m/Q_'+STRCOMPRESS(STRING(i), /REMOVE_ALL)+': '+ $
                               STRCOMPRESS(STRING(cb_data_strct[i].mass, FORMAT='(D14.4)'), /REMOVE_ALL)+masslabel
             ENDELSE
@@ -46,15 +46,15 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
 
 
   IF KEYWORD_SET(subst_rel_abds)  THEN BEGIN ; Multi mass viewer, display rel abds from msinfo
-    IF chrom[0].instr_type EQ 3 THEN peaktable=(*chrom[0].peaktable) ELSE peaktable=0 ; if HTOF data: de-reference peaktable
+    IF chrom[0].instr_type EQ 3 THEN peaktable = (*chrom[0].peaktable) ELSE peaktable=0 ; if HTOF data: de-reference peaktable
     FOR i=0, N_ELEMENTS(cb_data_strct)-1 DO BEGIN
       IF cb_data_strct[i].plotIO EQ 0 THEN textcontent[i]=''  $ ; plot set to false, do not display information
         ELSE BEGIN
           IF SIZE(peaktable, /TYPE) EQ 8 THEN BEGIN
-            limit_dif=0.5
+            limit_dif = 0.5
             ml_ixval=matchmass(peaktable.mass, cb_data_strct[i].mass, LIMIT_DIF=limit_dif)
-            masslabel=peaktable[ml_ixval[1]].label+' / '
-          ENDIF ELSE masslabel=''
+            masslabel = peaktable[ml_ixval[1]].label+' / '
+          ENDIF ELSE masslabel = ''
           IF i EQ 0 THEN subst_rel_abds[i] = 1000.
           textcontent[i]='m/Q_'+STRCOMPRESS(STRING(i), /REMOVE_ALL)+': '+STRCOMPRESS(STRING(cb_data_strct[i].mass, FORMAT='(D14.4)'), /REMOVE_ALL)+ $
                 ' / '+STRCOMPRESS(STRING(masslabel))+STRCOMPRESS(STRING(subst_rel_abds[i]/10., FORMAT='(F5.1)'), /REMOVE_ALL)+'%'
@@ -64,7 +64,7 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
   ENDIF
 
   IF KEYWORD_SET(set_zero) EQ 1 THEN BEGIN
-    set_subtitle=''
+    set_subtitle = ''
   ENDIF
 
   IF KEYWORD_SET(set_manual) EQ 1 THEN BEGIN
@@ -73,9 +73,9 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
       ENDFOR
   ENDIF
 
-  IF KEYWORD_SET(set_subtitle) EQ 1 THEN subtitle=set_subtitle
+  IF KEYWORD_SET(set_subtitle) EQ 1 THEN subtitle = set_subtitle
 
-  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)]=set_colors[0:(N_ELEMENTS(set_colors)-1)]
+  IF KEYWORD_SET(set_colors) THEN colors[0:(N_ELEMENTS(set_colors)-1)] = set_colors[0:(N_ELEMENTS(set_colors)-1)]
 
   ;+++++++++++++++++++++++++++++
   ; update textfields according to textcontent
@@ -90,15 +90,15 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
     (p_obj0_txt[8]).refresh, /disable
 
     IF KEYWORD_SET(recreate_txt) THEN BEGIN ; should be called if size of plot 0 is changed, e.g. when using mmv or mcv.
-      textcontent[0]=(p_obj0_txt[0]).string
-      textcontent[1]=(p_obj0_txt[1]).string
-      textcontent[2]=(p_obj0_txt[2]).string
-      textcontent[3]=(p_obj0_txt[3]).string
-      textcontent[4]=(p_obj0_txt[4]).string
-      textcontent[5]=(p_obj0_txt[5]).string
-      textcontent[6]=(p_obj0_txt[6]).string
-      textcontent[7]=(p_obj0_txt[7]).string
-      subtitle=(p_obj0_txt[8]).string
+      textcontent[0] = (p_obj0_txt[0]).string
+      textcontent[1] = (p_obj0_txt[1]).string
+      textcontent[2] = (p_obj0_txt[2]).string
+      textcontent[3] = (p_obj0_txt[3]).string
+      textcontent[4] = (p_obj0_txt[4]).string
+      textcontent[5] = (p_obj0_txt[5]).string
+      textcontent[6] = (p_obj0_txt[6]).string
+      textcontent[7] = (p_obj0_txt[7]).string
+      subtitle = (p_obj0_txt[8]).string
       (p_obj0_txt[0]).delete
       (p_obj0_txt[1]).delete
       (p_obj0_txt[2]).delete
@@ -119,25 +119,25 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
       p_obj0_txt[8] = text(0.10,0.015, '', TARGET=p_obj0[8], FONT_SIZE=textfontsize, FONT_STYLE='bf')
     ENDIF
 
-    (p_obj0_txt[0]).string=textcontent[0]
-    (p_obj0_txt[1]).string=textcontent[1]
-    (p_obj0_txt[2]).string=textcontent[2]
-    (p_obj0_txt[3]).string=textcontent[3]
-    (p_obj0_txt[4]).string=textcontent[4]
-    (p_obj0_txt[5]).string=textcontent[5]
-    (p_obj0_txt[6]).string=textcontent[6]
-    (p_obj0_txt[7]).string=textcontent[7]
-    (p_obj0_txt[8]).string=subtitle
+    (p_obj0_txt[0]).string = textcontent[0]
+    (p_obj0_txt[1]).string = textcontent[1]
+    (p_obj0_txt[2]).string = textcontent[2]
+    (p_obj0_txt[3]).string = textcontent[3]
+    (p_obj0_txt[4]).string = textcontent[4]
+    (p_obj0_txt[5]).string = textcontent[5]
+    (p_obj0_txt[6]).string = textcontent[6]
+    (p_obj0_txt[7]).string = textcontent[7]
+    (p_obj0_txt[8]).string = subtitle
 
-    (p_obj0_txt[0]).color=colors[0]
-    (p_obj0_txt[1]).color=colors[1]
-    (p_obj0_txt[2]).color=colors[2]
-    (p_obj0_txt[3]).color=colors[3]
-    (p_obj0_txt[4]).color=colors[4]
-    (p_obj0_txt[5]).color=colors[5]
-    (p_obj0_txt[6]).color=colors[6]
-    (p_obj0_txt[7]).color=colors[7]
-    (p_obj0_txt[8]).color=colors[8]
+    (p_obj0_txt[0]).color = colors[0]
+    (p_obj0_txt[1]).color = colors[1]
+    (p_obj0_txt[2]).color = colors[2]
+    (p_obj0_txt[3]).color = colors[3]
+    (p_obj0_txt[4]).color = colors[4]
+    (p_obj0_txt[5]).color = colors[5]
+    (p_obj0_txt[6]).color = colors[6]
+    (p_obj0_txt[7]).color = colors[7]
+    (p_obj0_txt[8]).color = colors[8]
 
     (p_obj0_txt[0]).refresh
     (p_obj0_txt[2]).refresh

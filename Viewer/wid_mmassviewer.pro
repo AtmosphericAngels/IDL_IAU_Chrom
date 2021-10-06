@@ -17,8 +17,8 @@ PRO wid_mmassviewer_ini
   COMMON WIDID
 
   DEVICE, Get_Screen_Size = ScreenSize
-          XCenter=FIX(ScreenSize[0])
-          YCenter=FIX(ScreenSize[1])
+          XCenter = FIX(ScreenSize[0])
+          YCenter = FIX(ScreenSize[1])
 
   mmviewerbase = WIDGET_BASE(title='Viewer: Multiple Masses', mbar=mmv_menu, column=1, $
                 xoff=0.10*screenSize[0], yoff=0.05*screensize[1], /BASE_ALIGN_CENTER)
@@ -120,7 +120,7 @@ PRO wid_mmassviewer_handle, event
   uname_chrom_list = ['sel_chrom']
   uname_mass_list = ['sel_mass0','sel_mass1','sel_mass2','sel_mass3','sel_mass4','sel_mass5','sel_mass6']
   uname_selmass_lbl_list = ['sel_mass0_lbl','sel_mass1_lbl','sel_mass2_lbl','sel_mass3_lbl','sel_mass4_lbl','sel_mass5_lbl','sel_mass6_lbl']
-  n_plot=7 ; maximum number of mass traces to plot
+  n_plot = 7 ; maximum number of mass traces to plot
   mmv_subtitle = 'Viewer: Multiple Masses'
   fix_xyrange=WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
   bgr_substr=WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='substr_bgr'), /BUTTON_SET)
@@ -128,7 +128,7 @@ PRO wid_mmassviewer_handle, event
   selchrom_id = WIDGET_INFO(event.top, find_by_uname='sel_chrom') ; chrom 0 selection
   dsel = WIDGET_INFO(selchrom_id, /droplist_select)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly=1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
      'exit' : $
@@ -136,7 +136,7 @@ PRO wid_mmassviewer_handle, event
          refresh_text_pobj0, SET_ZERO=1                                 ; reset plot and textfields
          plot_routine_pobj0, SET_ZERO=1
          FREEVAR, cb_mass_strct                                         ; clear variables from memory
-         widid.mmviewerwid=-1                                           ; set viewer widget id to zero
+         widid.mmviewerwid = -1                                           ; set viewer widget id to zero
          IF event.SELECT THEN WIDGET_CONTROL, event.top, /DESTROY       ; close widget window
       END
 
@@ -161,9 +161,9 @@ PRO wid_mmassviewer_handle, event
      'load_subst' : $
        BEGIN
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs=read_subst(path=path)
+          refs = read_subst(path=path)
             IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
-            refi=create_refi()
+            refi = create_refi()
             subst=add_ires2subst(refs, refi)
             chrom=add_subst2chrom(chrom, subst)
         ENDIF ELSE BEGIN ; msinfo loaded, ask for overwrite
@@ -171,11 +171,11 @@ PRO wid_mmassviewer_handle, event
             IF msg EQ 'Yes' THEN BEGIN
               refr_status, message='reloading msinfo...'
               refs=read_subst(PATH=path, USE_NOM=use_nom)
-              refi=create_refi()
+              refi = create_refi()
               subst=add_ires2subst(refs, refi)                          ; reload subst (overwrite)
               empty_chrom = create_empty_chromstrct(chrom, /CHROM_ONLY) ; reload msinfo (overwrite)
               STRUCT_ASSIGN, chrom, empty_chrom
-              chrom=empty_chrom
+              chrom = empty_chrom
               chrom=add_subst2chrom(chrom, subst)
               refr_status, message='msinfo reloaded.'
             ENDIF
@@ -233,7 +233,7 @@ PRO wid_mmassviewer_handle, event
      'gen_leg': $
        BEGIN
          cb_mass_strct = refresh_cboxes_mass(event, SEL_CHROM=dsel, UNAME_MASS_LIST=uname_mass_list)
-         plotmasses=cb_mass_strct.mass
+         plotmasses = cb_mass_strct.mass
          IF plotmasses[0] NE 0 THEN plot_routine_pobj0, 0, 0, gen_legend=plotmasses
        END
     ELSE: $
