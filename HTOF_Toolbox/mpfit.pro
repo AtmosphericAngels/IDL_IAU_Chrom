@@ -385,7 +385,7 @@
 ;              MPSIDE=0, the "automatic" one-sided derivative method
 ;              will chose a direction for the finite difference which
 ;              does not violate any constraints.  The other methods
-;              (MPSIDE = -1 or MPSIDE=1) do not perform this check.  The
+;              (MPSIDE = -1 or MPSIDE = 1) do not perform this check.  The
 ;              two-sided method is in principle more precise, but
 ;              requires twice as many function evaluations.  Default:
 ;              0.
@@ -1303,7 +1303,7 @@
 ;          PFREE_INDEX; add a fencepost to prevent recursion
 ;          CM, 2010-10-27
 ;   1.79 - Documentation corrections.  CM, 2011-08-26
-;   1.81 - Fix bug in interaction of AUTODERIVATIVE = 0 and .MPSIDE=3;
+;   1.81 - Fix bug in interaction of AUTODERIVATIVE = 0 and .MPSIDE = 3;
 ;          Document FJAC_MASK. CM, 2012-05-08
 ;
 ;  $Id: mpfit.pro,v 1.82 2012/09/27 23:59:44 cmarkwar Exp $
@@ -3330,7 +3330,7 @@ function mpfit, fcn, xall, FUNCTARGS=fcnargs, SCALE_FCN=scalfcn, $
   ;; Save a copy of the Jacobian if the user requests it...
   if keyword_set(calc_fjac) then output_fjac = fjac
 
-  ;; = = ===================
+  ;; = = = = = = = = =============
   ;; Compute the QR factorization of the jacobian
   catch_msg = 'calling MPFIT_QRFAC'
   ;;  IN:      Jacobian
@@ -3342,7 +3342,7 @@ function mpfit, fcn, xall, FUNCTARGS=fcnargs, SCALE_FCN=scalfcn, $
   ;; RDIAG - diagonal elements of R matrix
   ;; ACNORM - norms of input Jacobian matrix before factoring
 
-  ;; = = ===================
+  ;; = = = = = = = = =============
   ;; On the first iteration if "diag" is unspecified, scale
   ;; according to the norms of the columns of the initial jacobian
   catch_msg = 'rescaling diagonal elements'

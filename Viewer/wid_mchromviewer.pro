@@ -99,7 +99,7 @@ PRO wid_mchromviewer_handle, event
   fix_xyrange = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
   substract = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='substract'), /BUTTON_SET)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly = 0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
       'exit' : $
@@ -184,7 +184,7 @@ PRO wid_mchromviewer_handle, event
             chk_select[2] = (cbox_get_valind(csel_ID))[1]
             IF MIN(chk_select) EQ 0 THEN RETURN $                                                                  ; selection of mass, chrom 0 or chrom 1 missing
             ELSE BEGIN                                                                                             ; else: two chroms & mass selected, continue
-              IF N_ELEMENTS(pdata.x) LT N_ELEMENTS(pdata.x_0a) THEN pdata.x[*] = pdata.x_0a[0:N_ELEMENTS(pdata.x)-1] ; else x=x
+              IF N_ELEMENTS(pdata.x) LT N_ELEMENTS(pdata.x_0a) THEN pdata.x[*] = pdata.x_0a[0:N_ELEMENTS(pdata.x)-1] ; else x = x
               v_dif = pdata.v_0a-pdata.v                                                                           ; calc difference
               IF N_ELEMENTS(v_dif) LT N_ELEMENTS(pdata.v) THEN the_end = N_ELEMENTS(v_dif)-1 $
                 ELSE the_end=N_ELEMENTS(pdata.v)-1

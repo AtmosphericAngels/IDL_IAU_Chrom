@@ -46,7 +46,7 @@ PRO refresh_text_pobj0, CB_DATA_STRCT=cb_data_strct, CHROM=chrom, SUBST_REL_ABDS
 
 
   IF KEYWORD_SET(subst_rel_abds)  THEN BEGIN ; Multi mass viewer, display rel abds from msinfo
-    IF chrom[0].instr_type EQ 3 THEN peaktable = (*chrom[0].peaktable) ELSE peaktable=0 ; if HTOF data: de-reference peaktable
+    IF chrom[0].instr_type EQ 3 THEN peaktable = (*chrom[0].peaktable) ELSE peaktable = 0 ; if HTOF data: de-reference peaktable
     FOR i=0, N_ELEMENTS(cb_data_strct)-1 DO BEGIN
       IF cb_data_strct[i].plotIO EQ 0 THEN textcontent[i]=''  $ ; plot set to false, do not display information
         ELSE BEGIN

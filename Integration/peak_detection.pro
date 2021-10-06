@@ -9,7 +9,7 @@
 FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEAK=peak, BASE=base, VERBOSE=verbose
 
   IF NOT KEYWORD_SET(rt_win) THEN rt_win=[MIN(xval,/nan),MAX(xval,/nan)]
-  IF NOT KEYWORD_SET(nterms_base) THEN nterms_base_peakdet = 1 ELSE nterms_base_peakdet=nterms_base; linear baseline by default
+  IF NOT KEYWORD_SET(nterms_base) THEN nterms_base_peakdet = 1 ELSE nterms_base_peakdet = nterms_base; linear baseline by default
 
   nterms_peakdet = 3+nterms_base_peakdet
 

@@ -20,8 +20,8 @@ PRO intres2txt_sglsubst, chrom, sel_chrom, sel_name, PATH=path, ALL=all, NO_PICK
   IF STRLEN(fname) EQ 0 AND STRLEN(fpath) EQ 0 THEN RETURN ; export aborted
 
   TAB = STRING(9B)
-  header=['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
-  IF chrom[0].t_scale EQ 'Seconds' THEN header[14] = 'RT[s]' ELSE header[14]='RT[min]'
+  header = ['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
+  IF chrom[0].t_scale EQ 'Seconds' THEN header[14] = 'RT[s]' ELSE header[14] = 'RT[min]'
 
 ; ***
 ; ***

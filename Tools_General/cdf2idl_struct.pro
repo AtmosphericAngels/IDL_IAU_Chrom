@@ -129,7 +129,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 	; Retrieve general information about this netCDF file.
 	ncinfo = NCDF_INQUIRE(ncid)
 
-	IF (ncinfo.Ngatts GT 0) THEN gattname = STRARR(ncinfo.Ngatts) ELSE gattname=''
+	IF (ncinfo.Ngatts GT 0) THEN gattname = STRARR(ncinfo.Ngatts) ELSE gattname = ''
 
 	; Place the NCDF global attributes in idl structure.
 	FOR i=0, ncinfo.Ngatts-1 DO BEGIN
@@ -149,7 +149,7 @@ FUNCTION cdf2idl_struct, fname, suffix=suffix, verbose=verbose, gattname=gattnam
 		gattname[i] = name
 	ENDFOR
 
-	IF (ncinfo.Nvars GT 0) THEN varname = STRARR(ncinfo.Nvars) ELSE varname=''
+	IF (ncinfo.Nvars GT 0) THEN varname = STRARR(ncinfo.Nvars) ELSE varname = ''
 
 	; Place the NCDF variables and local attributes in the same idl structure.
 	FOR i=0, ncinfo.Nvars-1 DO BEGIN

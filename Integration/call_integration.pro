@@ -370,7 +370,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
   ;+++++++++++++++++++++++++++++
   ; update plot object 1 text
     IF plot THEN BEGIN
-      IF int_mass[0] EQ -1 THEN sel_int_mass = 'NaN' ELSE sel_int_mass=int_mass[0]
+      IF int_mass[0] EQ -1 THEN sel_int_mass = 'NaN' ELSE sel_int_mass = int_mass[0]
       refresh_text_pobj1, chrom, sel_chrom, sel_name, int_mass=sel_int_mass
     ENDIF
 

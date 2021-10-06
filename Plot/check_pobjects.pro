@@ -31,7 +31,7 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       FOR i=1, N_ELEMENTS(p_obj0)-1 DO p_obj0[i]=plot([0.,0.], COLOR=col_p0[i], THICK=thick_p0[i], LINESTYLE=linestyle_p0[i], /OVERPLOT)
 
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
-        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
+        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle = '$t_{R} [min]$'
         CASE chrom[0].instr_type OF
           0: ytitle = 'Intensity'
           3: ytitle = 'Intensity [ions/extr.]'
@@ -68,7 +68,7 @@ PRO check_pobjects, P_OBJ=p_obj ; p_obj: ['p_obj0', 'p_obj1']
       FOR i=1, N_ELEMENTS(p_obj1)-1 DO p_obj1[i]=plot([0.,0.], COLOR=col_p1[i], THICK=thick_p1[i], LINESTYLE=linestyle_p1[i], /OVERPLOT)
 
       IF SIZE(chrom, /TYPE) EQ 8 THEN BEGIN ; set x and ytitle if chrom defined
-        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle='$t_{R} [min]$'
+        IF chrom[0].t_scale EQ 'Seconds' THEN xtitle = '$t_{R} [s]$' ELSE xtitle = '$t_{R} [min]$'
         CASE chrom[0].instr_type OF
           0: ytitle = 'Intensity'
           3: ytitle = 'Intensity [ions/extr.]'

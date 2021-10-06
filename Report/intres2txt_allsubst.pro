@@ -9,16 +9,16 @@
 ;------------------------------------------------------------------------------------------------------------------------
 PRO intres2txt_allsubst, chrom, PATH=path
 
-  date=conc_date(chrom[0].jdate, systime(/julian))
-  fname=DIALOG_PICKFILE(file='allintres_'+date, /OVERWRITE_PROMPT, default_extension='txt', /WRITE, PATH=path)
+  date = conc_date(chrom[0].jdate, SYSTIME(/julian))
+  fname = DIALOG_PICKFILE(file='allintres_'+date, /OVERWRITE_PROMPT, default_extension='txt', /WRITE, PATH=path)
 
   IF STRLEN(fname) EQ 0 THEN RETURN
 
   TAB = STRING(9B)
-  header=['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
-  IF chrom[0].t_scale EQ 'Seconds' THEN header[14]='RT[s]' ELSE header[14]='RT[min]'; timescale given, set header
+  header = ['File',TAB,'Date',TAB,'Time',TAB,'Substance',TAB,'Fragment_Mass',TAB,'Peak_Height',TAB,'Peak_Area',TAB,'',TAB,'Noise',TAB,'Comment']
+  IF chrom[0].t_scale EQ 'Seconds' THEN header[14] = 'RT[s]' ELSE header[14] = 'RT[min]'; timescale given, set header
 
-  ;IF chrom[0].iauchrom_vers EQ '(not specified)' THEN iauchrom_vers = 'IAU_CHROM' ELSE iauchrom_vers='IAU_CHROM_v'+chrom[0].iauchrom_vers
+  ;IF chrom[0].iauchrom_vers EQ '(not specified)' THEN iauchrom_vers = 'IAU_CHROM' ELSE iauchrom_vers = 'IAU_CHROM_v'+chrom[0].iauchrom_vers
 
   OPENW, lun, fname, /GET_LUN
   ;PRINTF, lun, '***'

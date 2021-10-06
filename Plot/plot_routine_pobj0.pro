@@ -65,7 +65,7 @@ PRO plot_routine_pobj0, x, v, X_0A=x_0a, V_0A=v_0a, X_0B=x_0b, V_0B=v_0b, X_0C=x
 
 ;+++++++++++++++++++++++++++++
 ; check keyword set_title
-  IF NOT KEYWORD_SET(SET_TITLE) THEN title = '' ELSE set_title=title
+  IF NOT KEYWORD_SET(SET_TITLE) THEN title = '' ELSE set_title = title
 
 ;+++++++++++++++++++++++++++++
 ; check keyword set_title

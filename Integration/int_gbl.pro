@@ -44,8 +44,8 @@ PRO GumbelDoublePeak_PROC, X, A, F, PDER
 
 	ON_ERROR, 2	;Return to caller if an error occurs
 
-	IF (A[0] NE 0.) THEN GUM1 = A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2]))) ELSE GUM1=0.
-	IF (A[3] NE 0.) THEN GUM2 = A[3]*A[4]*EXP(-A[4]*(X-A[5]))*EXP(-EXP(-A[4]*(X-A[5]))) ELSE GUM2=0.
+	IF (A[0] NE 0.) THEN GUM1 = A[0]*A[1]*EXP(-A[1]*(X-A[2]))*EXP(-EXP(-A[1]*(X-A[2]))) ELSE GUM1 = 0.
+	IF (A[3] NE 0.) THEN GUM2 = A[3]*A[4]*EXP(-A[4]*(X-A[5]))*EXP(-EXP(-A[4]*(X-A[5]))) ELSE GUM2 = 0.
 
 	GUM = GUM1+GUM2	;GAUSSIAN DOUBLE PEAK
 

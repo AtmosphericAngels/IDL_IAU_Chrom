@@ -128,7 +128,7 @@ PRO wid_mmassviewer_handle, event
   selchrom_id = WIDGET_INFO(event.top, find_by_uname='sel_chrom') ; chrom 0 selection
   dsel = WIDGET_INFO(selchrom_id, /droplist_select)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly = 0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
      'exit' : $
@@ -161,7 +161,7 @@ PRO wid_mmassviewer_handle, event
      'load_subst' : $
        BEGIN
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs = read_subst(path=path)
+          refs = read_subst(path = path)
             IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
             refi = create_refi()
             subst=add_ires2subst(refs, refi)

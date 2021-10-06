@@ -158,10 +158,10 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) EQ 8 THEN BEGIN ; fragdata exists, ask if overwrite
           msg = DIALOG_MESSAGE('Fragment Data found. Overwrite?', /QUESTION)
-            IF msg EQ 'Yes' THEN fragdata = read_eifrags(path=path)
-        ENDIF ELSE fragdata = read_eifrags(path=path)
+            IF msg EQ 'Yes' THEN fragdata = read_eifrags(path = path)
+        ENDIF ELSE fragdata = read_eifrags(path = path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs = read_subst(path=path)
+          refs = read_subst(path = path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
           refi = create_refi()
           subst=add_ires2subst(refs, refi)
@@ -174,7 +174,7 @@ PRO wid_fragrat_handle, event
     'read_msinfo' : $
       BEGIN
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs = read_subst(path=path)
+          refs = read_subst(path = path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
           refi = create_refi()
           subst=add_ires2subst(refs, refi)
@@ -203,7 +203,7 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) NE 8 THEN fragdata=read_eifrags(path=path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs = read_subst(path=path)
+          refs = read_subst(path = path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
           refi = create_refi()
           subst=add_ires2subst(refs, refi)
@@ -219,7 +219,7 @@ PRO wid_fragrat_handle, event
       BEGIN
         IF SIZE(fragdata, /TYPE) NE 8 THEN fragdata=read_eifrags(path=path)
         IF WHERE(STRMATCH(TAG_NAMES(chrom), 'subst', /FOLD_CASE) EQ 1) EQ -1 THEN BEGIN ; msinfo not loaded yet
-          refs = read_subst(path=path)
+          refs = read_subst(path = path)
           IF STRLEN(refs[0].name) EQ 0 THEN RETURN ; no substances in msinfo
           refi = create_refi()
           subst=add_ires2subst(refs, refi)

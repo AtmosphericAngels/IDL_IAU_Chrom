@@ -98,7 +98,7 @@ PRO wid_tpshskviewer_handle, event
   xytitle = ['datapoint no.','value']
   fix_xyrange = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
 
-  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly=0 ; masses with label 'nominal' only for HTOF data
+  IF chrom[0].instr_type EQ 3 THEN nomonly = 1 ELSE nomonly = 0 ; masses with label 'nominal' only for HTOF data
 
   CASE uname OF
       'exit' : $

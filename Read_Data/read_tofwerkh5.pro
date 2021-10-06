@@ -116,7 +116,7 @@ FUNCTION h5_ptablecheck, FILE, PT_REF, PT_COMP=pt_com
 
     ; check for equal peaktables (keyword pt_comp set)
     labeltest = STRCMP(pt_ref.label, pt_comp.label)
-    IF PRODUCT(labeltest) LT 0.5 THEN result = result+0 ELSE result=result+0.25                   ; check labels
+    IF PRODUCT(labeltest) LT 0.5 THEN result = result+0 ELSE result = result+0.25                   ; check labels
     IF TOTAL(pt_ref.mass) NE TOTAL(pt_comp.mass) THEN result=result+0 ELSE result=result+0.25   ; check masses
     IF TOTAL(pt_ref.lower_integration_limit) NE TOTAL(pt_comp.lower_integration_limit)  $       ; check lower integration limit
       THEN result=result+0 ELSE result=result+0.25
