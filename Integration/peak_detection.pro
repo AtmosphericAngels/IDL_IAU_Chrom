@@ -39,8 +39,7 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
   ENDCASE
   ;TW 2019.08.08. *******************************/
 
-
-  IF (nw_ret_win LE nterms_peakdet) THEN RETURN, A   ; not enought datapoints in rt window
+  IF (nw_ret_win LE nterms_peakdet) THEN RETURN, A   ; not enough datapoints in rt window
 
   IF (nw_ret_win GT nterms_peakdet) THEN BEGIN
     width = -999
@@ -51,7 +50,6 @@ FUNCTION peak_detection, xval, yval, RT_WIN=rt_win, NTERMS_BASE=nterms_base, PEA
     v_fit1 = gaussfit(t,v,A,NTERMS=nterms_peakdet,Estimates=Est)  ;TW 2019.08.08. *******************************/
     IF width NE -999 THEN A[2] = width
   ENDIF
-
 
   IF KEYWORD_SET(verbose) THEN BEGIN
 

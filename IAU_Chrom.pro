@@ -37,12 +37,13 @@ PRO IAU_Chrom
 
   !Except = 0
 
-  def_common, '5.21' ; string = version
+  def_common, '5.22' ; string = version
 
   COMMON DATA
   COMMON COM_PLOT
 
   path = 'D:\'
+;  path='X:\HALO\PHILEAS\GHOST_MS_DATA\Preparation'
 ;  path = 'D:\PROGRAMMING\IDL\dev_debugging\IAU_Chrom\'
 
   error_handler_IO = 1
@@ -74,6 +75,15 @@ END
 ;   only is used
 ; - multimass-viewer: relative abundances will disappear if a different chromatogram is selected. they can be recalled
 ;   by reselecting the substance.
+;########################################################################################################################
+; *** CHANGELOG T .Schuck (>5.1 newest first; older version: chronological) ***
+; ***
+; ;
+; 2023-06-01: v5.21
+; - wid integration File -> added Gauß upsampling checkbox
+; - int_gau: if upsample then cycles per seconds is checked an upsampling is done if below 15 cycles per second (small dwell timeS)
+; - changes to call_integration
+;
 ;########################################################################################################################
 ; *** CHANGELOG F.Obersteiner (>5.1 newest first; older version: chronological) ***
 ; ***
