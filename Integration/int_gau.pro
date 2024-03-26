@@ -27,7 +27,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   IF timescale EQ 'Minutes' THEN timescale = 60. ELSE timescale = 1. ; 60: minutes / 1: seconds
   nterms = nterms_base + 3 ; nterms paramenter for gaussfit function
   ; datapoints per second? -> gauss min sigma
-  IF NOT keyword_set(upscale) THEN upscale = 0.
+  IF NOT keyword_set(upsample) THEN upsample = 0.
 
 
    strct = $
@@ -38,7 +38,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
       wdth: !VALUES.D_NAN, $
       ts: !VALUES.D_NAN, $
       te: !VALUES.D_NAN, $
-      upscale: 1 ,$
+      upscale: 1 ,$  ; initialisation upscaling factor, i. e. by how much the number of datapoints was increased - 1 indicates no change of original data
       t_int_axis: PTR_NEW(/ALLOCATE_HEAP), $
       flag: 0 ,$
       comment:'Not Integrated'$

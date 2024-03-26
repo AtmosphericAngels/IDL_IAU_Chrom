@@ -26,7 +26,7 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
 
   IF NOT KEYWORD_SET(plot) THEN plot = 0
   IF NOT KEYWORD_SET(fix_xyrange) THEN fix_xyrange = 0
-  ; IF NOT KEYWORD_SET(gau_upsample) THEN gau_upsample = 0
+  IF NOT KEYWORD_SET(gau_upsample) THEN gau_upsample = 0
 
   ;+++++++++++++++++++++++
   ; Default integration method: Integration Method stored in common variable subst
@@ -74,7 +74,6 @@ PRO call_integration, sel_chrom, sel_name, PLOT=plot, FIX_XYRANGE=fix_xyrange, M
   IF FINITE(chk_noise) NE 1 THEN chk_noise = 0. ; set zero if not calculated yet
 
   verbose = 0
-  upsample =  1
 
   ;****************************************************************************************************************************************************
     CASE sel_intmthd OF
