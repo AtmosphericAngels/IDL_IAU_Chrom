@@ -21,7 +21,7 @@ FUNCTION read_agilent_cdf, PATH=path, T_SCALE=t_scale, VERSION=version, DEF_FILE
   IF t_scale EQ 'Minutes' THEN t_conv = 60. ELSE t_conv = 1.   ; time conversion factor = 60 if time scale is minutes else 1 for seconds
 
 
-  filters = ['*.cdf', '*.nc']
+  filters = ['*.cdf', '*.nc','*.CDF', '*.NC']
   IF NOT KEYWORD_SET(def_file) THEN $
     fname=DIALOG_PICKFILE(/MULTIPLE_FILES, PATH=path, filter=filters, TITLE='Please select netCDF file(s) to import.') $
       ELSE fname=def_file

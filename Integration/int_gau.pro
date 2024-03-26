@@ -4,7 +4,9 @@
 ; FUNCTION int_gau
 ;
 ; created by: H. Boenisch
-; last modified: F. Obersteiner, Apr 2015.
+; modified: F. Obersteiner, Apr 2015.
+; last modified T. Schuck, May 2023
+;   added upscaling of data for numeric integration
 ;-
 ;------------------------------------------------------------------------------------------------------------------------
 @peak_detection
@@ -12,7 +14,7 @@
 FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTERMS_BASE=nterms_base, RT_WIN=rt_win, $
                   INT_WIN=int_win, FIT_WIN=fit_win,  PEAK_RET=peak_ret, BASE_RET=base_ret,  PEAK_FIT=peak_fit, $
                   BASE_FIT=base_fit, PEAK_INT=peak_int, BASE_INT=base_int, PARAMETER=parameter, TAXIS=taxis, $
-                  VERBOSE=verbose, CHK_NOISE=chk_noise, TIMESCALE=timescale, RTWINisFITWIN=rtwinisfitwin
+                  VERBOSE=verbose, CHK_NOISE=chk_noise, TIMESCALE=timescale, RTWINisFITWIN=rtwinisfitwin, upsample=upsample
 ;t0 = systime(1)
 
   IF NOT keyword_set(nsigma_fit)  THEN nsigma_fit=[15,15]
@@ -25,6 +27,7 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   IF timescale EQ 'Minutes' THEN timescale = 60. ELSE timescale = 1. ; 60: minutes / 1: seconds
   nterms = nterms_base + 3 ; nterms paramenter for gaussfit function
   ; datapoints per second? -> gauss min sigma
+  IF NOT keyword_set(upsample) THEN upsample = 0.
 
 
    strct = $
@@ -35,6 +38,8 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
       wdth: !VALUES.D_NAN, $
       ts: !VALUES.D_NAN, $
       te: !VALUES.D_NAN, $
+      upscale: 1 ,$  ; initialisation upscaling factor, i. e. by how much the number of datapoints was increased - 1 indicates no change of original data
+      t_int_axis: PTR_NEW(/ALLOCATE_HEAP), $
       flag: 0 ,$
       comment:'Not Integrated'$
       }
@@ -126,10 +131,21 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   parameter = A
 
   ;+++++++++++++++++++++++
+  ; Calculate peak inside retention time window (PEAK_RET) and baseline (BASE_RET)
+  ;+++++++++++++++++++++++
+  t = x[w_rt_win]
+  z = (x[w_rt_win]-A[1])/A[2]
+  peak_ret = A[0]*exp(-z^2/2)
+  CASE nterms_base OF
+    1: base_ret=A[3]+replicate(0,nw_rt_win)
+    2: base_ret = A[3]+A[4]*t
+    3: base_ret = A[3]+A[4]*t+A[5]*t^2
+  ENDCASE
+
+  ;+++++++++++++++++++++++
   ; Calculate fitted peak (PEAK_FIT) and baseline (BASE_FIT)
   ;+++++++++++++++++++++++
   t = x[w_fit_win]
-  v = y[w_fit_win]
   z = (x[w_fit_win]-A[1])/A[2]
   peak_fit = A[0]*exp(-z^2/2)
   CASE nterms_base OF
@@ -141,30 +157,40 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   ;+++++++++++++++++++++++
   ; Calculate integrated peak (PEAK_INT) and baseline (BASE_INT)
   ;+++++++++++++++++++++++
-  t = x[w_int_win]
-  v = y[w_int_win]
-  z = (x[w_int_win]-A[1])/A[2]
+
+        ;+++++++++++++++++++++++
+        ;  check cycle number and number of points used for integration
+        ;+++++++++++++++++++++++
+      
+        new_int_x = 0
+        scale = 1.
+        if upsample EQ 1. THEN BEGIN
+          chrom_per_sec = N_ELEMENTS(w_int_win)/((x[w_int_win[-1]]-x[w_int_win[0]])*timescale)
+      
+          ; check number of datapoints (cycles) per time interval - should not be less than 15 per second
+          IF chrom_per_sec LT 15. THEN BEGIN
+            IF KEYWORD_SET(verbose) THEN msg=DIALOG_MESSAGE('Low number of cycles per seconds found. Points added for numeric integration.', /INFORMATION)
+            scale=FLOOR(15./chrom_per_sec)
+            new_int_x=1
+          ENDIF
+        ENDIF
+        ; print, 'scale factor:', scale
+  IF new_int_x EQ 1 THEN BEGIN  ; add more points to calculate integral
+    t_tmp = x[w_int_win]
+    t_int_scal=INTERPOLATE(t_tmp, (N_ELEMENTS(t_tmp)-1)/(nw_int_win*scale-1.) * FINDGEN(nw_int_win*scale))   ; add more points to calculate integral
+    t = t_int_scal
+  ENDIF ELSE t = x[w_int_win]        
+
+  z = (t-A[1])/A[2]
   peak_int = A[0]*exp(-z^2/2)
+
   CASE nterms_base OF
-    1: base_int=A[3]+replicate(0,nw_int_win)
+    1: base_int = A[3]+replicate(0,nw_int_win*scale)
     2: base_int = A[3]+A[4]*t
     3: base_int = A[3]+A[4]*t+A[5]*t^2
   ENDCASE
 
-  ;+++++++++++++++++++++++
-  ; Calculate peak inside retention time window (PEAK_RET) and baseline (BASE_RET)
-  ;+++++++++++++++++++++++
-  t = x[w_rt_win]
-  v = y[w_rt_win]
-  z = (x[w_rt_win]-A[1])/A[2]
-  peak_ret = A[0]*exp(-z^2/2)
-  CASE nterms_base OF
-    1: base_ret=A[3]+replicate(0,nw_rt_win)
-    2: base_ret = A[3]+A[4]*t
-    3: base_ret = A[3]+A[4]*t+A[5]*t^2
-  ENDCASE
-
-  area=int_tabulated(x[w_int_win],peak_int,/double)
+  area=int_tabulated(t,peak_int,/double)
   IF (area LT 0.) THEN BEGIN
     strct.flag = -1;
     strct.comment = 'No Peak Found'
@@ -175,9 +201,11 @@ FUNCTION int_gau, xval, yval, NSIGMA_FIT=nsigma_fit, NSIGMA_INT=nsigma_int, NTER
   strct.rt = A[1]
   strct.hght = A[0]
   strct.area = area
-  strct.ts=min(x[w_int_win],/nan)
-  strct.te=max(x[w_int_win],/nan)
+  strct.ts=min(t,/nan)
+  strct.te=max(t,/nan)
   strct.wdth = A[2]
+  strct.upscale=scale
+  strct.t_int_axis = ptr_new(t)
   strct.flag = 1
   strct.comment = 'Integrated'
 

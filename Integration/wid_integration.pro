@@ -102,8 +102,12 @@ PRO wid_integration_ini
         w_im = WHERE(intm.prgmnames EQ chrom[sel_chrom].subst[sel_name].method)
         WIDGET_CONTROL, IM, SET_DROPLIST_SELECT=w_im[0]
        BF=WIDGET_DROPLIST(wT1, TITLE='   Baseline Fitfunction', Value=['constant','linear','quadratic'], uname='bl_fitfunc')
+       
           WIDGET_CONTROL, BF, set_droplist_select=chrom[sel_chrom].subst[sel_name].bl_type
-
+          chkb = WIDGET_BASE(intbase, column=1, /NONEXCLUSIVE)
+          gau_upsample = WIDGET_BUTTON(chkb, value='Gauss upsample', uname='gau_upsample', /ALIGN_CENTER)
+          WIDGET_CONTROL, gau_upsample, set_button = 0
+          
             wT11 = WIDGET_BASE(wT1, column=5)
           sigval = [get_finval(chrom[0].subst.sigma), (INDGEN(20)+1)]
        cb_sigval = STRING((sigval[UNIQ(sigval, SORT(sigval))]), FORMAT='(F4.1)')
@@ -116,6 +120,7 @@ PRO wid_integration_ini
   ID_cb_sigright = WIDGET_COMBOBOX(wT11, value=cb_sigval, uname='sigma_right', /DYNAMIC_RESIZE, /ALIGN_CENTER, TAB_MODE=1, /EDITABLE)
               w1 = WHERE(cb_sigval EQ chrom[sel_chrom].subst[sel_name].sigma[1])
   WIDGET_CONTROL, ID_cb_sigright, SET_COMBOBOX_SELECT=w1[0]
+
 
  INT_APPL=WIDGET_BASE(wT1, column=2)
        ID=WIDGET_BUTTON(INT_APPL, value='Apply Settings', uname='int_manual')
@@ -188,6 +193,7 @@ PRO wid_integration_handle, event
 
   fix_xyrange = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='fix_xyrange'), /BUTTON_SET)
   ovwr_man = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='ovwr_man'), /BUTTON_SET)
+  gau_upsample = WIDGET_INFO(WIDGET_INFO(event.top, find_by_uname='gau_upsample'), /BUTTON_SET)
 
   wait_ID = WIDGET_INFO(event.top, find_by_uname='wait')
   wait_sel = WIDGET_INFO(wait_ID, /DROPLIST_SELECT)
@@ -203,7 +209,6 @@ PRO wid_integration_handle, event
   sel_intmthd = intm.prgmnames[sel_mthd]
   ID_quant = WIDGET_INFO(event.top, find_by_uname='mass')
   sel_quant = WIDGET_INFO(ID_quant, /droplist_select)
-
 
 ;+++++++++++++++++++++++IF_EVENT+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ; reload msinfo to chromstruct: nominal masses (in case of exact masses in msinfo)
@@ -259,7 +264,7 @@ PRO wid_integration_handle, event
                   chrom[sel_chrom].subst[sel_name].method = subst[sel_name].method
                   IF WIDGET_INFO(event.id, /uname) EQ 'bat_int_noise' THEN $
                     call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_def_pres', /NO_WARN
-                  call_integration, sel_chrom, sel_name, PLOT=0
+                    call_integration, sel_chrom, sel_name, PLOT=0, gau_upsample=gau_upsample
                 ENDFOR
               ENDFOR
             END
@@ -269,7 +274,7 @@ PRO wid_integration_handle, event
                 FOR sel_chrom=0, n_chrom-1 DO BEGIN
                   IF WIDGET_INFO(event.id, /uname) EQ 'bat_int_noise' THEN $
                     call_noisecalc, sel_chrom, sel_name, event, NOISE_UNAME='noise_pres', /NO_WARN
-                  call_integration, sel_chrom, sel_name, plot=0
+                    call_integration, sel_chrom, sel_name, plot=0, gau_upsample=gau_upsample
                 ENDFOR
               ENDFOR
             END
@@ -485,7 +490,7 @@ PRO wid_integration_handle, event
   IF TOTAL(STRMATCH(int_triggers, WIDGET_INFO(event.id, /uname), /FOLD_CASE)) EQ 1 THEN BEGIN
     chrom[sel_chrom].subst[sel_name].method = sel_intmthd
     chrom[sel_chrom].subst[sel_name].ires.flag = 2
-    call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, MAN_FLAG=2, MAN_COMMENT='Integrated (man.)'
+    call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, MAN_FLAG=2, MAN_COMMENT='Integrated (man.)', gau_upsample=gau_upsample
     int_called = 1
   ENDIF
 
@@ -508,7 +513,7 @@ PRO wid_integration_handle, event
       chrom[n].subst[sel_name].sigma = chrom[sel_chrom].subst[sel_name].sigma
       chrom[n].subst[sel_name].quant = chrom[sel_chrom].subst[sel_name].quant
       chrom[n].subst[sel_name].method = sel_intmthd
-      call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
+      call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, gau_upsample=gau_upsample
       WAIT, wait
     ENDFOR
 ;      sel_chrom = n-1                                                                                  ; select last integrated file
@@ -549,7 +554,7 @@ PRO wid_integration_handle, event
       chrom[n].subst[sel_name].sigma = subst[sel_name].sigma
       chrom[n].subst[sel_name].quant = subst[sel_name].quant
       chrom[n].subst[sel_name].method = subst[sel_name].method
-      call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
+      call_integration, n, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, gau_upsample=gau_upsample
       WAIT, wait
     ENDFOR
 ;    IF STRUPCASE(chrom[sel_chrom].subst[sel_name].ires.comment) NE 'INTEGRATED' THEN BEGIN
@@ -585,7 +590,7 @@ PRO wid_integration_handle, event
     chrom[sel_chrom].subst[sel_name].sigma = subst[sel_name].sigma
     chrom[sel_chrom].subst[sel_name].quant = subst[sel_name].quant
     chrom[sel_chrom].subst[sel_name].method = subst[sel_name].method
-    call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
+    call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, gau_upsample=gau_upsample
   ENDIF
 
 
@@ -634,8 +639,8 @@ PRO wid_integration_handle, event
 
   IF NOT int_called THEN BEGIN ; call integration only if not done so yet
     CASE chrom[sel_chrom].subst[sel_name].ires.flag OF
-      1: call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange
-      2: call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, MAN_FLAG=2, MAN_COMMENT='Integrated (man.)'
+      1: call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, gau_upsample=gau_upsample
+      2: call_integration, sel_chrom, sel_name, plot=1, FIX_XYRANGE=fix_xyrange, MAN_FLAG=2, MAN_COMMENT='Integrated (man.)', gau_upsample=gau_upsample
       ELSE: plot_routine_pobj1, x,v, OVER=1, XRANGE=xrange, YRANGE=yrange, FIX_XYRANGE=fix_xyrange
     ENDCASE
   ENDIF
